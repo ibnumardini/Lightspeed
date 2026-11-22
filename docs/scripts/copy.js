@@ -24,11 +24,11 @@ export const COPY = {
       },
       {
         title: 'Quick speeds and custom fine-tune steps',
-        desc: 'Pick up to 10 one-tap presets, nudge speed with customizable small and big percentage steps, or type any exact rate from 0.1× to 16×.',
+        desc: 'Pick up to 10 one-tap presets (each with an expandable +0.5× tab), press-and-hold percentage steps, or adjust 0.1× to 16× with typing, scroll wheel, or arrow keys.',
       },
       {
         title: 'Shortcuts and live remaining time',
-        desc: 'Press A, D, or S on any video page to step up, step down, or reset to 1× (ignored while typing). See remaining time and minutes saved in Now playing.',
+        desc: 'Press A, D, or S on any video page to step up, step down, or reset to 1× (toggleable in Settings, ignored while typing). See progress, remaining time, and minutes saved in Now playing.',
       },
     ],
 
@@ -120,12 +120,12 @@ export const COPY = {
         desc: 'Atur kecepatan khusus untuk satu tab, simpan kecepatan default per situs seperti YouTube, atau terapkan ke semua tab sekaligus. Tetap terjaga saat pindah video di SPA maupun iframe.',
       },
       {
-        title: 'Quick speed dan fine-tune step custom',
-        desc: 'Simpan hingga 10 preset sekali klik, atur langkah −/+ kecil dan besar (termasuk persentase custom), atau ketik angka langsung dari 0.1× sampai 16×.',
+        title: 'Preset kecepatan dan langkah penyesuaian',
+        desc: 'Simpan hingga 10 preset sekali klik (masing-masing dilengkapi tab +0.5× saat di-hover), tahan tombol −/+ untuk repeat, atau atur 0.1× sampai 16× lewat ketik, scroll mouse, dan tombol panah.',
       },
       {
-        title: 'Keyboard shortcuts dan estimasi sisa waktu',
-        desc: 'Tekan A, D, atau S di halaman video untuk naik, turun, atau reset ke 1× (otomatis nonaktif saat mengetik). Kartu Now playing menampilkan sisa durasi dan waktu yang dihemat.',
+        title: 'Pintasan keyboard dan estimasi sisa waktu',
+        desc: 'Tekan A, D, atau S di halaman video untuk naik, turun, atau reset ke 1× (bisa dimatikan di Pengaturan, otomatis jeda saat mengetik). Kartu Sedang diputar menampilkan progress, sisa durasi, dan waktu hemat.',
       },
     ],
 
