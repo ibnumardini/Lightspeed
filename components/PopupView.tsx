@@ -231,34 +231,70 @@ export function PopupView({
 
         <button
           type="button"
-          className="ls-btn ls-btn-surface"
-          aria-pressed={enabled}
+          role="switch"
+          aria-checked={enabled}
           aria-label="Speed control on or off"
+          title={enabled ? 'Turn off Lightspeed' : 'Turn on Lightspeed'}
           onClick={onTogglePower}
           style={{
-            flex: '0 0 auto',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
+            position: 'relative',
+            flex: '0 0 66px',
+            width: 66,
             height: 36,
-            padding: '0 6px 0 10px',
+            padding: 4,
             borderRadius: 10,
-            border: `1.5px solid ${enabled ? 'var(--accent-fg)' : 'var(--power-off-border)'}`,
-            background: 'var(--bg-surface)',
-            color: enabled ? 'var(--accent-fg)' : 'var(--text-muted)',
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: '0.04em',
+            border: 0,
+            display: 'flex',
+            alignItems: 'center',
+            background: enabled ? accent : 'var(--switch-off)',
+            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.16)',
+            transition: 'background 0.18s ease',
             cursor: 'pointer',
           }}
         >
-          {enabled ? 'ON' : 'OFF'}
+          <span
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: 10,
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: '0.04em',
+              color: '#FFFFFF',
+              opacity: enabled ? 1 : 0,
+              transition: 'opacity 0.15s ease',
+              pointerEvents: 'none',
+            }}
+          >
+            ON
+          </span>
+          <span
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              right: 9,
+              fontSize: 11,
+              fontWeight: 800,
+              letterSpacing: '0.04em',
+              color: 'var(--text-primary)',
+              opacity: enabled ? 0 : 0.8,
+              transition: 'opacity 0.15s ease',
+              pointerEvents: 'none',
+            }}
+          >
+            OFF
+          </span>
           <span
             style={{
-              width: 18,
-              height: 18,
-              borderRadius: 5,
-              background: enabled ? accent : 'var(--knob-off)',
+              position: 'relative',
+              zIndex: 1,
+              width: 24,
+              height: 28,
+              borderRadius: 6,
+              background: '#FFFFFF',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.28)',
+              transition: 'transform 0.18s cubic-bezier(0.22, 1, 0.36, 1)',
+              transform: enabled ? 'translateX(34px)' : 'translateX(0)',
             }}
           />
         </button>
