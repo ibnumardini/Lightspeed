@@ -82,10 +82,28 @@ export function PopupView({
 }: PopupViewProps) {
   const [draft, setDraft] = useState(() => formatSpeed(speed));
   const justFocusedRef = useRef(false);
+  const speedRef = useRef(speed);
+  const holdTimerRef = useRef<number | null>(null);
+  const holdIntervalRef = useRef<number | null>(null);
+  const holdFiredRef = useRef(false);
 
   useEffect(() => {
+    speedRef.current = speed;
     setDraft(formatSpeed(speed));
   }, [speed]);
+
+  const stopHold = () => {
+    if (holdTimerRef.current !== null) {
+      window.clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+    if (holdIntervalRef.current !== null) {
+      window.clearInterval(holdIntervalRef.current);
+      holdIntervalRef.current = null;
+    }
+  };
+
+  useEffect(() => () => stopHold(), []);
 
   const t = getStrings(lang);
   const scopes: { id: ScopeMode; label: string }[] = [
@@ -100,9 +118,35 @@ export function PopupView({
 
   const commitSpeed = (next: number) => {
     const clamped = clampSpeed(next);
+    speedRef.current = clamped;
     setDraft(formatSpeed(clamped));
     onChangeSpeed(clamped);
   };
+
+  const makeHoldProps = (delta: number) => ({
+    onPointerDown: (e: React.PointerEvent<HTMLButtonElement>) => {
+      if (e.button !== 0) return;
+      stopHold();
+      holdFiredRef.current = false;
+      holdTimerRef.current = window.setTimeout(() => {
+        holdFiredRef.current = true;
+        commitSpeed(speedRef.current + delta);
+        holdIntervalRef.current = window.setInterval(() => {
+          commitSpeed(speedRef.current + delta);
+        }, 85);
+      }, 340);
+    },
+    onPointerUp: stopHold,
+    onPointerLeave: stopHold,
+    onPointerCancel: stopHold,
+    onClick: () => {
+      if (holdFiredRef.current) {
+        holdFiredRef.current = false;
+        return;
+      }
+      commitSpeed(speedRef.current + delta);
+    },
+  });
 
   const applyDraft = () => {
     if (parsed !== null) {
@@ -123,6 +167,7 @@ export function PopupView({
   const quickList = quickSpeeds.length > 0 ? quickSpeeds : [1, 2, 3, 4, 5];
   const quickCols = Math.min(5, quickList.length);
   const showSpeedRow = vis.fine || vis.manual;
+  const showControlsCard = vis.scope || vis.quick || showSpeedRow;
 
   const supportUrl = isIndonesia ? SUPPORT_URLS.indonesia : SUPPORT_URLS.global;
   const supportAria = t.supportAria(isIndonesia);
@@ -499,25 +544,45 @@ export function PopupView({
 
           {showSpeedRow && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span
+              <div
                 style={{
-                  fontSize: 11,
-                  lineHeight: '16px',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'var(--text-muted)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 8,
                 }}
               >
-                {t.playbackSpeed}
-              </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    lineHeight: '16px',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--text-muted)',
+                  }}
+                >
+                  {t.playbackSpeed}
+                </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    lineHeight: '16px',
+                    fontWeight: 700,
+                    color: 'var(--text-subtle)',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {Math.round(speed * 100)}%
+                </span>
+              </div>
               <div style={{ display: 'flex', gap: 6, alignItems: 'stretch' }}>
                 {vis.fine && (
                   <>
                     <button
                       type="button"
                       className="ls-btn ls-btn-tint"
-                      onClick={() => commitSpeed(speed - bigStep / 100)}
+                      {...makeHoldProps(-bigStep / 100)}
                       aria-label={t.decreaseBy(bigStep)}
                       style={{
                         flex: '0 0 44px',
@@ -537,7 +602,7 @@ export function PopupView({
                     <button
                       type="button"
                       className={`ls-btn ls-btn-tint${shortcutsEnabled ? ' ls-has-key' : ''}`}
-                      onClick={() => commitSpeed(speed - smallStep / 100)}
+                      {...makeHoldProps(-smallStep / 100)}
                       aria-label={t.decreaseBy(smallStep, shortcutsEnabled ? keys.down : undefined)}
                       title={shortcutsEnabled ? t.shortcutTip(keys.down) : undefined}
                       style={{
@@ -565,6 +630,10 @@ export function PopupView({
 
                 <div
                   className="ls-input-well"
+                  onWheel={(e) => {
+                    const step = (e.shiftKey ? bigStep : smallStep) / 100;
+                    commitSpeed(speedRef.current + (e.deltaY < 0 ? step : -step));
+                  }}
                   style={{
                     flex: '1 1 0',
                     minWidth: 0,
@@ -602,7 +671,11 @@ export function PopupView({
                         }}
                         onKeyDown={(e) => {
                           justFocusedRef.current = false;
-                          if (e.key === 'Enter') {
+                          if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const step = (e.shiftKey ? bigStep : smallStep) / 100;
+                            commitSpeed(speedRef.current + (e.key === 'ArrowUp' ? step : -step));
+                          } else if (e.key === 'Enter') {
                             e.preventDefault();
                             applyDraft();
                           } else if (e.key === 'Escape') {
@@ -645,7 +718,7 @@ export function PopupView({
                     <button
                       type="button"
                       className={`ls-btn ls-btn-tint${shortcutsEnabled ? ' ls-has-key' : ''}`}
-                      onClick={() => commitSpeed(speed + smallStep / 100)}
+                      {...makeHoldProps(smallStep / 100)}
                       aria-label={t.increaseBy(smallStep, shortcutsEnabled ? keys.up : undefined)}
                       title={shortcutsEnabled ? t.shortcutTip(keys.up) : undefined}
                       style={{
@@ -671,7 +744,7 @@ export function PopupView({
                     <button
                       type="button"
                       className="ls-btn ls-btn-tint"
-                      onClick={() => commitSpeed(speed + bigStep / 100)}
+                      {...makeHoldProps(bigStep / 100)}
                       aria-label={t.increaseBy(bigStep)}
                       style={{
                         flex: '0 0 44px',
@@ -692,7 +765,7 @@ export function PopupView({
                 )}
               </div>
 
-              {vis.manual && (
+              {vis.manual && (dirty || !valid) && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
                   <p
                     style={{
@@ -700,7 +773,7 @@ export function PopupView({
                       flex: '1 1 0',
                       minWidth: 0,
                       fontSize: 12,
-                      fontWeight: 500,
+                      fontWeight: 600,
                       lineHeight: 1.4,
                       color: hintColor,
                     }}
@@ -714,11 +787,11 @@ export function PopupView({
                     disabled={!dirty}
                     style={{
                       flex: '0 0 auto',
-                      height: 36,
-                      padding: '0 18px',
-                      borderRadius: 10,
+                      height: 34,
+                      padding: '0 16px',
+                      borderRadius: 9,
                       border: 0,
-                      fontSize: 13,
+                      fontSize: 12.5,
                       fontWeight: 700,
                       background: dirty ? accent : 'var(--btn-disabled-bg)',
                       color: dirty ? '#FFFFFF' : 'var(--btn-disabled-text)',
@@ -730,6 +803,17 @@ export function PopupView({
                 </div>
               )}
             </div>
+          )}
+
+          {vis.now && showControlsCard && (
+            <div
+              aria-hidden="true"
+              style={{
+                height: 1,
+                background: 'var(--border-divider)',
+                margin: '2px 0',
+              }}
+            />
           )}
 
           {vis.now && (() => {
