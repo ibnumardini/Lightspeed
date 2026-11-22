@@ -35,25 +35,16 @@ export function LightspeedLogo({ size, accent }: { size: number; accent: string 
 export function ResetIcon() {
   return (
     <svg
-      width="16"
-      height="16"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="0.9"
+      strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path
-        d="M4.8 12.5a7.2 7.2 0 1 0 2.1-5.1"
-        stroke="currentColor"
-        strokeWidth="2.8"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4.2 4.2v5.4h5.4Z"
-        fill="currentColor"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinejoin="round"
-      />
+      <path d="M12 5V2.21c0-.45-.54-.67-.85-.35l-3.8 3.79c-.2.2-.2.51 0 .71l3.79 3.79c.32.31.86.09.86-.36V7c3.73 0 6.68 3.42 5.86 7.29-.47 2.27-2.31 4.1-4.57 4.57-3.57.75-6.75-1.7-7.23-5.01-.07-.48-.49-.85-.98-.85-.6 0-1.08.53-1 1.13.62 4.39 4.8 7.64 9.53 6.72 3.12-.61 5.63-3.12 6.24-6.24C20.84 9.48 16.94 5 12 5z" />
     </svg>
   );
 }
