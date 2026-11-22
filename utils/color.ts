@@ -15,8 +15,8 @@ export const PRESET_ACCENTS: AccentSwatch[] = [
 export const PRESET_HEX_SET = new Set(PRESET_ACCENTS.map((s) => s.hex.toUpperCase()));
 
 export const SUPPORT_URLS = {
-  indonesia: 'https://trakteer.id',
-  global: 'https://ko-fi.com',
+  indonesia: 'https://trakteer.id/ibnumardini/tip',
+  global: 'https://ko-fi.com/ibnumardini',
 } as const;
 
 export const PRIVACY_URL = 'https://ibnumardini.github.io/lightspeed/privacy.html';

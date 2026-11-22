@@ -100,7 +100,7 @@ function App() {
   const secondaryStoreUrl = isFirefox ? CHROME_STORE_URL : FIREFOX_STORE_URL;
   const secondaryStoreLabel = isFirefox ? t.alsoChrome : t.alsoFirefox;
 
-  const supportUrl = isID ? 'https://trakteer.id' : 'https://ko-fi.com';
+  const supportUrl = isID ? 'https://trakteer.id/ibnumardini/tip' : 'https://ko-fi.com/ibnumardini';
   const supportName = isID ? 'Trakteer' : 'Ko-fi';
 
   return html`
