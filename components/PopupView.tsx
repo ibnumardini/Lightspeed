@@ -258,6 +258,8 @@ export function PopupView({
               fontWeight: 700,
               lineHeight: '14px',
               whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
               color: 'var(--accent-fg)',
             }}
           >
@@ -283,6 +285,7 @@ export function PopupView({
             color: 'var(--text-secondary)',
             fontSize: 12,
             fontWeight: 700,
+            whiteSpace: 'nowrap',
             cursor: 'pointer',
           }}
         >

@@ -1130,7 +1130,7 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
                             : '1.5px dashed var(--border-strong)',
                         }}
                       >
-                        {smallIsCustom ? `${settings.smallStep}%` : 'Custom'}
+                        {smallIsCustom ? `${settings.smallStep}%` : t.custom}
                       </button>
                     )}
                   </div>
@@ -1262,7 +1262,7 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
                             : '1.5px dashed var(--border-strong)',
                         }}
                       >
-                        {bigIsCustom ? `${settings.bigStep}%` : 'Custom'}
+                        {bigIsCustom ? `${settings.bigStep}%` : t.custom}
                       </button>
                     )}
                   </div>
