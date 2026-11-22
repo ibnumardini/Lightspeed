@@ -1706,7 +1706,7 @@ export default function App() {
         >
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
             <LightspeedLogo size={22} accent={accent} />
-            <span>© 2026 Lightspeed - Video Speed Controller Pro</span>
+            <span>© 2026 Lightspeed - Vid Speed Ctrl Pro</span>
             <span
               style={{
                 fontSize: 11,

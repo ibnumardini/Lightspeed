@@ -1062,7 +1062,7 @@ export function PopupView({
           }}
         >
           <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            © 2026 Lightspeed - Video Speed Controller Pro
+            © 2026 Lightspeed - Vid Speed Ctrl Pro
           </span>
           <a
             href={PRIVACY_URL}
