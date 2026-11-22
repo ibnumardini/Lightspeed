@@ -25,6 +25,7 @@ export interface Settings {
   quickSpeeds: number[];
   smallStep: number;
   bigStep: number;
+  shortcutsEnabled: boolean;
   keys: ShortcutKeys;
   accent: string;
   customColor: string | null;
@@ -47,6 +48,7 @@ export const DEFAULT_SETTINGS: Settings = {
   quickSpeeds: [...DEFAULT_QUICK_SPEEDS],
   smallStep: 1,
   bigStep: 5,
+  shortcutsEnabled: true,
   keys: {
     up: 'A',
     down: 'D',

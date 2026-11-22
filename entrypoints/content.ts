@@ -185,7 +185,7 @@ export default defineContentScript({
     window.addEventListener(
       'keydown',
       (e: KeyboardEvent) => {
-        if (!enabled || e.ctrlKey || e.altKey || e.metaKey) return;
+        if (!enabled || settings.shortcutsEnabled === false || e.ctrlKey || e.altKey || e.metaKey) return;
         if (e.key.length !== 1 || !/[a-z0-9]/i.test(e.key)) return;
         if (isEditableEvent(e)) return;
         if (collectVideos().length === 0) return;

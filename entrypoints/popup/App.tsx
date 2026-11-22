@@ -143,6 +143,7 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
       quickSpeeds={settings.quickSpeeds}
       smallStep={settings.smallStep}
       bigStep={settings.bigStep}
+      shortcutsEnabled={settings.shortcutsEnabled ?? true}
       keys={settings.keys}
       accent={settings.accent}
       theme={resolvedTheme}

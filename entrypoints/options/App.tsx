@@ -1290,7 +1290,56 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
                 gap: 4,
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navShortcuts}</h2>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 16,
+                }}
+              >
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navShortcuts}</h2>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={settings.shortcutsEnabled ?? true}
+                  aria-label={t.navShortcuts}
+                  onClick={() => {
+                    const nextOn = !(settings.shortcutsEnabled ?? true);
+                    if (!nextOn) {
+                      setListening(null);
+                      setKeyMsg('');
+                    }
+                    updateSettings((prev) => ({ ...prev, shortcutsEnabled: nextOn }));
+                  }}
+                  style={{
+                    flex: '0 0 52px',
+                    width: 52,
+                    height: 32,
+                    padding: 3,
+                    borderRadius: 999,
+                    border: 0,
+                    display: 'flex',
+                    cursor: 'pointer',
+                    background: (settings.shortcutsEnabled ?? true) ? accent : 'var(--switch-off)',
+                    transition: 'background 0.15s ease',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: '50%',
+                      background: '#FFFFFF',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.28)',
+                      transition: 'transform 0.15s ease',
+                      transform: (settings.shortcutsEnabled ?? true)
+                        ? 'translateX(20px)'
+                        : 'translateX(0)',
+                    }}
+                  />
+                </button>
+              </div>
               <p
                 style={{
                   margin: '0 0 12px',
@@ -1301,67 +1350,79 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
               >
                 {t.shortcutsDesc}
               </p>
-              {keyDefs.map((k) => {
-                const isListening = listening === k.id;
-                return (
-                  <div
-                    key={k.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 12,
-                      padding: '12px 0',
-                      borderTop: '1px solid var(--border-divider)',
-                    }}
-                  >
-                    <span style={{ flex: '1 1 0', minWidth: 0, fontSize: 14, fontWeight: 600 }}>
-                      {k.action}
-                    </span>
-                    <kbd
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                  opacity: (settings.shortcutsEnabled ?? true) ? 1 : 0.45,
+                  pointerEvents: (settings.shortcutsEnabled ?? true) ? 'auto' : 'none',
+                  transition: 'opacity 0.15s ease',
+                }}
+              >
+                {keyDefs.map((k) => {
+                  const isListening = listening === k.id;
+                  return (
+                    <div
+                      key={k.id}
                       style={{
-                        minWidth: 36,
-                        height: 36,
-                        padding: '0 10px',
-                        display: 'inline-flex',
+                        display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 8,
-                        border: `1.5px solid ${isListening ? 'var(--accent-fg)' : 'var(--border-strong)'}`,
-                        borderBottomWidth: 3,
-                        background: 'var(--bg-surface)',
-                        fontSize: 14,
-                        fontWeight: 800,
-                        color: isListening ? 'var(--accent-fg)' : 'var(--text-primary)',
+                        gap: 12,
+                        padding: '12px 0',
+                        borderTop: '1px solid var(--border-divider)',
                       }}
                     >
-                      {isListening ? t.pressKey : settings.keys[k.id]}
-                    </kbd>
-                    <button
-                      type="button"
-                      className="ls-btn ls-btn-surface"
-                      onClick={() => {
-                        setListening(isListening ? null : k.id);
-                        setKeyMsg('');
-                      }}
-                      onKeyDown={(e) => handleCaptureKey(k.id, e)}
-                      style={{
-                        minWidth: 88,
-                        height: 40,
-                        padding: '0 14px',
-                        borderRadius: 10,
-                        border: '1.5px solid var(--border-strong)',
-                        background: 'var(--bg-surface)',
-                        color: 'var(--text-secondary)',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {isListening ? t.cancel : t.change}
-                    </button>
-                  </div>
-                );
-              })}
+                      <span style={{ flex: '1 1 0', minWidth: 0, fontSize: 14, fontWeight: 600 }}>
+                        {k.action}
+                      </span>
+                      <kbd
+                        style={{
+                          minWidth: 36,
+                          height: 36,
+                          padding: '0 10px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 8,
+                          border: `1.5px solid ${isListening ? 'var(--accent-fg)' : 'var(--border-strong)'}`,
+                          borderBottomWidth: 3,
+                          background: 'var(--bg-surface)',
+                          fontSize: 14,
+                          fontWeight: 800,
+                          color: isListening ? 'var(--accent-fg)' : 'var(--text-primary)',
+                        }}
+                      >
+                        {isListening ? t.pressKey : settings.keys[k.id]}
+                      </kbd>
+                      <button
+                        type="button"
+                        disabled={!(settings.shortcutsEnabled ?? true)}
+                        className="ls-btn ls-btn-surface"
+                        onClick={() => {
+                          setListening(isListening ? null : k.id);
+                          setKeyMsg('');
+                        }}
+                        onKeyDown={(e) => handleCaptureKey(k.id, e)}
+                        style={{
+                          minWidth: 88,
+                          height: 40,
+                          padding: '0 14px',
+                          borderRadius: 10,
+                          border: '1.5px solid var(--border-strong)',
+                          background: 'var(--bg-surface)',
+                          color: 'var(--text-secondary)',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {isListening ? t.cancel : t.change}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
               {keyMsg && (
                 <p style={{ margin: '8px 0 0', fontSize: 12.5, fontWeight: 600, color: 'var(--error)' }}>
                   {keyMsg}
@@ -1645,6 +1706,7 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
                   quickSpeeds={settings.quickSpeeds}
                   smallStep={settings.smallStep}
                   bigStep={settings.bigStep}
+                  shortcutsEnabled={settings.shortcutsEnabled ?? true}
                   keys={settings.keys}
                   accent={accent}
                   theme={resolvedTheme}
