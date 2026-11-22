@@ -26,8 +26,8 @@ bun run dev           # dev server with HMR (Chromium)
 bun run dev:firefox   # dev server with HMR (Firefox)
 bun run build         # build to .output/chrome-mv3
 bun run build:firefox # build to .output/firefox-mv2
-bun run zip           # build + package Chromium zip in .output/
-bun run zip:firefox   # build + package Firefox zip in .output/
+bun run zip           # build + package Chromium zip in dist/
+bun run zip:firefox   # build + package Firefox zip in dist/
 bun run compile       # TypeScript typecheck (tsc --noEmit)
 bun test              # run unit tests
 bun run docs          # preview the GitHub Pages landing site in docs/
