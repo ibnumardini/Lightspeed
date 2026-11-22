@@ -111,6 +111,29 @@ export default function App() {
     return () => unwatch();
   }, []);
 
+  useEffect(() => {
+    const updateActiveFromScroll = () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
+      if (atBottom) {
+        setActiveNav(NAV_ITEMS[NAV_ITEMS.length - 1].id);
+        return;
+      }
+      let current: string = NAV_ITEMS[0].id;
+      for (const item of NAV_ITEMS) {
+        const el = document.getElementById(item.id);
+        if (el && el.getBoundingClientRect().top <= 120) {
+          current = item.id;
+        }
+      }
+      setActiveNav(current);
+    };
+
+    updateActiveFromScroll();
+    window.addEventListener('scroll', updateActiveFromScroll, { passive: true });
+    return () => window.removeEventListener('scroll', updateActiveFromScroll);
+  }, []);
+
   const updateSettings = (updater: (prev: Settings) => Settings) => {
     setSettings((prev) => {
       const next = updater(prev);
@@ -431,6 +454,7 @@ export default function App() {
                 border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
+                scrollMarginTop: 24,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 4,
@@ -525,6 +549,7 @@ export default function App() {
                 border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
+                scrollMarginTop: 24,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 4,
@@ -868,6 +893,7 @@ export default function App() {
                 border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
+                scrollMarginTop: 24,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 16,
@@ -967,6 +993,7 @@ export default function App() {
                 border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
+                scrollMarginTop: 24,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 4,
@@ -1061,6 +1088,7 @@ export default function App() {
                 border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
+                scrollMarginTop: 24,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 18,
