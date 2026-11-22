@@ -734,128 +734,188 @@ export function PopupView({
             </div>
           )}
 
-          {vis.now && (
-            <div
-              className="ls-card"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '11px 12px',
-                borderRadius: 12,
-                background:
-                  'linear-gradient(180deg, var(--bg-now-start) 0%, var(--bg-now-end) 100%)',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <button
-                type="button"
-                className={`ls-btn ${video ? 'ls-btn-primary' : ''}`}
-                onClick={onTogglePlay}
-                disabled={!video}
-                aria-label={video?.playing ? t.pauseVideo : t.playVideo}
-                style={{
-                  flex: '0 0 40px',
-                  width: 40,
-                  height: 40,
-                  padding: 0,
-                  borderRadius: '50%',
-                  border: 0,
-                  background: video ? accent : 'var(--knob-off)',
-                  color: '#FFFFFF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: video ? 'pointer' : 'not-allowed',
-                }}
-              >
-                {video?.playing ? <PauseIcon /> : <PlayIcon />}
-              </button>
+          {vis.now && (() => {
+            const cleanHost = hostname ? hostname.replace(/^www\./, '') : '';
+            const hasFiniteDuration =
+              !!video && Number.isFinite(video.duration) && video.duration > 0;
+            const progressPct = hasFiniteDuration
+              ? Math.min(100, Math.max(0, (video.currentTime / video.duration) * 100))
+              : 0;
+            const isSpeedChanged = !nearSpeed(speed, 1);
 
+            return (
               <div
+                className="ls-card"
                 style={{
-                  flex: '1 1 0',
-                  minWidth: 0,
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 2,
+                  gap: 10,
+                  padding: '12px 13px',
+                  borderRadius: 13,
+                  background:
+                    'linear-gradient(180deg, var(--bg-now-start) 0%, var(--bg-now-end) 100%)',
+                  border: '1px solid var(--border)',
                 }}
               >
-                <span
-                  style={{
-                    fontSize: 10.5,
-                    lineHeight: '14px',
-                    fontWeight: 700,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-muted)',
-                  }}
-                >
-                  {t.nowPlaying}
-                </span>
-                <span
-                  style={{
-                    fontSize: 13.5,
-                    lineHeight: '18px',
-                    fontWeight: 700,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {hostname || (restricted ? t.browserPage : t.thisTab)}
-                </span>
-                <span
-                  style={{
-                    fontSize: 12,
-                    lineHeight: '16px',
-                    color: 'var(--text-muted)',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
-                >
-                  {video
-                    ? `${video.playing ? t.playing : t.paused} · ${formatDuration(video.currentTime)} / ${formatDuration(video.duration)}`
-                    : restricted
-                      ? t.notAvailableBrowser
-                      : t.noVideoDetected}
-                </span>
-              </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                  <button
+                    type="button"
+                    className={`ls-btn ${video ? 'ls-btn-primary' : ''}`}
+                    onClick={onTogglePlay}
+                    disabled={!video}
+                    aria-label={video?.playing ? t.pauseVideo : t.playVideo}
+                    style={{
+                      flex: '0 0 40px',
+                      width: 40,
+                      height: 40,
+                      padding: 0,
+                      borderRadius: '50%',
+                      border: 0,
+                      background: video ? accent : 'var(--knob-off)',
+                      color: '#FFFFFF',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: video ? 'pointer' : 'not-allowed',
+                    }}
+                  >
+                    {video?.playing ? <PauseIcon /> : <PlayIcon />}
+                  </button>
 
-              {stats && (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    gap: 2,
-                    textAlign: 'right',
-                  }}
-                >
-                  <span
+                  <div
                     style={{
-                      fontSize: 15,
-                      lineHeight: '20px',
-                      fontWeight: 800,
-                      fontVariantNumeric: 'tabular-nums',
+                      flex: '1 1 0',
+                      minWidth: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 2,
                     }}
                   >
-                    {leftLabel}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11.5,
-                      lineHeight: '16px',
-                      fontWeight: 700,
-                      color: deltaColor,
-                      fontVariantNumeric: 'tabular-nums',
-                    }}
-                  >
-                    {deltaLabel}
-                  </span>
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 5,
+                        fontSize: 10,
+                        lineHeight: '14px',
+                        fontWeight: 700,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        color: 'var(--text-muted)',
+                      }}
+                    >
+                      {video && (
+                        <span
+                          aria-hidden="true"
+                          className={video.playing ? 'ls-live-dot' : undefined}
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            background: video.playing ? 'var(--accent-fg)' : 'var(--text-subtle)',
+                            flexShrink: 0,
+                          }}
+                        />
+                      )}
+                      {video ? (video.playing ? t.playing : t.paused) : t.nowPlaying}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 13.5,
+                        lineHeight: '18px',
+                        fontWeight: 700,
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {cleanHost || (restricted ? t.browserPage : t.thisTab)}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 11.5,
+                        lineHeight: '15px',
+                        color: 'var(--text-muted)',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {video
+                        ? `${formatDuration(video.currentTime)} / ${formatDuration(video.duration)}`
+                        : restricted
+                          ? t.notAvailableBrowser
+                          : t.noVideoDetected}
+                    </span>
+                  </div>
+
+                  {stats && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                        gap: 3,
+                        textAlign: 'right',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 14.5,
+                          lineHeight: '18px',
+                          fontWeight: 800,
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
+                        {leftLabel}
+                      </span>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          padding: isSpeedChanged ? '2px 7px' : 0,
+                          borderRadius: 999,
+                          background: isSpeedChanged ? 'var(--accent-tint)' : 'transparent',
+                          fontSize: 11,
+                          lineHeight: '15px',
+                          fontWeight: 700,
+                          color: deltaColor,
+                          fontVariantNumeric: 'tabular-nums',
+                        }}
+                      >
+                        {deltaLabel}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )}
+
+                {hasFiniteDuration && (
+                  <div
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(progressPct)}
+                    style={{
+                      width: '100%',
+                      height: 4,
+                      borderRadius: 999,
+                      background: 'var(--border-subtle)',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${progressPct}%`,
+                        height: '100%',
+                        borderRadius: 999,
+                        background: accent,
+                        transition: 'width 0.35s linear',
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         {!enabled && (
