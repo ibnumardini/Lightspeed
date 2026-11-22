@@ -1608,27 +1608,80 @@ export default function App() {
 
       <footer
         style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '8px 24px 32px',
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          gap: 12,
-          fontSize: 12.5,
-          fontWeight: 600,
-          color: 'var(--text-subtle)',
+          marginTop: 24,
+          background: 'var(--bg-surface)',
+          borderTop: '1px solid var(--border)',
         }}
       >
-        <span>© 2026 Lightspeed - Video Speed Controller Pro</span>
-        <a
-          href={PRIVACY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ls-credit-link"
+        <div
+          style={{
+            maxWidth: 1280,
+            margin: '0 auto',
+            padding: '18px 24px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 12,
+            fontSize: 12.5,
+            fontWeight: 600,
+            color: 'var(--text-subtle)',
+          }}
         >
-          Privacy Policy
-        </a>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <LightspeedLogo size={22} accent={accent} />
+            <span>© 2026 Lightspeed - Video Speed Controller Pro</span>
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                padding: '2px 7px',
+                borderRadius: 6,
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-muted)',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              v{version}
+            </span>
+          </div>
+
+          <div style={{ display: 'inline-flex', flexWrap: 'wrap', alignItems: 'center', gap: 18 }}>
+            <a
+              href={WEBSITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ls-credit-link"
+            >
+              Website
+            </a>
+            <a
+              href="https://github.com/ibnumardini/Lightspeed"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ls-credit-link"
+            >
+              GitHub
+            </a>
+            <a
+              href={PRIVACY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ls-credit-link"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href={supportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ls-credit-link"
+            >
+              {isIndonesia ? 'Trakteer' : 'Ko-fi'}
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );
