@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lightspeed - Video Speed Controller Pro</title>
+  <meta
+    name="description"
+    content="Control HTML5 video playback speed from 0.1x to 16x on Chromium and Firefox. Per tab, per site, or all tabs, with keyboard shortcuts and zero telemetry."
+  />
+  <meta name="author" content="Muhammad Fatkurozi" />
+  <link rel="canonical" href="https://ibnumardini.github.io/lightspeed/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ibnumardini.github.io/lightspeed/" />
+  <meta property="og:title" content="Lightspeed - Video Speed Controller Pro" />
+  <meta
+    property="og:description"
+    content="0.1x to 16x video speed controller for Chromium and Firefox with shortcuts, live badge, and zero telemetry."
+  />
+  <meta property="og:image" content="https://ibnumardini.github.io/lightspeed/assets/preview.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lightspeed - Video Speed Controller Pro" />
+  <meta
+    name="twitter:description"
+    content="0.1x to 16x video speed controller for Chromium and Firefox with shortcuts, live badge, and zero telemetry."
+  />
+  <meta name="twitter:image" content="https://ibnumardini.github.io/lightspeed/assets/preview.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="128x128" href="./assets/icon-128.png" />
+  <link rel="preload" as="image" href="./assets/hero.webp" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./style.css" />
+  <script>
+    (function () {
+      var saved = localStorage.getItem('lightspeed_site_theme') || 'system';
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/htm@3/dist/htm.umd.js"></script>
+  <script type="module" src="./scripts/main.js"></script>
+</body>
+</html>

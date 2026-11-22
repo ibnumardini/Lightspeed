@@ -12,6 +12,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "test": "bun test",
+    "docs": "bunx serve docs",
     "postinstall": "wxt prepare"
   },
   "dependencies": {

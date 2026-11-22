@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Lightspeed - Video Speed Controller Pro</title>
+  <meta
+    name="description"
+    content="Privacy Policy for Lightspeed - Video Speed Controller Pro. Zero data collection, zero analytics, local browser storage only."
+  />
+  <meta name="author" content="Muhammad Fatkurozi" />
+  <link rel="canonical" href="https://ibnumardini.github.io/lightspeed/privacy.html" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon-32.png" />
+  <link rel="icon" type="image/png" sizes="128x128" href="./assets/icon-128.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./style.css" />
+  <script>
+    (function () {
+      var saved = localStorage.getItem('lightspeed_site_theme') || 'system';
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+</head>
+<body>
+  <nav class="nav scrolled" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="./" class="wordmark">
+        <img src="./assets/icon-128.png" alt="Lightspeed logo" width="28" height="28" />
+        <span>Lightspeed</span>
+      </a>
+      <div class="nav-actions" style="display: flex">
+        <a href="./" class="nav-link">Back to home</a>
+        <a href="https://github.com/ibnumardini/Lightspeed" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="prose-page">
+    <div class="container">
+      <article class="prose-card">
+        <p class="prose-meta">Effective Date: November 22, 2026</p>
+        <h1>Privacy Policy: Lightspeed - Video Speed Controller Pro</h1>
+        <p class="prose-lead">
+          Lightspeed - Video Speed Controller Pro ("Lightspeed") respects your privacy.
+        </p>
+
+        <h2>Data Collection</h2>
+        <p>
+          Lightspeed does <strong>not</strong> collect, transmit, sell, or share any personal data,
+          browsing history, analytics, or telemetry.
+        </p>
+
+        <h2>Local Storage</h2>
+        <p>
+          All settings (playback speed preferences, quick speed presets, keyboard shortcuts, layout
+          toggles, and accent color) are stored locally in your browser using the browser's
+          extension storage API (<code>storage.local</code> / <code>storage.session</code>). This
+          data never leaves your device.
+        </p>
+
+        <h2>Permissions Used</h2>
+        <ul class="privacy-perms">
+          <li>
+            <code>storage</code>
+            <span>Saves your extension settings and per-site speed preferences locally.</span>
+          </li>
+          <li>
+            <code>tabs</code>
+            <span>Reads the active tab's hostname to apply per-tab, per-site, or all-tabs playback speed settings and updates the toolbar badge.</span>
+          </li>
+          <li>
+            <code>&lt;all_urls&gt;</code>
+            <span>Detects <code>&lt;video&gt;</code> elements and listens for your configured keyboard shortcuts on websites you visit. No page content is collected or transmitted.</span>
+          </li>
+        </ul>
+
+        <h2>Third-Party Links</h2>
+        <p>
+          Lightspeed includes optional external links (such as Trakteer, Ko-fi, or the developer's
+          website). Clicking these links is entirely optional and subject to those third-party
+          sites' privacy policies.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          If you have any questions about this Privacy Policy, contact Muhammad Fatkurozi via
+          <a href="https://ibnu.mardini.dev" target="_blank" rel="noopener noreferrer" class="text-link">ibnu.mardini.dev</a>
+          or <a href="mailto:hi@mardini.dev" class="text-link">hi@mardini.dev</a>.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>
+        © 2026 Lightspeed - Video Speed Controller Pro · Made by
+        <a href="https://ibnu.mardini.dev" target="_blank" rel="noopener noreferrer" class="footer-author">Muhammad Fatkurozi</a>
+      </span>
+      <div class="footer-links">
+        <a href="./">Home</a>
+        <a href="https://github.com/ibnumardini/Lightspeed" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
