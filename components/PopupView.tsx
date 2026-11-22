@@ -143,7 +143,7 @@ export function PopupView({
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          padding: '16px 14px',
+          padding: '14px 16px',
           background: 'linear-gradient(180deg, #FFFFFF 0%, #F9FCFB 100%)',
           borderBottom: '1px solid #E3ECEA',
         }}
@@ -205,7 +205,7 @@ export function PopupView({
             display: 'inline-flex',
             alignItems: 'center',
             gap: 5,
-            height: 40,
+            height: 36,
             padding: '0 10px',
             borderRadius: 10,
             border: `1.5px solid ${accent}`,
@@ -231,7 +231,7 @@ export function PopupView({
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            height: 40,
+            height: 36,
             padding: '0 6px 0 10px',
             borderRadius: 10,
             border: `1.5px solid ${enabled ? accent : '#9DB0AD'}`,
@@ -246,9 +246,9 @@ export function PopupView({
           {enabled ? 'ON' : 'OFF'}
           <span
             style={{
-              width: 20,
-              height: 20,
-              borderRadius: 6,
+              width: 18,
+              height: 18,
+              borderRadius: 5,
               background: enabled ? accent : '#C5D3D1',
             }}
           />
@@ -260,8 +260,8 @@ export function PopupView({
           style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 18,
-            padding: 16,
+            gap: 16,
+            padding: '14px 16px 16px',
             ...(enabled
               ? {}
               : { opacity: 0.4, pointerEvents: 'none', filter: 'grayscale(1)' }),
@@ -272,7 +272,7 @@ export function PopupView({
               <legend
                 style={{
                   padding: 0,
-                  marginBottom: 8,
+                  marginBottom: 6,
                   fontSize: 11,
                   lineHeight: '16px',
                   fontWeight: 700,
@@ -287,9 +287,9 @@ export function PopupView({
                 className="ls-scope-track"
                 style={{
                   display: 'flex',
-                  gap: 4,
-                  padding: 4,
-                  borderRadius: 12,
+                  gap: 3,
+                  padding: 3,
+                  borderRadius: 11,
                   background: tint,
                 }}
               >
@@ -306,8 +306,8 @@ export function PopupView({
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: 6,
-                        minHeight: 36,
-                        borderRadius: 9,
+                        minHeight: 34,
+                        borderRadius: 8,
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -360,7 +360,7 @@ export function PopupView({
           )}
 
           {vis.quick && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span
                 style={{
                   fontSize: 11,
@@ -390,13 +390,13 @@ export function PopupView({
                       onClick={() => commitSpeed(v)}
                       aria-pressed={active}
                       style={{
-                        height: 44,
+                        height: 40,
                         padding: 0,
                         borderRadius: 10,
                         border: `1.5px solid ${active ? accent : 'transparent'}`,
                         background: active ? accent : tint,
                         color: active ? '#FFFFFF' : accent,
-                        fontSize: 15,
+                        fontSize: 14.5,
                         fontWeight: 800,
                         cursor: 'pointer',
                         fontVariantNumeric: 'tabular-nums',
@@ -411,7 +411,7 @@ export function PopupView({
           )}
 
           {showSpeedRow && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <span
                 style={{
                   fontSize: 11,
@@ -434,13 +434,13 @@ export function PopupView({
                       aria-label={`Decrease speed by ${bigStep}%`}
                       style={{
                         flex: '0 0 44px',
-                        height: 48,
+                        height: 44,
                         padding: 0,
-                        borderRadius: 12,
+                        borderRadius: 11,
                         border: 0,
                         background: tint,
                         color: accent,
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
                       }}
@@ -454,13 +454,13 @@ export function PopupView({
                       aria-label={`Decrease speed by ${smallStep}%`}
                       style={{
                         flex: '0 0 44px',
-                        height: 48,
+                        height: 44,
                         padding: 0,
-                        borderRadius: 12,
+                        borderRadius: 11,
                         border: 0,
                         background: tint,
                         color: accent,
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
                       }}
@@ -475,13 +475,13 @@ export function PopupView({
                   style={{
                     flex: '1 1 0',
                     minWidth: 0,
-                    height: 48,
+                    height: 44,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 2,
                     padding: '0 12px',
-                    borderRadius: 12,
+                    borderRadius: 11,
                     border: `2px solid ${!valid ? '#B42318' : dirty ? accent : '#DCE7E5'}`,
                     background: '#FFFFFF',
                   }}
@@ -540,13 +540,13 @@ export function PopupView({
                       aria-label={`Increase speed by ${smallStep}%`}
                       style={{
                         flex: '0 0 44px',
-                        height: 48,
+                        height: 44,
                         padding: 0,
-                        borderRadius: 12,
+                        borderRadius: 11,
                         border: 0,
                         background: tint,
                         color: accent,
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
                       }}
@@ -560,13 +560,13 @@ export function PopupView({
                       aria-label={`Increase speed by ${bigStep}%`}
                       style={{
                         flex: '0 0 44px',
-                        height: 48,
+                        height: 44,
                         padding: 0,
-                        borderRadius: 12,
+                        borderRadius: 11,
                         border: 0,
                         background: tint,
                         color: accent,
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
                       }}
@@ -578,7 +578,7 @@ export function PopupView({
               </div>
 
               {vis.manual && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
                   <p
                     style={{
                       margin: 0,
@@ -599,8 +599,8 @@ export function PopupView({
                     disabled={!dirty}
                     style={{
                       flex: '0 0 auto',
-                      height: 40,
-                      padding: '0 20px',
+                      height: 36,
+                      padding: '0 18px',
                       borderRadius: 10,
                       border: 0,
                       fontSize: 13,
@@ -624,7 +624,7 @@ export function PopupView({
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
-                padding: 12,
+                padding: '11px 12px',
                 borderRadius: 12,
                 background: 'linear-gradient(180deg, #F7FBFA 0%, #EEF5F3 100%)',
                 border: '1px solid #DCE7E5',
@@ -637,9 +637,9 @@ export function PopupView({
                 disabled={!video}
                 aria-label={video?.playing ? 'Pause video' : 'Play video'}
                 style={{
-                  flex: '0 0 44px',
-                  width: 44,
-                  height: 44,
+                  flex: '0 0 40px',
+                  width: 40,
+                  height: 40,
                   padding: 0,
                   borderRadius: '50%',
                   border: 0,
@@ -792,121 +792,127 @@ export function PopupView({
         )}
       </div>
 
-      <div
+      <footer
         style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
           gap: 10,
           padding: '12px 16px',
           borderTop: '1px solid #E3ECEA',
+          background: '#F4F8F7',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button
-            type="button"
-            className="ls-btn ls-btn-surface"
-            onClick={onOpenSettings}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 10,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              className="ls-btn ls-btn-surface"
+              onClick={onOpenSettings}
+              style={{
+                flex: '0 0 auto',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 7,
+                height: 36,
+                padding: '0 12px',
+                borderRadius: 10,
+                border: '1.5px solid #DCE7E5',
+                background: '#FFFFFF',
+                color: '#0B2B28',
+                fontSize: 12.5,
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              <SlidersIcon color={accent} />
+              <span>Settings</span>
+            </button>
+
+            <a
+              href={WEBSITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Official website"
+              aria-label="Visit official website"
+              className="ls-btn ls-btn-surface"
+              style={{
+                flex: '0 0 36px',
+                width: 36,
+                height: 36,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+                border: '1.5px solid #DCE7E5',
+                background: '#FFFFFF',
+                color: '#2D4744',
+                textDecoration: 'none',
+              }}
+            >
+              <GlobeIcon size={16} color={accent} />
+            </a>
+          </div>
+
+          <a
+            href={supportUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={supportAria}
+            className="ls-btn ls-btn-warm"
             style={{
               flex: '0 0 auto',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 7,
+              gap: 6,
               height: 36,
               padding: '0 12px',
               borderRadius: 10,
-              border: '1.5px solid #DCE7E5',
-              background: '#FFFFFF',
-              color: '#0B2B28',
+              border: '1.5px solid #FDE3C2',
+              background: '#FFF4E5',
+              color: '#7A3E00',
+              textDecoration: 'none',
               fontSize: 12.5,
               fontWeight: 700,
-              cursor: 'pointer',
             }}
           >
-            <SlidersIcon color={accent} />
-            <span>Settings</span>
-          </button>
-
-          <a
-            href={WEBSITE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Official website"
-            aria-label="Visit official website"
-            className="ls-btn ls-btn-surface"
-            style={{
-              flex: '0 0 36px',
-              width: 36,
-              height: 36,
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 10,
-              border: '1.5px solid #DCE7E5',
-              background: '#FFFFFF',
-              color: '#2D4744',
-              textDecoration: 'none',
-            }}
-          >
-            <GlobeIcon size={16} color={accent} />
+            <CoffeeIcon size={16} />
+            Buy me a coffee
           </a>
         </div>
 
-        <a
-          href={supportUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={supportAria}
-          className="ls-btn ls-btn-warm"
+        <div
           style={{
-            flex: '0 0 auto',
-            display: 'inline-flex',
+            display: 'flex',
             alignItems: 'center',
-            gap: 6,
-            height: 36,
-            padding: '0 12px',
-            borderRadius: 10,
-            border: '1.5px solid #FDE3C2',
-            background: '#FFF4E5',
-            color: '#7A3E00',
-            textDecoration: 'none',
-            fontSize: 12.5,
-            fontWeight: 700,
+            justifyContent: 'space-between',
+            gap: 8,
+            fontSize: 11,
+            lineHeight: '16px',
+            fontWeight: 500,
+            color: '#5F7672',
           }}
         >
-          <CoffeeIcon size={16} />
-          Buy me a coffee
-        </a>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 8,
-          padding: '10px 16px',
-          borderTop: '1px solid #E3ECEA',
-          background: '#F4F8F7',
-          fontSize: 11,
-          lineHeight: '16px',
-          fontWeight: 500,
-          color: '#5F7672',
-        }}
-      >
-        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          © 2026 Lightspeed - Video Speed Controller Pro
-        </span>
-        <a
-          href={PRIVACY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ls-credit-link"
-          style={{ flex: '0 0 auto', whiteSpace: 'nowrap' }}
-        >
-          Privacy Policy
-        </a>
-      </div>
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            © 2026 Lightspeed - Video Speed Controller Pro
+          </span>
+          <a
+            href={PRIVACY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ls-credit-link"
+            style={{ flex: '0 0 auto', whiteSpace: 'nowrap' }}
+          >
+            Privacy Policy
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
