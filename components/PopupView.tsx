@@ -899,158 +899,154 @@ export function PopupView({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 8,
+            gap: 6,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <button
+            type="button"
+            className="ls-btn ls-btn-surface"
+            onClick={onOpenSettings}
+            style={{
+              flex: '0 0 auto',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              height: 36,
+              padding: '0 11px',
+              borderRadius: 10,
+              border: '1.5px solid var(--border)',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
+              fontSize: 12.5,
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            <SlidersIcon color="var(--accent-fg)" />
+            <span>{t.settings}</span>
+          </button>
+
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'stretch',
+              height: 36,
+              borderRadius: 10,
+              border: '1.5px solid var(--border)',
+              background: 'var(--bg-surface)',
+              boxShadow: 'var(--shadow-btn)',
+              overflow: 'hidden',
+            }}
+          >
             <button
               type="button"
-              className="ls-btn ls-btn-surface"
-              onClick={onOpenSettings}
+              onClick={onToggleTheme}
+              title={theme === 'dark' ? t.switchToLight : t.switchToDark}
+              aria-label={theme === 'dark' ? t.switchToLight : t.switchToDark}
+              className="ls-btn"
               style={{
-                flex: '0 0 auto',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                height: 36,
-                padding: '0 11px',
-                borderRadius: 10,
-                border: '1.5px solid var(--border)',
-                background: 'var(--bg-surface)',
-                color: 'var(--text-primary)',
-                fontSize: 12.5,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              <SlidersIcon color="var(--accent-fg)" />
-              <span>{t.settings}</span>
-            </button>
-
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'stretch',
-                height: 36,
-                borderRadius: 10,
-                border: '1.5px solid var(--border)',
-                background: 'var(--bg-surface)',
-                boxShadow: 'var(--shadow-btn)',
-                overflow: 'hidden',
-              }}
-            >
-              <button
-                type="button"
-                onClick={onToggleTheme}
-                title={theme === 'dark' ? t.switchToLight : t.switchToDark}
-                aria-label={theme === 'dark' ? t.switchToLight : t.switchToDark}
-                className="ls-btn"
-                style={{
-                  width: 34,
-                  height: '100%',
-                  padding: 0,
-                  border: 0,
-                  background: 'transparent',
-                  color: 'var(--accent-fg)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}
-              >
-                {theme === 'dark' ? (
-                  <SunIcon size={15} color="var(--accent-fg)" />
-                ) : (
-                  <MoonIcon size={15} color="var(--accent-fg)" />
-                )}
-              </button>
-              <span
-                aria-hidden="true"
-                style={{
-                  width: 1,
-                  background: 'var(--border)',
-                  alignSelf: 'stretch',
-                  margin: '6px 0',
-                }}
-              />
-              <button
-                type="button"
-                onClick={onToggleLang}
-                title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-                aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-                className="ls-btn"
-                style={{
-                  width: 34,
-                  height: '100%',
-                  padding: 0,
-                  border: 0,
-                  background: 'transparent',
-                  color: 'var(--accent-fg)',
-                  fontSize: 11,
-                  fontWeight: 800,
-                  letterSpacing: '0.03em',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}
-              >
-                {lang.toUpperCase()}
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <a
-              href={WEBSITE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={t.officialWebsite}
-              aria-label={t.visitWebsite}
-              className="ls-btn ls-btn-surface"
-              style={{
-                flex: '0 0 34px',
                 width: 34,
-                height: 36,
+                height: '100%',
+                padding: 0,
+                border: 0,
+                background: 'transparent',
+                color: 'var(--accent-fg)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 10,
-                border: '1.5px solid var(--border)',
-                background: 'var(--bg-surface)',
-                color: 'var(--text-secondary)',
-                textDecoration: 'none',
+                cursor: 'pointer',
               }}
             >
-              <GlobeIcon size={16} color="var(--accent-fg)" />
-            </a>
-
-            <a
-              href={supportUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={supportAria}
-              className="ls-btn ls-btn-warm"
+              {theme === 'dark' ? (
+                <SunIcon size={15} color="var(--accent-fg)" />
+              ) : (
+                <MoonIcon size={15} color="var(--accent-fg)" />
+              )}
+            </button>
+            <span
+              aria-hidden="true"
               style={{
-                flex: '0 0 auto',
+                width: 1,
+                background: 'var(--border)',
+                alignSelf: 'stretch',
+                margin: '6px 0',
+              }}
+            />
+            <button
+              type="button"
+              onClick={onToggleLang}
+              title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+              className="ls-btn"
+              style={{
+                width: 34,
+                height: '100%',
+                padding: 0,
+                border: 0,
+                background: 'transparent',
+                color: 'var(--accent-fg)',
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: '0.03em',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                height: 36,
-                padding: '0 11px',
-                borderRadius: 10,
-                border: '1.5px solid var(--warm-border)',
-                background: 'var(--warm-bg)',
-                color: 'var(--warm-text)',
-                textDecoration: 'none',
-                fontSize: 12.5,
-                fontWeight: 700,
+                justifyContent: 'center',
+                cursor: 'pointer',
               }}
             >
-              <CoffeeIcon size={16} />
-              {t.buyCoffee}
-            </a>
+              {lang.toUpperCase()}
+            </button>
           </div>
+
+          <a
+            href={WEBSITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={t.officialWebsite}
+            aria-label={t.visitWebsite}
+            className="ls-btn ls-btn-surface"
+            style={{
+              flex: '0 0 34px',
+              width: 34,
+              height: 36,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 10,
+              border: '1.5px solid var(--border)',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-secondary)',
+              textDecoration: 'none',
+            }}
+          >
+            <GlobeIcon size={16} color="var(--accent-fg)" />
+          </a>
+
+          <a
+            href={supportUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={supportAria}
+            className="ls-btn ls-btn-warm"
+            style={{
+              flex: '0 0 auto',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              height: 36,
+              padding: '0 11px',
+              borderRadius: 10,
+              border: '1.5px solid var(--warm-border)',
+              background: 'var(--warm-bg)',
+              color: 'var(--warm-text)',
+              textDecoration: 'none',
+              fontSize: 12.5,
+              fontWeight: 700,
+            }}
+          >
+            <CoffeeIcon size={16} />
+            {t.buyCoffee}
+          </a>
         </div>
 
         <div
