@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.0.1] - 2026-11-22
+
+### Changed
+
+- Updated Trakteer and Ko-fi support links in the popup and Settings page to point to the live profile URLs.
+- Updated repository links to match the lowercase `ibnumardini/lightspeed` GitHub URL.
+
 ## [1.0.0] - 2026-11-22
 
 ### Added
