@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { contrastWithWhite, isLowContrast } from './color';
+import { contrastWithWhite, isLowContrast, PRESET_ACCENTS } from './color';
 import {
   calcTimeStats,
   clampSpeed,
@@ -79,10 +79,11 @@ describe('speed utils', () => {
 });
 
 describe('color utils', () => {
-  test('preset dark accents pass WCAG AA contrast with white', () => {
-    expect(isLowContrast('#0F766E')).toBe(false);
-    expect(isLowContrast('#4338CA')).toBe(false);
-    expect(contrastWithWhite('#0F766E')).toBeGreaterThan(4.5);
+  test('all preset accents pass WCAG AA contrast with white', () => {
+    for (const swatch of PRESET_ACCENTS) {
+      expect(isLowContrast(swatch.hex)).toBe(false);
+      expect(contrastWithWhite(swatch.hex)).toBeGreaterThan(4.5);
+    }
   });
 
   test('light custom colors trigger low-contrast warning', () => {

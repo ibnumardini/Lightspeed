@@ -8,6 +8,8 @@ export const PRESET_ACCENTS: AccentSwatch[] = [
   { hex: '#0E7490', name: 'Ocean' },
   { hex: '#047857', name: 'Emerald' },
   { hex: '#4338CA', name: 'Indigo' },
+  { hex: '#BE123C', name: 'Rose' },
+  { hex: '#B45309', name: 'Amber' },
 ];
 
 export const PRESET_HEX_SET = new Set(PRESET_ACCENTS.map((s) => s.hex.toUpperCase()));
