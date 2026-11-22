@@ -11,8 +11,8 @@ import {
 } from '@/utils/storage';
 import { useResolvedTheme } from '@/utils/theme';
 
-export default function App() {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSettings?: Settings }) {
+  const [settings, setSettings] = useState<Settings>(initialSettings);
   const [speed, setSpeed] = useState<number>(DEFAULT_SPEED);
   const [hostname, setHostname] = useState<string>('');
   const [video, setVideo] = useState<VideoInfo | null>(null);
@@ -24,6 +24,11 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', settings.accent);
+    try {
+      localStorage.setItem('ls_accent', settings.accent);
+    } catch {
+      // Ignore storage errors
+    }
   }, [settings.accent]);
 
   useEffect(() => {

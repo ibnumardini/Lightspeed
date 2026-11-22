@@ -81,8 +81,8 @@ const THEME_OPTIONS: { id: ThemeMode; label: string }[] = [
   { id: 'dark', label: 'Dark' },
 ];
 
-export default function App() {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSettings?: Settings }) {
+  const [settings, setSettings] = useState<Settings>(initialSettings);
   const [activeNav, setActiveNav] = useState<string>('popup');
 
   // Quick speeds local edit state
@@ -144,6 +144,11 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', settings.accent);
+    try {
+      localStorage.setItem('ls_accent', settings.accent);
+    } catch {
+      // Ignore storage errors
+    }
   }, [settings.accent]);
 
   useEffect(() => {
