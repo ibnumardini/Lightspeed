@@ -1,29 +1,58 @@
 # Lightspeed - Video Speed Controller Pro
 
-> A browser extension for Chromium and Firefox to control video playback speed on any website.
+> 0.1× to 16× HTML5 video playback speed controller for Chromium (MV3) and Firefox (MV2). Per tab, per site, or across all tabs, with zero telemetry.
 
-![Lightspeed popup](./assets/preview.png)
+[Website](https://ibnumardini.github.io/lightspeed/) · [Releases](https://github.com/ibnumardini/Lightspeed/releases) · [Privacy Policy](https://ibnumardini.github.io/lightspeed/privacy.html)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/preview.png" />
+  <source media="(prefers-color-scheme: light)" srcset="./docs/assets/preview-light.webp" />
+  <img alt="Lightspeed popup" src="./docs/assets/preview.png" width="380" />
+</picture>
+
+## Features
+
+- **Flexible scope**: apply speed per tab, per site (saved locally), or across all tabs, including SPAs and iframes.
+- **Quick speeds & fine-tune steps**: up to 10 customizable one-tap presets, preset or custom percentage nudge buttons, and direct `0.1×` to `16×` input.
+- **Keyboard shortcuts**: `A` (speed up), `D` (slow down), and `S` (reset to `1×`), rebindable in Settings and disabled while typing.
+- **Toolbar badge & Now playing**: live speed badge on the extension icon (hidden at `1×`, shows `OFF` when paused) plus remaining duration and time saved.
+- **Settings with live preview**: toggle popup sections on/off, switch System/Light/Dark themes, pick from 6 WCAG-checked accents or a custom color, and switch between English and Bahasa Indonesia.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/settings-layout.webp" />
+  <source media="(prefers-color-scheme: light)" srcset="./docs/assets/settings-layout-light.webp" />
+  <img alt="Lightspeed Settings page with live preview" src="./docs/assets/settings-layout.webp" width="760" />
+</picture>
 
 ## Development
 
+Built with [Bun](https://bun.sh), [WXT](https://wxt.dev), React, and TypeScript.
+
 ```bash
 bun install           # install dependencies
-bun run dev           # dev server with HMR (Chrome)
+bun run dev           # dev server with HMR (Chromium)
 bun run dev:firefox   # dev server with HMR (Firefox)
 bun run build         # build to .output/chrome-mv3
 bun run build:firefox # build to .output/firefox-mv2
-bun run zip           # build + package to .output/
-bun run zip:firefox   # build + package Firefox to .output/
+bun run zip           # build + package Chromium zip in .output/
+bun run zip:firefox   # build + package Firefox zip in .output/
+bun run compile       # TypeScript typecheck (tsc --noEmit)
 bun test              # run unit tests
+bun run docs          # preview the GitHub Pages landing site in docs/
 ```
+
+### Load unpacked
+
+- **Chrome / Edge / Brave**: open `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and select `.output/chrome-mv3`.
+- **Firefox**: open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on**, and select `.output/firefox-mv2/manifest.json`.
 
 ## Privacy
 
-See [PRIVACY.md](./PRIVACY.md).
+Zero telemetry, zero analytics, and zero external requests. All preferences stay inside browser storage. See [PRIVACY.md](./PRIVACY.md).
 
 ## Author
 
-Muhammad Fatkurozi · [hi@mardini.dev](mailto:hi@mardini.dev) · [Official Website](https://ibnumardini.github.io/lightspeed/)
+[Muhammad Fatkurozi](https://ibnu.mardini.dev) · [hi@mardini.dev](mailto:hi@mardini.dev) · [Official Website](https://ibnumardini.github.io/lightspeed/)
 
 ## License
 
