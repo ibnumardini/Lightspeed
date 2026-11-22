@@ -5,7 +5,7 @@ export default defineConfig({
   manifest: {
     name: 'Lightspeed - Video Speed Controller Pro',
     short_name: 'Lightspeed',
-    description: 'Simple, fast video playback speed controller for any website.',
+    description: 'Video speed controller for your browser. Quick presets, fine-tune steps, and custom speeds up to 16x.',
     permissions: ['storage', 'tabs'],
     icons: {
       16: 'icon/16.png',
