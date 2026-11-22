@@ -238,7 +238,13 @@ export default function App() {
         } as React.CSSProperties
       }
     >
-      <header style={{ background: '#FFFFFF', borderBottom: '1px solid #DCE7E5' }}>
+      <header
+        style={{
+          background: 'linear-gradient(180deg, #FFFFFF 0%, #F9FCFB 100%)',
+          borderBottom: '1px solid #DCE7E5',
+          boxShadow: '0 1px 3px rgba(11,43,40,0.04)',
+        }}
+      >
         <div
           style={{
             maxWidth: 1280,
@@ -290,6 +296,7 @@ export default function App() {
             href={WEBSITE_URL}
             target="_blank"
             rel="noopener noreferrer"
+            className="ls-btn ls-btn-surface"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -312,13 +319,15 @@ export default function App() {
             href={supportUrl}
             target="_blank"
             rel="noopener noreferrer"
+            className="ls-btn ls-btn-warm"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
               height: 40,
               padding: '0 14px',
-              borderRadius: 999,
+              borderRadius: 10,
+              border: '1.5px solid #FDE3C2',
               background: '#FFF4E5',
               color: '#7A3E00',
               textDecoration: 'none',
@@ -360,6 +369,7 @@ export default function App() {
               <a
                 key={item.id}
                 href={`#${item.id}`}
+                className={isActive ? undefined : 'ls-nav-link'}
                 onClick={() => setActiveNav(item.id)}
                 style={{
                   display: 'flex',
@@ -401,6 +411,7 @@ export default function App() {
             {/* Popup layout */}
             <section
               id="popup"
+              className="ls-card"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #DCE7E5',
@@ -493,6 +504,7 @@ export default function App() {
             {/* Quick speeds */}
             <section
               id="quick"
+              className="ls-card"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #DCE7E5',
@@ -827,6 +839,7 @@ export default function App() {
             {/* Fine-tune steps */}
             <section
               id="steps"
+              className="ls-card"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #DCE7E5',
@@ -923,6 +936,7 @@ export default function App() {
             {/* Keyboard shortcuts */}
             <section
               id="shortcuts"
+              className="ls-card"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #DCE7E5',
@@ -1015,6 +1029,7 @@ export default function App() {
             {/* Appearance */}
             <section
               id="appearance"
+              className="ls-card"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #DCE7E5',

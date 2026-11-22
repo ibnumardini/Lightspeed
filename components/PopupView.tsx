@@ -144,6 +144,7 @@ export function PopupView({
           alignItems: 'center',
           gap: 8,
           padding: '16px 14px',
+          background: 'linear-gradient(180deg, #FFFFFF 0%, #F9FCFB 100%)',
           borderBottom: '1px solid #E3ECEA',
         }}
       >
@@ -197,6 +198,7 @@ export function PopupView({
 
         <button
           type="button"
+          className="ls-btn ls-btn-surface"
           onClick={onResetAll}
           style={{
             flex: '0 0 auto',
@@ -220,6 +222,7 @@ export function PopupView({
 
         <button
           type="button"
+          className="ls-btn ls-btn-surface"
           aria-pressed={enabled}
           aria-label="Speed control on or off"
           onClick={onTogglePower}
@@ -281,6 +284,7 @@ export function PopupView({
                 Apply to
               </legend>
               <div
+                className="ls-scope-track"
                 style={{
                   display: 'flex',
                   gap: 4,
@@ -382,6 +386,7 @@ export function PopupView({
                     <button
                       key={v}
                       type="button"
+                      className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}`}
                       onClick={() => commitSpeed(v)}
                       aria-pressed={active}
                       style={{
@@ -424,6 +429,7 @@ export function PopupView({
                   <>
                     <button
                       type="button"
+                      className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed - bigStep / 100)}
                       aria-label={`Decrease speed by ${bigStep}%`}
                       style={{
@@ -443,6 +449,7 @@ export function PopupView({
                     </button>
                     <button
                       type="button"
+                      className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed - smallStep / 100)}
                       aria-label={`Decrease speed by ${smallStep}%`}
                       style={{
@@ -464,6 +471,7 @@ export function PopupView({
                 )}
 
                 <div
+                  className="ls-input-well"
                   style={{
                     flex: '1 1 0',
                     minWidth: 0,
@@ -527,6 +535,7 @@ export function PopupView({
                   <>
                     <button
                       type="button"
+                      className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed + smallStep / 100)}
                       aria-label={`Increase speed by ${smallStep}%`}
                       style={{
@@ -546,6 +555,7 @@ export function PopupView({
                     </button>
                     <button
                       type="button"
+                      className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed + bigStep / 100)}
                       aria-label={`Increase speed by ${bigStep}%`}
                       style={{
@@ -584,6 +594,7 @@ export function PopupView({
                   </p>
                   <button
                     type="button"
+                    className={`ls-btn ${dirty ? 'ls-btn-primary' : ''}`}
                     onClick={applyDraft}
                     disabled={!dirty}
                     style={{
@@ -608,18 +619,20 @@ export function PopupView({
 
           {vis.now && (
             <div
+              className="ls-card"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
                 padding: 12,
                 borderRadius: 12,
-                background: '#F4F8F7',
-                border: '1px solid #E3ECEA',
+                background: 'linear-gradient(180deg, #F7FBFA 0%, #EEF5F3 100%)',
+                border: '1px solid #DCE7E5',
               }}
             >
               <button
                 type="button"
+                className={`ls-btn ${video ? 'ls-btn-primary' : ''}`}
                 onClick={onTogglePlay}
                 disabled={!video}
                 aria-label={video?.playing ? 'Pause video' : 'Play video'}
@@ -792,6 +805,7 @@ export function PopupView({
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button
             type="button"
+            className="ls-btn ls-btn-surface"
             onClick={onOpenSettings}
             style={{
               flex: '0 0 auto',
@@ -819,6 +833,7 @@ export function PopupView({
             rel="noopener noreferrer"
             title="Official website"
             aria-label="Visit official website"
+            className="ls-btn ls-btn-surface"
             style={{
               flex: '0 0 36px',
               width: 36,
@@ -842,6 +857,7 @@ export function PopupView({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={supportAria}
+          className="ls-btn ls-btn-warm"
           style={{
             flex: '0 0 auto',
             display: 'inline-flex',
