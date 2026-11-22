@@ -21,7 +21,7 @@ import {
   nearSpeed,
   parseSpeed,
 } from '@/utils/speed';
-import type { PopupVisibility, ScopeMode } from '@/utils/storage';
+import type { PopupVisibility, ScopeMode, ShortcutKeys } from '@/utils/storage';
 import type { ResolvedTheme } from '@/utils/theme';
 
 export interface PopupViewProps {
@@ -32,6 +32,7 @@ export interface PopupViewProps {
   quickSpeeds: number[];
   smallStep: number;
   bigStep: number;
+  keys?: ShortcutKeys;
   accent: string;
   theme?: ResolvedTheme;
   isIndonesia: boolean;
@@ -62,6 +63,7 @@ export function PopupView({
   quickSpeeds,
   smallStep,
   bigStep,
+  keys = { up: 'A', down: 'D', reset: 'S' },
   accent,
   theme = 'light',
   isIndonesia,
@@ -389,13 +391,15 @@ export function PopupView({
               >
                 {quickList.map((v) => {
                   const active = nearSpeed(speed, v);
+                  const isReset = nearSpeed(v, 1);
                   return (
                     <button
                       key={v}
                       type="button"
-                      className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}`}
+                      className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset ? ' ls-has-key' : ''}`}
                       onClick={() => commitSpeed(v)}
                       aria-pressed={active}
+                      title={isReset ? `Shortcut: ${keys.reset}` : undefined}
                       style={{
                         height: 40,
                         padding: 0,
@@ -409,6 +413,11 @@ export function PopupView({
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
+                      {isReset && (
+                        <kbd className="ls-key-hint" aria-hidden="true">
+                          {keys.reset}
+                        </kbd>
+                      )}
                       {formatShortSpeed(v)}
                     </button>
                   );
@@ -456,9 +465,10 @@ export function PopupView({
                     </button>
                     <button
                       type="button"
-                      className="ls-btn ls-btn-tint"
+                      className="ls-btn ls-btn-tint ls-has-key"
                       onClick={() => commitSpeed(speed - smallStep / 100)}
-                      aria-label={`Decrease speed by ${smallStep}%`}
+                      aria-label={`Decrease speed by ${smallStep}% (shortcut ${keys.down})`}
+                      title={`Shortcut: ${keys.down}`}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -472,6 +482,9 @@ export function PopupView({
                         cursor: 'pointer',
                       }}
                     >
+                      <kbd className="ls-key-hint" aria-hidden="true">
+                        {keys.down}
+                      </kbd>
                       −{smallStep}%
                     </button>
                   </>
@@ -544,9 +557,10 @@ export function PopupView({
                   <>
                     <button
                       type="button"
-                      className="ls-btn ls-btn-tint"
+                      className="ls-btn ls-btn-tint ls-has-key"
                       onClick={() => commitSpeed(speed + smallStep / 100)}
-                      aria-label={`Increase speed by ${smallStep}%`}
+                      aria-label={`Increase speed by ${smallStep}% (shortcut ${keys.up})`}
+                      title={`Shortcut: ${keys.up}`}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -560,6 +574,9 @@ export function PopupView({
                         cursor: 'pointer',
                       }}
                     >
+                      <kbd className="ls-key-hint" aria-hidden="true">
+                        {keys.up}
+                      </kbd>
                       +{smallStep}%
                     </button>
                     <button

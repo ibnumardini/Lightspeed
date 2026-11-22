@@ -123,6 +123,7 @@ export default function App() {
       quickSpeeds={settings.quickSpeeds}
       smallStep={settings.smallStep}
       bigStep={settings.bigStep}
+      keys={settings.keys}
       accent={settings.accent}
       theme={resolvedTheme}
       isIndonesia={isIndonesia}

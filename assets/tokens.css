@@ -231,3 +231,43 @@ input:focus-visible {
 .ls-nav-link:hover {
   background: var(--bg-nav-hover);
 }
+
+/* Micro keyboard shortcut hint on popup buttons */
+.ls-has-key {
+  position: relative;
+}
+
+.ls-key-hint {
+  position: absolute;
+  top: -7px;
+  right: 4px;
+  min-width: 16px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 9.5px;
+  font-weight: 800;
+  line-height: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.45;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ls-has-key:hover .ls-key-hint,
+.ls-has-key:focus-visible .ls-key-hint {
+  opacity: 1;
+  color: var(--text-primary);
+  border-color: var(--accent-fg);
+  transform: translateY(-1px);
+}

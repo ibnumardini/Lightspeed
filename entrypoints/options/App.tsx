@@ -1290,6 +1290,7 @@ export default function App() {
                   quickSpeeds={settings.quickSpeeds}
                   smallStep={settings.smallStep}
                   bigStep={settings.bigStep}
+                  keys={settings.keys}
                   accent={accent}
                   theme={resolvedTheme}
                   isIndonesia={isIndonesia}
