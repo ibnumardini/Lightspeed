@@ -24,7 +24,7 @@
 
 ## 2. GitHub release
 
-1. Go to [github.com/ibnumardini/Lightspeed/releases/new](https://github.com/ibnumardini/Lightspeed/releases/new).
+1. Go to [github.com/ibnumardini/lightspeed/releases/new](https://github.com/ibnumardini/lightspeed/releases/new).
 2. Tag: `vx.y.z` (create on publish), target: `master`.
 3. Title: `x.y.z`
 4. Release notes: paste the matching section from `CHANGELOG.md`.

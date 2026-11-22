@@ -1,12 +1,12 @@
 /* global React, htm */
 export const html = htm.bind(React.createElement);
 
-export const REPO_URL = 'https://github.com/ibnumardini/Lightspeed';
-export const RELEASES_API = 'https://api.github.com/repos/ibnumardini/Lightspeed/releases';
+export const REPO_URL = 'https://github.com/ibnumardini/lightspeed';
+export const RELEASES_API = 'https://api.github.com/repos/ibnumardini/lightspeed/releases';
 export const PRIVACY_URL = './privacy.html';
 // Replace with live Chrome Web Store & Firefox Add-ons URLs once published
-export const CHROME_STORE_URL = 'https://github.com/ibnumardini/Lightspeed/releases';
-export const FIREFOX_STORE_URL = 'https://github.com/ibnumardini/Lightspeed/releases';
+export const CHROME_STORE_URL = 'https://github.com/ibnumardini/lightspeed/releases';
+export const FIREFOX_STORE_URL = 'https://github.com/ibnumardini/lightspeed/releases';
 
 export function isFirefoxBrowser() {
   return typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent || '');

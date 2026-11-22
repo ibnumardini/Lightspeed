@@ -1733,7 +1733,7 @@ export default function App() {
               Website
             </a>
             <a
-              href="https://github.com/ibnumardini/Lightspeed"
+              href="https://github.com/ibnumardini/lightspeed"
               target="_blank"
               rel="noopener noreferrer"
               className="ls-credit-link"

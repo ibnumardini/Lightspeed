@@ -2,7 +2,7 @@
 
 > 0.1× to 16× HTML5 video playback speed controller for Chromium (MV3) and Firefox (MV2). Per tab, per site, or across all tabs, with zero telemetry.
 
-[Website](https://ibnumardini.github.io/lightspeed/) · [Releases](https://github.com/ibnumardini/Lightspeed/releases) · [Privacy Policy](https://ibnumardini.github.io/lightspeed/privacy.html)
+[Website](https://ibnumardini.github.io/lightspeed/) · [Releases](https://github.com/ibnumardini/lightspeed/releases) · [Privacy Policy](https://ibnumardini.github.io/lightspeed/privacy.html)
 
 <img alt="Lightspeed popup" src="./docs/assets/preview-light.webp" width="380" />
 
