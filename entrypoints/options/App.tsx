@@ -110,6 +110,10 @@ export default function App() {
   const resolvedTheme = useResolvedTheme(themeMode);
 
   useEffect(() => {
+    document.documentElement.style.setProperty('--accent', settings.accent);
+  }, [settings.accent]);
+
+  useEffect(() => {
     void settingsStorage.getValue().then(setSettings);
     const unwatch = settingsStorage.watch((next) => {
       if (next) setSettings(next);
