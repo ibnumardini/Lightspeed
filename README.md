@@ -2,6 +2,8 @@
 
 > A browser extension for Chromium and Firefox to control video playback speed on any website.
 
+![Lightspeed popup](./assets/preview.png)
+
 ## Development
 
 ```bash
