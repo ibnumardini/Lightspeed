@@ -190,8 +190,8 @@ input:focus-visible {
 
 [data-theme='dark'] .ls-btn-tint {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    inset 0 0 0 1px color-mix(in srgb, var(--accent, #0f766e) 32%, rgba(255, 255, 255, 0.08));
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px color-mix(in srgb, var(--accent, #0f766e) 22%, rgba(255, 255, 255, 0.05));
 }
 
 .ls-btn-tint:hover:not(:disabled) {
@@ -307,54 +307,63 @@ input:focus-visible {
   transform: rotate(-40deg);
 }
 
-/* Quick speed split-cell with expandable +0.5x micro-tab */
+/* Quick speed split-cell with symmetric +0.5x flip (pure-fr Grid for smooth 60fps interpolation) */
 .ls-quick-cell {
   position: relative;
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: 4.2fr 1fr;
+  gap: 1px;
   height: 40px;
   min-width: 0;
+  transition: grid-template-columns 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.ls-quick-main {
-  flex: 1 1 0;
+.ls-quick-cell:not(:has(.ls-quick-half)) {
+  grid-template-columns: 1fr;
+}
+
+.ls-quick-cell:not(.is-flipped):has(.ls-quick-half:is(:hover, :focus-visible)) {
+  grid-template-columns: 1fr 1.28fr;
+}
+
+.ls-quick-cell.is-flipped {
+  grid-template-columns: 1fr 4.2fr;
+}
+
+.ls-quick-cell.is-flipped:has(.ls-quick-main:is(:hover, :focus-visible)) {
+  grid-template-columns: 1.05fr 1.2fr;
+}
+
+.ls-quick-main,
+.ls-quick-half {
   min-width: 0;
   height: 100%;
   padding: 0;
-  font-size: 14.5px;
-  font-weight: 800;
-  cursor: pointer;
-  font-variant-numeric: tabular-nums;
-  transition:
-    font-size 0.16s ease,
-    transform 0.1s ease,
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    filter 0.15s ease;
-}
-
-.ls-quick-half {
-  flex: 0 0 13px;
-  height: 100%;
-  padding: 0;
-  border-radius: 0 10px 10px 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  overflow: hidden;
   white-space: nowrap;
-  font-size: 11.5px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   transition:
-    flex-basis 0.18s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease,
-    transform 0.1s ease;
+    font-size 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease,
+    filter 0.15s ease;
+}
+
+.ls-quick-main {
+  font-size: 14.5px;
+}
+
+.ls-quick-half {
+  border-radius: 4px 10px 10px 4px;
+  overflow: hidden;
+  font-size: 11.5px;
 }
 
 .ls-quick-half-dot {
@@ -365,8 +374,13 @@ input:focus-visible {
   opacity: 0.35;
   flex-shrink: 0;
   transition:
-    opacity 0.12s ease,
-    width 0.12s ease;
+    opacity 0.18s ease,
+    width 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ls-quick-main .ls-quick-half-dot {
+  opacity: 0;
+  width: 0;
 }
 
 .ls-quick-half-label {
@@ -374,32 +388,77 @@ input:focus-visible {
   max-width: 0;
   overflow: hidden;
   transition:
-    opacity 0.14s ease 0.03s,
-    max-width 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.2s ease 0.04s,
+    max-width 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.ls-quick-half:hover,
-.ls-quick-half:focus-visible,
-.ls-quick-half.is-active {
-  flex-basis: 38px;
+.ls-quick-main .ls-quick-half-label {
+  opacity: 1;
+  max-width: 56px;
 }
 
-.ls-quick-half:hover .ls-quick-half-dot,
-.ls-quick-half:focus-visible .ls-quick-half-dot,
-.ls-quick-half.is-active .ls-quick-half-dot {
+/* Normal state: hover right +0.5 strip */
+.ls-quick-cell:not(.is-flipped) .ls-quick-half:hover .ls-quick-half-dot,
+.ls-quick-cell:not(.is-flipped) .ls-quick-half:focus-visible .ls-quick-half-dot {
   opacity: 0;
   width: 0;
 }
 
-.ls-quick-half:hover .ls-quick-half-label,
-.ls-quick-half:focus-visible .ls-quick-half-label,
-.ls-quick-half.is-active .ls-quick-half-label {
+.ls-quick-cell:not(.is-flipped) .ls-quick-half:hover .ls-quick-half-label,
+.ls-quick-cell:not(.is-flipped) .ls-quick-half:focus-visible .ls-quick-half-label {
   opacity: 1;
   max-width: 36px;
 }
 
-.ls-quick-cell:has(.ls-quick-half:is(:hover, :focus-visible, .is-active)) .ls-quick-main {
+.ls-quick-cell:not(.is-flipped):has(.ls-quick-half:is(:hover, :focus-visible)) .ls-quick-main {
   font-size: 12px;
+}
+
+/* Flipped state: .5x is active primary, original collapses to left strip */
+.ls-quick-cell.is-flipped .ls-quick-main {
+  overflow: hidden;
+  font-size: 12px;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-main .ls-quick-half-dot {
+  opacity: 0.35;
+  width: 3px;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-main .ls-quick-half-label {
+  opacity: 0;
+  max-width: 0;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-half {
+  font-size: 14.5px;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-half .ls-quick-half-dot {
+  opacity: 0;
+  width: 0;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-half .ls-quick-half-label {
+  opacity: 1;
+  max-width: 56px;
+}
+
+/* Flipped state: hover left original strip to reveal & click back */
+.ls-quick-cell.is-flipped .ls-quick-main:hover .ls-quick-half-dot,
+.ls-quick-cell.is-flipped .ls-quick-main:focus-visible .ls-quick-half-dot {
+  opacity: 0;
+  width: 0;
+}
+
+.ls-quick-cell.is-flipped .ls-quick-main:hover .ls-quick-half-label,
+.ls-quick-cell.is-flipped .ls-quick-main:focus-visible .ls-quick-half-label {
+  opacity: 1;
+  max-width: 30px;
+}
+
+.ls-quick-cell.is-flipped:has(.ls-quick-main:is(:hover, :focus-visible)) .ls-quick-half {
+  font-size: 11.5px;
 }
 
 @keyframes ls-pulse {
