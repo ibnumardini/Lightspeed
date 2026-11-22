@@ -444,34 +444,55 @@ export function PopupView({
                 {quickList.map((v) => {
                   const active = nearSpeed(speed, v);
                   const isReset = shortcutsEnabled && nearSpeed(v, 1);
+                  const halfVal = Math.round((v + 0.5) * 100) / 100;
+                  const showHalf =
+                    halfVal <= 16 && !quickList.some((q) => nearSpeed(q, halfVal));
+                  const halfActive = showHalf && nearSpeed(speed, halfVal);
                   return (
-                    <button
-                      key={v}
-                      type="button"
-                      className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset ? ' ls-has-key' : ''}`}
-                      onClick={() => commitSpeed(v)}
-                      aria-pressed={active}
-                      title={isReset ? t.shortcutTip(keys.reset) : undefined}
-                      style={{
-                        height: 40,
-                        padding: 0,
-                        borderRadius: 10,
-                        border: `1.5px solid ${active ? accent : 'transparent'}`,
-                        background: active ? accent : 'var(--accent-tint)',
-                        color: active ? '#FFFFFF' : 'var(--accent-fg)',
-                        fontSize: 14.5,
-                        fontWeight: 800,
-                        cursor: 'pointer',
-                        fontVariantNumeric: 'tabular-nums',
-                      }}
-                    >
-                      {isReset && (
-                        <kbd className="ls-key-hint" aria-hidden="true">
-                          {keys.reset}
-                        </kbd>
+                    <div key={v} className="ls-quick-cell">
+                      <button
+                        type="button"
+                        className={`ls-quick-main ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset ? ' ls-has-key' : ''}`}
+                        onClick={() => commitSpeed(v)}
+                        aria-pressed={active}
+                        title={isReset ? t.shortcutTip(keys.reset) : undefined}
+                        style={{
+                          borderRadius: showHalf ? '10px 0 0 10px' : 10,
+                          border: `1.5px solid ${active ? accent : 'transparent'}`,
+                          borderRightWidth: showHalf ? 0 : 1.5,
+                          background: active ? accent : 'var(--accent-tint)',
+                          color: active ? '#FFFFFF' : 'var(--accent-fg)',
+                        }}
+                      >
+                        {isReset && (
+                          <kbd className="ls-key-hint" aria-hidden="true">
+                            {keys.reset}
+                          </kbd>
+                        )}
+                        {formatShortSpeed(v)}
+                      </button>
+                      {showHalf && (
+                        <button
+                          type="button"
+                          className={`ls-quick-half ls-btn ${halfActive ? 'ls-btn-primary is-active' : 'ls-btn-tint'}`}
+                          onClick={() => commitSpeed(halfVal)}
+                          aria-pressed={halfActive}
+                          aria-label={formatShortSpeed(halfVal)}
+                          title={formatShortSpeed(halfVal)}
+                          style={{
+                            border: `1.5px solid ${halfActive ? accent : 'transparent'}`,
+                            borderLeft: halfActive
+                              ? `1.5px solid ${accent}`
+                              : '1px solid color-mix(in srgb, var(--accent, #0f766e) 22%, transparent)',
+                            background: halfActive ? accent : 'var(--accent-tint)',
+                            color: halfActive ? '#FFFFFF' : 'var(--accent-fg)',
+                          }}
+                        >
+                          <span className="ls-quick-half-dot" aria-hidden="true" />
+                          <span className="ls-quick-half-label">{formatShortSpeed(halfVal)}</span>
+                        </button>
                       )}
-                      {formatShortSpeed(v)}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
