@@ -207,8 +207,9 @@ export function PopupView({
 
         <button
           type="button"
-          className="ls-btn ls-btn-surface"
+          className="ls-btn ls-btn-surface ls-reset-btn"
           onClick={onResetAll}
+          title="Reset all tabs and sites to 1×"
           style={{
             flex: '0 0 auto',
             display: 'inline-flex',
@@ -217,9 +218,9 @@ export function PopupView({
             height: 36,
             padding: '0 10px',
             borderRadius: 10,
-            border: '1.5px solid var(--accent-fg)',
+            border: '1.5px solid var(--border)',
             background: 'var(--bg-surface)',
-            color: 'var(--accent-fg)',
+            color: 'var(--text-secondary)',
             fontSize: 12,
             fontWeight: 700,
             cursor: 'pointer',
