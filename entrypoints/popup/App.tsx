@@ -11,12 +11,18 @@ import {
 } from '@/utils/storage';
 import { useResolvedTheme } from '@/utils/theme';
 
-export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSettings?: Settings }) {
+export default function App({
+  initialSettings = DEFAULT_SETTINGS,
+  initialTabState = null,
+}: {
+  initialSettings?: Settings;
+  initialTabState?: TabStateResponse | null;
+}) {
   const [settings, setSettings] = useState<Settings>(initialSettings);
-  const [speed, setSpeed] = useState<number>(DEFAULT_SPEED);
-  const [hostname, setHostname] = useState<string>('');
-  const [video, setVideo] = useState<VideoInfo | null>(null);
-  const [restricted, setRestricted] = useState<boolean>(false);
+  const [speed, setSpeed] = useState<number>(initialTabState?.speed ?? DEFAULT_SPEED);
+  const [hostname, setHostname] = useState<string>(initialTabState?.hostname ?? '');
+  const [video, setVideo] = useState<VideoInfo | null>(initialTabState?.video ?? null);
+  const [restricted, setRestricted] = useState<boolean>(initialTabState?.restricted ?? false);
 
   const isIndonesia = useMemo(() => detectIndonesiaRegion(), []);
   const resolvedTheme = useResolvedTheme(settings.theme);
