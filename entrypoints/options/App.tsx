@@ -94,6 +94,11 @@ export default function App() {
   const [listening, setListening] = useState<keyof ShortcutKeys | null>(null);
   const [keyMsg, setKeyMsg] = useState('');
 
+  // Custom fine-tune step input state
+  const [editingStep, setEditingStep] = useState<'small' | 'big' | null>(null);
+  const [stepDraft, setStepDraft] = useState('');
+  const [stepErr, setStepErr] = useState('');
+
   // Interactive preview state
   const [previewEnabled, setPreviewEnabled] = useState(true);
   const [previewScope, setPreviewScope] = useState<ScopeMode>('tab');
@@ -256,6 +261,32 @@ export default function App() {
 
   const customActive = !PRESET_HEX_SET.has(accent.toUpperCase());
   const customLowContrast = customActive && isLowContrast(accent);
+
+  const smallIsCustom = !(SMALL_STEPS as readonly number[]).includes(settings.smallStep);
+  const bigIsCustom = !(BIG_STEPS as readonly number[]).includes(settings.bigStep);
+
+  const openCustomStep = (kind: 'small' | 'big') => {
+    const current = kind === 'small' ? settings.smallStep : settings.bigStep;
+    setEditingStep(kind);
+    setStepDraft(String(current));
+    setStepErr('');
+  };
+
+  const commitCustomStep = (kind: 'small' | 'big') => {
+    const max = kind === 'small' ? 25 : 50;
+    const cleaned = stepDraft.trim().replace(/%/g, '');
+    const n = Number(cleaned);
+    if (!Number.isInteger(n) || n < 1 || n > max) {
+      setStepErr(`Enter a whole number from 1% to ${max}%.`);
+      return;
+    }
+    updateSettings((prev) =>
+      kind === 'small' ? { ...prev, smallStep: n } : { ...prev, bigStep: n },
+    );
+    setEditingStep(null);
+    setStepDraft('');
+    setStepErr('');
+  };
 
   return (
     <div
@@ -943,16 +974,20 @@ export default function App() {
                   <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
                     Small step
                   </span>
-                  <div style={{ display: 'flex', gap: 6 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {SMALL_STEPS.map((val) => {
-                      const active = settings.smallStep === val;
+                      const active = settings.smallStep === val && editingStep !== 'small';
                       return (
                         <button
                           key={val}
                           type="button"
                           className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
                           aria-pressed={active}
-                          onClick={() => updateSettings((prev) => ({ ...prev, smallStep: val }))}
+                          onClick={() => {
+                            setEditingStep(null);
+                            setStepErr('');
+                            updateSettings((prev) => ({ ...prev, smallStep: val }));
+                          }}
                           style={{
                             minWidth: 64,
                             height: 44,
@@ -970,6 +1005,96 @@ export default function App() {
                         </button>
                       );
                     })}
+                    {editingStep === 'small' ? (
+                      <span
+                        className="ls-input-well"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          width: 96,
+                          height: 44,
+                          padding: '0 10px',
+                          borderRadius: 10,
+                          border: `2px solid ${stepErr ? 'var(--error)' : 'var(--accent-fg)'}`,
+                          background: 'var(--bg-surface)',
+                        }}
+                      >
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          aria-label="Custom small step percentage"
+                          value={stepDraft}
+                          autoFocus
+                          onChange={(e) => {
+                            setStepDraft(e.target.value);
+                            setStepErr('');
+                          }}
+                          onFocus={(e) => {
+                            justFocusedRef.current = true;
+                            e.currentTarget.select();
+                          }}
+                          onMouseUp={(e) => {
+                            if (justFocusedRef.current) {
+                              e.preventDefault();
+                              justFocusedRef.current = false;
+                            }
+                          }}
+                          onBlur={() => {
+                            justFocusedRef.current = false;
+                            commitCustomStep('small');
+                          }}
+                          onKeyDown={(e) => {
+                            justFocusedRef.current = false;
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              commitCustomStep('small');
+                            } else if (e.key === 'Escape') {
+                              setEditingStep(null);
+                              setStepErr('');
+                            }
+                          }}
+                          style={{
+                            flex: '1 1 0',
+                            minWidth: 0,
+                            border: 0,
+                            outline: 'none',
+                            background: 'transparent',
+                            padding: 0,
+                            fontSize: 14,
+                            fontWeight: 800,
+                            color: 'var(--text-primary)',
+                            textAlign: 'right',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        />
+                        <span style={{ fontWeight: 700, color: 'var(--text-muted)', marginLeft: 2 }}>
+                          %
+                        </span>
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        className={`ls-btn ${smallIsCustom ? 'ls-btn-primary' : 'ls-btn-surface'}`}
+                        aria-pressed={smallIsCustom}
+                        onClick={() => openCustomStep('small')}
+                        style={{
+                          minWidth: 76,
+                          height: 44,
+                          padding: '0 14px',
+                          borderRadius: 10,
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: smallIsCustom ? accent : 'var(--bg-surface)',
+                          color: smallIsCustom ? '#FFFFFF' : 'var(--text-secondary)',
+                          border: smallIsCustom
+                            ? `1.5px solid ${accent}`
+                            : '1.5px dashed var(--border-strong)',
+                        }}
+                      >
+                        {smallIsCustom ? `${settings.smallStep}%` : 'Custom'}
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -981,16 +1106,20 @@ export default function App() {
                   <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
                     Big step
                   </span>
-                  <div style={{ display: 'flex', gap: 6 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {BIG_STEPS.map((val) => {
-                      const active = settings.bigStep === val;
+                      const active = settings.bigStep === val && editingStep !== 'big';
                       return (
                         <button
                           key={val}
                           type="button"
                           className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
                           aria-pressed={active}
-                          onClick={() => updateSettings((prev) => ({ ...prev, bigStep: val }))}
+                          onClick={() => {
+                            setEditingStep(null);
+                            setStepErr('');
+                            updateSettings((prev) => ({ ...prev, bigStep: val }));
+                          }}
                           style={{
                             minWidth: 64,
                             height: 44,
@@ -1008,9 +1137,104 @@ export default function App() {
                         </button>
                       );
                     })}
+                    {editingStep === 'big' ? (
+                      <span
+                        className="ls-input-well"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          width: 96,
+                          height: 44,
+                          padding: '0 10px',
+                          borderRadius: 10,
+                          border: `2px solid ${stepErr ? 'var(--error)' : 'var(--accent-fg)'}`,
+                          background: 'var(--bg-surface)',
+                        }}
+                      >
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          aria-label="Custom big step percentage"
+                          value={stepDraft}
+                          autoFocus
+                          onChange={(e) => {
+                            setStepDraft(e.target.value);
+                            setStepErr('');
+                          }}
+                          onFocus={(e) => {
+                            justFocusedRef.current = true;
+                            e.currentTarget.select();
+                          }}
+                          onMouseUp={(e) => {
+                            if (justFocusedRef.current) {
+                              e.preventDefault();
+                              justFocusedRef.current = false;
+                            }
+                          }}
+                          onBlur={() => {
+                            justFocusedRef.current = false;
+                            commitCustomStep('big');
+                          }}
+                          onKeyDown={(e) => {
+                            justFocusedRef.current = false;
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              commitCustomStep('big');
+                            } else if (e.key === 'Escape') {
+                              setEditingStep(null);
+                              setStepErr('');
+                            }
+                          }}
+                          style={{
+                            flex: '1 1 0',
+                            minWidth: 0,
+                            border: 0,
+                            outline: 'none',
+                            background: 'transparent',
+                            padding: 0,
+                            fontSize: 14,
+                            fontWeight: 800,
+                            color: 'var(--text-primary)',
+                            textAlign: 'right',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        />
+                        <span style={{ fontWeight: 700, color: 'var(--text-muted)', marginLeft: 2 }}>
+                          %
+                        </span>
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        className={`ls-btn ${bigIsCustom ? 'ls-btn-primary' : 'ls-btn-surface'}`}
+                        aria-pressed={bigIsCustom}
+                        onClick={() => openCustomStep('big')}
+                        style={{
+                          minWidth: 76,
+                          height: 44,
+                          padding: '0 14px',
+                          borderRadius: 10,
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: bigIsCustom ? accent : 'var(--bg-surface)',
+                          color: bigIsCustom ? '#FFFFFF' : 'var(--text-secondary)',
+                          border: bigIsCustom
+                            ? `1.5px solid ${accent}`
+                            : '1.5px dashed var(--border-strong)',
+                        }}
+                      >
+                        {bigIsCustom ? `${settings.bigStep}%` : 'Custom'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
+              {stepErr && (
+                <p style={{ margin: 0, fontSize: 12.5, fontWeight: 600, color: 'var(--error)' }}>
+                  {stepErr}
+                </p>
+              )}
             </section>
 
             {/* Keyboard shortcuts */}
