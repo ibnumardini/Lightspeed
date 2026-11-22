@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   CoffeeIcon,
   GlobeIcon,
@@ -80,6 +80,7 @@ export function PopupView({
   onOpenSettings,
 }: PopupViewProps) {
   const [draft, setDraft] = useState(() => formatSpeed(speed));
+  const justFocusedRef = useRef(false);
 
   useEffect(() => {
     setDraft(formatSpeed(speed));
@@ -551,7 +552,21 @@ export function PopupView({
                         aria-label="Playback speed"
                         value={draft}
                         onChange={(e) => setDraft(e.target.value)}
+                        onFocus={(e) => {
+                          justFocusedRef.current = true;
+                          e.currentTarget.select();
+                        }}
+                        onMouseUp={(e) => {
+                          if (justFocusedRef.current) {
+                            e.preventDefault();
+                            justFocusedRef.current = false;
+                          }
+                        }}
+                        onBlur={() => {
+                          justFocusedRef.current = false;
+                        }}
                         onKeyDown={(e) => {
+                          justFocusedRef.current = false;
                           if (e.key === 'Enter') {
                             e.preventDefault();
                             applyDraft();

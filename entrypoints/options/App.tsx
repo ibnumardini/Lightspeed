@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CheckIcon,
   CoffeeIcon,
@@ -88,6 +88,7 @@ export default function App() {
   const [editDraft, setEditDraft] = useState('');
   const [addDraft, setAddDraft] = useState('');
   const [quickErr, setQuickErr] = useState('');
+  const justFocusedRef = useRef(false);
 
   // Shortcut capture state
   const [listening, setListening] = useState<keyof ShortcutKeys | null>(null);
@@ -722,7 +723,21 @@ export default function App() {
                                   setEditDraft(e.target.value);
                                   setQuickErr('');
                                 }}
+                                onFocus={(e) => {
+                                  justFocusedRef.current = true;
+                                  e.currentTarget.select();
+                                }}
+                                onMouseUp={(e) => {
+                                  if (justFocusedRef.current) {
+                                    e.preventDefault();
+                                    justFocusedRef.current = false;
+                                  }
+                                }}
+                                onBlur={() => {
+                                  justFocusedRef.current = false;
+                                }}
                                 onKeyDown={(e) => {
+                                  justFocusedRef.current = false;
                                   if (e.key === 'Enter') {
                                     e.preventDefault();
                                     saveEdit();
@@ -828,7 +843,21 @@ export default function App() {
                       setAddDraft(e.target.value);
                       setQuickErr('');
                     }}
+                    onFocus={(e) => {
+                      justFocusedRef.current = true;
+                      e.currentTarget.select();
+                    }}
+                    onMouseUp={(e) => {
+                      if (justFocusedRef.current) {
+                        e.preventDefault();
+                        justFocusedRef.current = false;
+                      }
+                    }}
+                    onBlur={() => {
+                      justFocusedRef.current = false;
+                    }}
                     onKeyDown={(e) => {
+                      justFocusedRef.current = false;
                       if (e.key === 'Enter') {
                         e.preventDefault();
                         addQuick();
