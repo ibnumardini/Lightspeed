@@ -1,4 +1,4 @@
-# Privacy Policy — Lightspeed - Video Speed Controller Pro
+# Privacy Policy: Lightspeed - Video Speed Controller Pro
 
 **Effective Date:** November 22, 2026
 
