@@ -4,11 +4,7 @@
 
 [Website](https://ibnumardini.github.io/lightspeed/) · [Releases](https://github.com/ibnumardini/Lightspeed/releases) · [Privacy Policy](https://ibnumardini.github.io/lightspeed/privacy.html)
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/preview.png" />
-  <source media="(prefers-color-scheme: light)" srcset="./docs/assets/preview-light.webp" />
-  <img alt="Lightspeed popup" src="./docs/assets/preview.png" width="380" />
-</picture>
+<img alt="Lightspeed popup" src="./docs/assets/preview-light.webp" width="380" />
 
 ## Features
 
@@ -18,11 +14,7 @@
 - **Toolbar badge & Now playing**: live speed badge on the extension icon (hidden at `1×`, shows `OFF` when paused) plus remaining duration and time saved.
 - **Settings with live preview**: toggle popup sections on/off, switch System/Light/Dark themes, pick from 6 WCAG-checked accents or a custom color, and switch between English and Bahasa Indonesia.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./docs/assets/settings-layout.webp" />
-  <source media="(prefers-color-scheme: light)" srcset="./docs/assets/settings-layout-light.webp" />
-  <img alt="Lightspeed Settings page with live preview" src="./docs/assets/settings-layout.webp" width="760" />
-</picture>
+<img alt="Lightspeed Settings page with live preview" src="./docs/assets/settings-layout-light.webp" width="760" />
 
 ## Development
 
