@@ -7,12 +7,12 @@ export const COPY = {
     navGithub: 'GitHub',
     heroTitle: 'Video speed, without the friction.',
     heroSub:
-      '0.1× to 16× playback speed for Chromium and Firefox. Per tab, per site, or across every tab.',
+      '0.1× to 16× playback speed for Chromium and Firefox-based browsers. Per tab, per site, or across every tab.',
     addChrome: 'Add to Chrome',
     addFirefox: 'Add to Firefox',
     alsoFirefox: 'Also available for Firefox',
     alsoChrome: 'Also available for Chrome',
-    heroTagline: 'Free, open source, and zero telemetry. Built for Chromium and Firefox.',
+    heroTagline: 'Free, open source, and zero telemetry. Built for Chromium and Firefox-based browsers.',
 
     showcaseTitle: 'Built for everyday watching.',
     showcaseLead:
@@ -62,14 +62,14 @@ export const COPY = {
     ],
 
     releasesTitle: 'Releases',
-    releasesLead: 'Prebuilt packages for Chromium (MV3) and Firefox (MV2).',
+    releasesLead: 'Prebuilt packages for Chromium (MV3) and Firefox-based (MV2) browsers.',
     releasesViewAll: 'All releases on GitHub',
     releasesLatest: 'Latest',
     releasesLoading: 'Loading releases…',
     releasesFallbackTitle: 'v1.0.0',
     releasesFallbackDate: 'Nov 22, 2026',
     releasesFallbackNotes: [
-      '0.1× to 16× HTML5 video playback speed control across Chromium (MV3) and Firefox (MV2).',
+      '0.1× to 16× HTML5 video playback speed control across Chromium (MV3) and Firefox-based (MV2) browsers.',
       'Per-tab, per-site, and all-tabs scope modes with automatic enforcement in SPAs and iframes.',
       'Up to 10 customizable Quick speeds, preset & custom Fine-tune steps, and single-key shortcuts (A / D / S).',
       'Toolbar speed badge, Now playing time-saved card, System/Light/Dark themes, 6 WCAG-checked accents, and EN/ID support.',
@@ -94,7 +94,7 @@ export const COPY = {
     footerMade: 'Made by',
     footerPrivacy: 'Privacy Policy',
     ctaBandTitle: 'Watch at your own pace.',
-    ctaBandSub: 'Free for Chromium and Firefox. No account, no tracking.',
+    ctaBandSub: 'Free for Chromium and Firefox-based browsers. No account, no tracking.',
   },
   id: {
     navFeatures: 'Fitur',
@@ -104,12 +104,12 @@ export const COPY = {
     navGithub: 'GitHub',
     heroTitle: 'Atur kecepatan video tanpa ribet.',
     heroSub:
-      'Kecepatan 0.1× sampai 16× untuk Chromium dan Firefox. Per tab, per situs, atau semua tab.',
+      'Kecepatan 0.1× sampai 16× untuk browser berbasis Chromium dan Firefox. Per tab, per situs, atau semua tab.',
     addChrome: 'Pasang di Chrome',
     addFirefox: 'Pasang di Firefox',
     alsoFirefox: 'Juga tersedia untuk Firefox',
     alsoChrome: 'Juga tersedia untuk Chrome',
-    heroTagline: 'Gratis, open source, dan tanpa telemetri. Untuk Chromium dan Firefox.',
+    heroTagline: 'Gratis, open source, dan tanpa telemetri. Untuk browser berbasis Chromium dan Firefox.',
 
     showcaseTitle: 'Dirancang untuk pemakaian harian.',
     showcaseLead:
@@ -159,14 +159,14 @@ export const COPY = {
     ],
 
     releasesTitle: 'Rilis',
-    releasesLead: 'Paket siap pakai untuk Chromium (MV3) dan Firefox (MV2).',
+    releasesLead: 'Paket siap pakai untuk browser berbasis Chromium (MV3) dan Firefox (MV2).',
     releasesViewAll: 'Semua rilis di GitHub',
     releasesLatest: 'Terbaru',
     releasesLoading: 'Memuat daftar rilis…',
     releasesFallbackTitle: 'v1.0.0',
     releasesFallbackDate: '22 Nov 2026',
     releasesFallbackNotes: [
-      'Kontrol kecepatan video HTML5 0.1× sampai 16× untuk Chromium (MV3) dan Firefox (MV2).',
+      'Kontrol kecepatan video HTML5 0.1× sampai 16× untuk browser berbasis Chromium (MV3) dan Firefox (MV2).',
       'Mode scope per tab, per situs, dan semua tab yang tetap aktif di SPA dan iframe.',
       'Hingga 10 Quick speeds, Fine-tune steps preset & custom, serta keyboard shortcut satu tombol (A / D / S).',
       'Badge kecepatan di toolbar, kartu Now playing dengan estimasi waktu hemat, tema System/Light/Dark, 6 warna accent, dan bahasa EN/ID.',
@@ -191,6 +191,6 @@ export const COPY = {
     footerMade: 'Made by',
     footerPrivacy: 'Privacy Policy',
     ctaBandTitle: 'Tonton dengan ritme kamu sendiri.',
-    ctaBandSub: 'Gratis untuk Chromium dan Firefox. Tanpa akun, tanpa pelacakan.',
+    ctaBandSub: 'Gratis untuk browser berbasis Chromium dan Firefox. Tanpa akun, tanpa pelacakan.',
   },
 };

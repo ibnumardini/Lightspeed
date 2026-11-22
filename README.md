@@ -1,6 +1,6 @@
 # Lightspeed - Video Speed Controller Pro
 
-> 0.1× to 16× HTML5 video playback speed controller for Chromium (MV3) and Firefox (MV2). Per tab, per site, or across all tabs, with zero telemetry.
+> 0.1× to 16× HTML5 video playback speed controller for Chromium (MV3) and Firefox-based (MV2) browsers. Per tab, per site, or across all tabs, with zero telemetry.
 
 [Chrome Web Store](https://chromewebstore.google.com/detail/gndblfdplnlcbnckabpgbnjmbcmcpaac) · [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/lightspeed-vid-speed-ctrl-pro/) · [Website](https://ibnumardini.github.io/lightspeed/) · [Releases](https://github.com/ibnumardini/lightspeed/releases) · [Privacy Policy](https://ibnumardini.github.io/lightspeed/privacy.html)
 
