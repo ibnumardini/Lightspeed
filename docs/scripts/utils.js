@@ -4,9 +4,8 @@ export const html = htm.bind(React.createElement);
 export const REPO_URL = 'https://github.com/ibnumardini/lightspeed';
 export const RELEASES_API = 'https://api.github.com/repos/ibnumardini/lightspeed/releases';
 export const PRIVACY_URL = './privacy.html';
-// Replace with live Chrome Web Store & Firefox Add-ons URLs once published
-export const CHROME_STORE_URL = 'https://github.com/ibnumardini/lightspeed/releases';
-export const FIREFOX_STORE_URL = 'https://github.com/ibnumardini/lightspeed/releases';
+export const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/gndblfdplnlcbnckabpgbnjmbcmcpaac';
+export const FIREFOX_STORE_URL = 'https://addons.mozilla.org/en-US/firefox/addon/lightspeed-vid-speed-ctrl-pro/';
 
 export function isFirefoxBrowser() {
   return typeof navigator !== 'undefined' && /firefox/i.test(navigator.userAgent || '');
