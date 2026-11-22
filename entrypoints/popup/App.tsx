@@ -8,6 +8,7 @@ import {
   type Settings,
   settingsStorage,
 } from '@/utils/storage';
+import { useResolvedTheme } from '@/utils/theme';
 
 export default function App() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
@@ -17,6 +18,7 @@ export default function App() {
   const [restricted, setRestricted] = useState<boolean>(false);
 
   const isIndonesia = useMemo(() => detectIndonesiaRegion(), []);
+  const resolvedTheme = useResolvedTheme(settings.theme);
 
   useEffect(() => {
     void settingsStorage.getValue().then(setSettings);
@@ -99,6 +101,15 @@ export default function App() {
     }
   };
 
+  const handleToggleTheme = () => {
+    const nextTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
+    setSettings((prev) => {
+      const next = { ...prev, theme: nextTheme } as Settings;
+      void settingsStorage.setValue(next);
+      return next;
+    });
+  };
+
   const handleOpenSettings = () => {
     void browser.runtime.openOptionsPage();
   };
@@ -113,6 +124,7 @@ export default function App() {
       smallStep={settings.smallStep}
       bigStep={settings.bigStep}
       accent={settings.accent}
+      theme={resolvedTheme}
       isIndonesia={isIndonesia}
       hostname={hostname}
       video={video}
@@ -122,6 +134,7 @@ export default function App() {
       onChangeScope={handleChangeScope}
       onChangeSpeed={handleChangeSpeed}
       onTogglePlay={() => void handleTogglePlay()}
+      onToggleTheme={handleToggleTheme}
       onOpenSettings={handleOpenSettings}
     />
   );

@@ -8,6 +8,7 @@ import {
   parseSpeed,
   resolveEffectiveSpeed,
 } from './speed';
+import { resolveTheme } from './theme';
 
 describe('speed utils', () => {
   test('parseSpeed handles decimals, commas, × suffix, and bounds', () => {
@@ -87,5 +88,14 @@ describe('color utils', () => {
   test('light custom colors trigger low-contrast warning', () => {
     expect(isLowContrast('#FACC15')).toBe(true);
     expect(isLowContrast('#FFFFFF')).toBe(true);
+  });
+});
+
+describe('theme utils', () => {
+  test('resolveTheme respects explicit light/dark and falls back to system', () => {
+    expect(resolveTheme('light', 'dark')).toBe('light');
+    expect(resolveTheme('dark', 'light')).toBe('dark');
+    expect(resolveTheme('system', 'dark')).toBe('dark');
+    expect(resolveTheme(undefined, 'light')).toBe('light');
   });
 });

@@ -3,10 +3,12 @@ import {
   CoffeeIcon,
   GlobeIcon,
   LightspeedLogo,
+  MoonIcon,
   PauseIcon,
   PlayIcon,
   ResetIcon,
   SlidersIcon,
+  SunIcon,
 } from '@/components/Icons';
 import { PRIVACY_URL, SUPPORT_URLS, WEBSITE_URL } from '@/utils/color';
 import type { VideoInfo } from '@/utils/messaging';
@@ -20,6 +22,7 @@ import {
   parseSpeed,
 } from '@/utils/speed';
 import type { PopupVisibility, ScopeMode } from '@/utils/storage';
+import type { ResolvedTheme } from '@/utils/theme';
 
 export interface PopupViewProps {
   enabled: boolean;
@@ -30,6 +33,7 @@ export interface PopupViewProps {
   smallStep: number;
   bigStep: number;
   accent: string;
+  theme?: ResolvedTheme;
   isIndonesia: boolean;
   hostname: string;
   video: VideoInfo | null;
@@ -40,6 +44,7 @@ export interface PopupViewProps {
   onChangeScope: (scope: ScopeMode) => void;
   onChangeSpeed: (speed: number) => void;
   onTogglePlay: () => void;
+  onToggleTheme: () => void;
   onOpenSettings: () => void;
 }
 
@@ -58,6 +63,7 @@ export function PopupView({
   smallStep,
   bigStep,
   accent,
+  theme = 'light',
   isIndonesia,
   hostname,
   video,
@@ -68,6 +74,7 @@ export function PopupView({
   onChangeScope,
   onChangeSpeed,
   onTogglePlay,
+  onToggleTheme,
   onOpenSettings,
 }: PopupViewProps) {
   const [draft, setDraft] = useState(() => formatSpeed(speed));
@@ -76,7 +83,6 @@ export function PopupView({
     setDraft(formatSpeed(speed));
   }, [speed]);
 
-  const tint = `color-mix(in srgb, ${accent} 10%, #ffffff)`;
   const parsed = parseSpeed(draft);
   const valid = parsed !== null;
   const dirty = valid && !nearSpeed(parsed, speed);
@@ -94,13 +100,13 @@ export function PopupView({
   };
 
   let hint = `Now ${Math.round(speed * 100)}% · type any speed, then Apply`;
-  let hintColor = '#4A6663';
+  let hintColor = 'var(--text-muted)';
   if (!valid) {
     hint = 'Enter a speed from 0.1× to 16×';
-    hintColor = '#B42318';
+    hintColor = 'var(--error)';
   } else if (dirty) {
     hint = `Press Apply or Enter to switch to ${formatShortSpeed(parsed)}`;
-    hintColor = accent;
+    hintColor = 'var(--accent-fg)';
   }
 
   const quickList = quickSpeeds.length > 0 ? quickSpeeds : [1, 2, 3, 4, 5];
@@ -116,23 +122,24 @@ export function PopupView({
   const stats = video ? calcTimeStats(video.currentTime, video.duration, speed) : null;
   const deltaColor =
     stats?.deltaKind === 'faster'
-      ? accent
+      ? 'var(--accent-fg)'
       : stats?.deltaKind === 'slower'
-        ? '#B54708'
-        : '#4A6663';
+        ? 'var(--warn)'
+        : 'var(--text-muted)';
 
   return (
     <div
+      data-theme={theme}
       style={
         {
           '--accent': accent,
           width: 400,
           display: 'flex',
           flexDirection: 'column',
-          background: '#FFFFFF',
-          color: '#0B2B28',
+          background: 'var(--bg-surface)',
+          color: 'var(--text-primary)',
           fontSize: 14,
-          border: isPreview ? '1px solid #DCE7E5' : 'none',
+          border: isPreview ? '1px solid var(--border)' : 'none',
           borderRadius: isPreview ? 14 : 0,
           overflow: 'hidden',
         } as React.CSSProperties
@@ -144,8 +151,8 @@ export function PopupView({
           alignItems: 'center',
           gap: 8,
           padding: '14px 16px',
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #F9FCFB 100%)',
-          borderBottom: '1px solid #E3ECEA',
+          background: 'linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-header-end) 100%)',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         <LightspeedLogo size={34} accent={accent} />
@@ -176,7 +183,7 @@ export function PopupView({
                 fontSize: 10,
                 fontWeight: 600,
                 letterSpacing: 0,
-                color: '#5F7672',
+                color: 'var(--text-subtle)',
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
@@ -189,7 +196,7 @@ export function PopupView({
               fontWeight: 700,
               lineHeight: '14px',
               whiteSpace: 'nowrap',
-              color: accent,
+              color: 'var(--accent-fg)',
             }}
           >
             Video Speed Controller Pro
@@ -208,9 +215,9 @@ export function PopupView({
             height: 36,
             padding: '0 10px',
             borderRadius: 10,
-            border: `1.5px solid ${accent}`,
-            background: '#FFFFFF',
-            color: accent,
+            border: '1.5px solid var(--accent-fg)',
+            background: 'var(--bg-surface)',
+            color: 'var(--accent-fg)',
             fontSize: 12,
             fontWeight: 700,
             cursor: 'pointer',
@@ -234,9 +241,9 @@ export function PopupView({
             height: 36,
             padding: '0 6px 0 10px',
             borderRadius: 10,
-            border: `1.5px solid ${enabled ? accent : '#9DB0AD'}`,
-            background: '#FFFFFF',
-            color: enabled ? accent : '#4A6663',
+            border: `1.5px solid ${enabled ? 'var(--accent-fg)' : 'var(--power-off-border)'}`,
+            background: 'var(--bg-surface)',
+            color: enabled ? 'var(--accent-fg)' : 'var(--text-muted)',
             fontSize: 12,
             fontWeight: 800,
             letterSpacing: '0.04em',
@@ -249,7 +256,7 @@ export function PopupView({
               width: 18,
               height: 18,
               borderRadius: 5,
-              background: enabled ? accent : '#C5D3D1',
+              background: enabled ? accent : 'var(--knob-off)',
             }}
           />
         </button>
@@ -278,7 +285,7 @@ export function PopupView({
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: '#4A6663',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Apply to
@@ -290,7 +297,7 @@ export function PopupView({
                   gap: 3,
                   padding: 3,
                   borderRadius: 11,
-                  background: tint,
+                  background: 'var(--accent-tint)',
                 }}
               >
                 {SCOPES.map((sc) => {
@@ -311,9 +318,9 @@ export function PopupView({
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
-                        background: checked ? '#FFFFFF' : 'transparent',
-                        color: checked ? accent : '#2D4744',
-                        boxShadow: checked ? '0 1px 3px rgba(11,43,40,0.14)' : 'none',
+                        background: checked ? 'var(--bg-surface)' : 'transparent',
+                        color: checked ? 'var(--accent-fg)' : 'var(--text-secondary)',
+                        boxShadow: checked ? '0 1px 3px rgba(0,0,0,0.16)' : 'none',
                         transition: 'background 0.15s ease, color 0.15s ease',
                       }}
                     >
@@ -332,8 +339,8 @@ export function PopupView({
                           height: 14,
                           flex: '0 0 14px',
                           borderRadius: '50%',
-                          border: `1.5px solid ${checked ? accent : '#9DB0AD'}`,
-                          background: '#FFFFFF',
+                          border: `1.5px solid ${checked ? 'var(--accent-fg)' : 'var(--power-off-border)'}`,
+                          background: 'var(--bg-surface)',
                           display: 'inline-flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -345,7 +352,7 @@ export function PopupView({
                             width: 7,
                             height: 7,
                             borderRadius: '50%',
-                            background: accent,
+                            background: 'var(--accent-fg)',
                             transform: checked ? 'scale(1)' : 'scale(0)',
                             transition: 'transform 0.12s ease',
                           }}
@@ -368,7 +375,7 @@ export function PopupView({
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: '#4A6663',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Quick speed
@@ -394,8 +401,8 @@ export function PopupView({
                         padding: 0,
                         borderRadius: 10,
                         border: `1.5px solid ${active ? accent : 'transparent'}`,
-                        background: active ? accent : tint,
-                        color: active ? '#FFFFFF' : accent,
+                        background: active ? accent : 'var(--accent-tint)',
+                        color: active ? '#FFFFFF' : 'var(--accent-fg)',
                         fontSize: 14.5,
                         fontWeight: 800,
                         cursor: 'pointer',
@@ -419,7 +426,7 @@ export function PopupView({
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: '#4A6663',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Playback speed
@@ -438,8 +445,8 @@ export function PopupView({
                         padding: 0,
                         borderRadius: 11,
                         border: 0,
-                        background: tint,
-                        color: accent,
+                        background: 'var(--accent-tint)',
+                        color: 'var(--accent-fg)',
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -458,8 +465,8 @@ export function PopupView({
                         padding: 0,
                         borderRadius: 11,
                         border: 0,
-                        background: tint,
-                        color: accent,
+                        background: 'var(--accent-tint)',
+                        color: 'var(--accent-fg)',
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -482,8 +489,8 @@ export function PopupView({
                     gap: 2,
                     padding: '0 12px',
                     borderRadius: 11,
-                    border: `2px solid ${!valid ? '#B42318' : dirty ? accent : '#DCE7E5'}`,
-                    background: '#FFFFFF',
+                    border: `2px solid ${!valid ? 'var(--error)' : dirty ? 'var(--accent-fg)' : 'var(--border)'}`,
+                    background: 'var(--bg-surface)',
                   }}
                 >
                   {vis.manual ? (
@@ -511,12 +518,14 @@ export function PopupView({
                           padding: 0,
                           fontSize: 22,
                           fontWeight: 800,
-                          color: '#0B2B28',
+                          color: 'var(--text-primary)',
                           textAlign: 'right',
                           fontVariantNumeric: 'tabular-nums',
                         }}
                       />
-                      <span style={{ fontSize: 18, fontWeight: 800, color: '#4A6663' }}>×</span>
+                      <span style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-muted)' }}>
+                        ×
+                      </span>
                     </>
                   ) : (
                     <span
@@ -544,8 +553,8 @@ export function PopupView({
                         padding: 0,
                         borderRadius: 11,
                         border: 0,
-                        background: tint,
-                        color: accent,
+                        background: 'var(--accent-tint)',
+                        color: 'var(--accent-fg)',
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -564,8 +573,8 @@ export function PopupView({
                         padding: 0,
                         borderRadius: 11,
                         border: 0,
-                        background: tint,
-                        color: accent,
+                        background: 'var(--accent-tint)',
+                        color: 'var(--accent-fg)',
                         fontSize: 12.5,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -605,8 +614,8 @@ export function PopupView({
                       border: 0,
                       fontSize: 13,
                       fontWeight: 700,
-                      background: dirty ? accent : '#E3ECEA',
-                      color: dirty ? '#FFFFFF' : '#5F7672',
+                      background: dirty ? accent : 'var(--btn-disabled-bg)',
+                      color: dirty ? '#FFFFFF' : 'var(--btn-disabled-text)',
                       cursor: dirty ? 'pointer' : 'not-allowed',
                     }}
                   >
@@ -626,8 +635,9 @@ export function PopupView({
                 gap: 12,
                 padding: '11px 12px',
                 borderRadius: 12,
-                background: 'linear-gradient(180deg, #F7FBFA 0%, #EEF5F3 100%)',
-                border: '1px solid #DCE7E5',
+                background:
+                  'linear-gradient(180deg, var(--bg-now-start) 0%, var(--bg-now-end) 100%)',
+                border: '1px solid var(--border)',
               }}
             >
               <button
@@ -643,7 +653,7 @@ export function PopupView({
                   padding: 0,
                   borderRadius: '50%',
                   border: 0,
-                  background: video ? accent : '#C5D3D1',
+                  background: video ? accent : 'var(--knob-off)',
                   color: '#FFFFFF',
                   display: 'flex',
                   alignItems: 'center',
@@ -670,7 +680,7 @@ export function PopupView({
                     fontWeight: 700,
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
-                    color: '#4A6663',
+                    color: 'var(--text-muted)',
                   }}
                 >
                   Now playing
@@ -691,7 +701,7 @@ export function PopupView({
                   style={{
                     fontSize: 12,
                     lineHeight: '16px',
-                    color: '#4A6663',
+                    color: 'var(--text-muted)',
                     fontVariantNumeric: 'tabular-nums',
                   }}
                 >
@@ -760,18 +770,19 @@ export function PopupView({
                 maxWidth: 260,
                 padding: 20,
                 borderRadius: 14,
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
-                boxShadow: '0 12px 32px rgba(11,43,40,0.16)',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
+                boxShadow: 'var(--shadow-pop)',
                 textAlign: 'center',
               }}
             >
               <span style={{ fontSize: 14, fontWeight: 800 }}>Lightspeed is off</span>
-              <span style={{ fontSize: 12.5, lineHeight: 1.45, color: '#4A6663' }}>
+              <span style={{ fontSize: 12.5, lineHeight: 1.45, color: 'var(--text-muted)' }}>
                 Videos play at their normal speed until you turn it back on.
               </span>
               <button
                 type="button"
+                className="ls-btn ls-btn-primary"
                 onClick={onTogglePower}
                 style={{
                   height: 40,
@@ -798,8 +809,8 @@ export function PopupView({
           flexDirection: 'column',
           gap: 10,
           padding: '12px 16px',
-          borderTop: '1px solid #E3ECEA',
-          background: '#F4F8F7',
+          borderTop: '1px solid var(--border-subtle)',
+          background: 'var(--bg-subtle)',
         }}
       >
         <div
@@ -823,15 +834,15 @@ export function PopupView({
                 height: 36,
                 padding: '0 12px',
                 borderRadius: 10,
-                border: '1.5px solid #DCE7E5',
-                background: '#FFFFFF',
-                color: '#0B2B28',
+                border: '1.5px solid var(--border)',
+                background: 'var(--bg-surface)',
+                color: 'var(--text-primary)',
                 fontSize: 12.5,
                 fontWeight: 700,
                 cursor: 'pointer',
               }}
             >
-              <SlidersIcon color={accent} />
+              <SlidersIcon color="var(--accent-fg)" />
               <span>Settings</span>
             </button>
 
@@ -850,14 +861,42 @@ export function PopupView({
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
-                border: '1.5px solid #DCE7E5',
-                background: '#FFFFFF',
-                color: '#2D4744',
+                border: '1.5px solid var(--border)',
+                background: 'var(--bg-surface)',
+                color: 'var(--text-secondary)',
                 textDecoration: 'none',
               }}
             >
-              <GlobeIcon size={16} color={accent} />
+              <GlobeIcon size={16} color="var(--accent-fg)" />
             </a>
+
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="ls-btn ls-btn-surface"
+              style={{
+                flex: '0 0 36px',
+                width: 36,
+                height: 36,
+                padding: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+                border: '1.5px solid var(--border)',
+                background: 'var(--bg-surface)',
+                color: 'var(--accent-fg)',
+                cursor: 'pointer',
+              }}
+            >
+              {theme === 'dark' ? (
+                <SunIcon size={16} color="var(--accent-fg)" />
+              ) : (
+                <MoonIcon size={16} color="var(--accent-fg)" />
+              )}
+            </button>
           </div>
 
           <a
@@ -874,9 +913,9 @@ export function PopupView({
               height: 36,
               padding: '0 12px',
               borderRadius: 10,
-              border: '1.5px solid #FDE3C2',
-              background: '#FFF4E5',
-              color: '#7A3E00',
+              border: '1.5px solid var(--warm-border)',
+              background: 'var(--warm-bg)',
+              color: 'var(--warm-text)',
               textDecoration: 'none',
               fontSize: 12.5,
               fontWeight: 700,
@@ -896,7 +935,7 @@ export function PopupView({
             fontSize: 11,
             lineHeight: '16px',
             fontWeight: 500,
-            color: '#5F7672',
+            color: 'var(--text-subtle)',
           }}
         >
           <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

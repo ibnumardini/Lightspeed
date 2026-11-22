@@ -6,6 +6,89 @@
   src: url('/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
 }
 
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --bg-page: #f4f8f7;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f4f8f7;
+  --bg-header-end: #f9fcfb;
+  --bg-now-start: #f7fbfa;
+  --bg-now-end: #eef5f3;
+  --bg-hover: #f4f8f7;
+  --bg-nav-hover: #eaf2f0;
+  --border: #dce7e5;
+  --border-subtle: #e3ecea;
+  --border-divider: #edf3f2;
+  --border-strong: #c5d3d1;
+  --border-hover: #b7c9c6;
+  --text-primary: #0b2b28;
+  --text-secondary: #2d4744;
+  --text-muted: #4a6663;
+  --text-subtle: #5f7672;
+  --accent-fg: var(--accent, #0f766e);
+  --accent-tint: color-mix(in srgb, var(--accent, #0f766e) 10%, #ffffff);
+  --accent-tint-hover: color-mix(in srgb, var(--accent, #0f766e) 17%, #ffffff);
+  --preview-bg: color-mix(in srgb, var(--accent, #0f766e) 7%, #ffffff);
+  --btn-disabled-bg: #e3ecea;
+  --btn-disabled-text: #5f7672;
+  --switch-off: #b7c6c3;
+  --knob-off: #c5d3d1;
+  --power-off-border: #9db0ad;
+  --warm-bg: #fff4e5;
+  --warm-border: #fde3c2;
+  --warm-text: #7a3e00;
+  --warm-hover-bg: #ffebd2;
+  --warm-hover-border: #f6cd9a;
+  --danger-border: #f3c7c3;
+  --error: #b42318;
+  --warn: #b54708;
+  --shadow-card: 0 1px 2px rgba(11, 43, 40, 0.04), 0 4px 12px rgba(11, 43, 40, 0.03);
+  --shadow-btn: 0 1px 2px rgba(11, 43, 40, 0.06);
+  --shadow-pop: 0 14px 36px rgba(11, 43, 40, 0.16);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg-page: #0b1212;
+  --bg-surface: #111b1a;
+  --bg-subtle: #152221;
+  --bg-header-end: #14201f;
+  --bg-now-start: #172625;
+  --bg-now-end: #121f1e;
+  --bg-hover: #1a2a28;
+  --bg-nav-hover: #172524;
+  --border: #223634;
+  --border-subtle: #1e302e;
+  --border-divider: #1a2b29;
+  --border-strong: #2f4946;
+  --border-hover: #3d5d59;
+  --text-primary: #edf5f4;
+  --text-secondary: #c3d6d3;
+  --text-muted: #8fa9a5;
+  --text-subtle: #78938f;
+  --accent-fg: color-mix(in srgb, var(--accent, #0f766e) 58%, #ffffff);
+  --accent-tint: color-mix(in srgb, var(--accent, #0f766e) 22%, #111b1a);
+  --accent-tint-hover: color-mix(in srgb, var(--accent, #0f766e) 32%, #111b1a);
+  --preview-bg: color-mix(in srgb, var(--accent, #0f766e) 12%, #0b1212);
+  --btn-disabled-bg: #1b2b29;
+  --btn-disabled-text: #69837f;
+  --switch-off: #2c4340;
+  --knob-off: #3f5b57;
+  --power-off-border: #3a5551;
+  --warm-bg: #2a1e10;
+  --warm-border: #4d351a;
+  --warm-text: #fdba74;
+  --warm-hover-bg: #362715;
+  --warm-hover-border: #664622;
+  --danger-border: #5c2623;
+  --error: #f87171;
+  --warn: #fbbf24;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.25), 0 6px 16px rgba(0, 0, 0, 0.22);
+  --shadow-btn: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
 *,
 *::before,
 *::after {
@@ -15,7 +98,8 @@
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #0b2b28;
+  background: var(--bg-surface);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -27,7 +111,7 @@ input {
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--accent, #0f766e);
+  outline: 2px solid var(--accent-fg);
   outline-offset: 2px;
 }
 
@@ -44,18 +128,18 @@ input:focus-visible {
 }
 
 .ls-scope-option:has(input:focus-visible) {
-  outline: 2px solid var(--accent, #0f766e);
+  outline: 2px solid var(--accent-fg);
   outline-offset: 1px;
 }
 
 .ls-credit-link {
-  color: #4a6663;
+  color: var(--text-muted);
   font-weight: 700;
   text-decoration: none;
 }
 
 .ls-credit-link:hover {
-  color: #0b2b28;
+  color: var(--text-primary);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -76,53 +160,53 @@ input:focus-visible {
 
 .ls-btn-primary {
   box-shadow:
-    0 1px 2px rgba(11, 43, 40, 0.16),
+    0 1px 2px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .ls-btn-primary:hover:not(:disabled) {
-  filter: brightness(1.06);
+  filter: brightness(1.07);
   box-shadow:
-    0 3px 8px color-mix(in srgb, var(--accent, #0f766e) 28%, transparent),
+    0 3px 8px color-mix(in srgb, var(--accent, #0f766e) 32%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .ls-btn-surface {
-  box-shadow: 0 1px 2px rgba(11, 43, 40, 0.06);
+  box-shadow: var(--shadow-btn);
 }
 
 .ls-btn-surface:hover:not(:disabled) {
-  background: #f4f8f7 !important;
-  border-color: #b7c9c6 !important;
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
 }
 
 .ls-btn-tint {
-  box-shadow: inset 0 -1px 0 rgba(11, 43, 40, 0.06);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .ls-btn-tint:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--accent, #0f766e) 17%, #ffffff) !important;
+  background: var(--accent-tint-hover) !important;
 }
 
 .ls-btn-warm {
-  box-shadow: 0 1px 2px rgba(122, 62, 0, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .ls-btn-warm:hover {
-  background: #ffebd2 !important;
-  border-color: #f6cd9a !important;
+  background: var(--warm-hover-bg) !important;
+  border-color: var(--warm-hover-border) !important;
 }
 
 .ls-scope-track {
-  box-shadow: inset 0 1px 2px rgba(11, 43, 40, 0.07);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .ls-scope-option:hover {
-  color: #0b2b28;
+  color: var(--text-primary);
 }
 
 .ls-input-well {
-  box-shadow: inset 0 1px 2px rgba(11, 43, 40, 0.06);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
@@ -130,14 +214,12 @@ input:focus-visible {
 
 .ls-input-well:focus-within {
   box-shadow:
-    inset 0 1px 2px rgba(11, 43, 40, 0.04),
-    0 0 0 3px color-mix(in srgb, var(--accent, #0f766e) 16%, transparent);
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 3px color-mix(in srgb, var(--accent, #0f766e) 20%, transparent);
 }
 
 .ls-card {
-  box-shadow:
-    0 1px 2px rgba(11, 43, 40, 0.04),
-    0 4px 12px rgba(11, 43, 40, 0.03);
+  box-shadow: var(--shadow-card);
 }
 
 .ls-nav-link {
@@ -147,5 +229,5 @@ input:focus-visible {
 }
 
 .ls-nav-link:hover {
-  background: #eaf2f0;
+  background: var(--bg-nav-hover);
 }

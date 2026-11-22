@@ -31,7 +31,9 @@ import {
   type Settings,
   settingsStorage,
   type ShortcutKeys,
+  type ThemeMode,
 } from '@/utils/storage';
+import { useResolvedTheme } from '@/utils/theme';
 
 const NAV_ITEMS = [
   { id: 'popup', label: 'Popup layout' },
@@ -71,6 +73,11 @@ const VISIBILITY_ROWS: { key: keyof PopupVisibility; title: string; desc: string
 
 const SMALL_STEPS = [1, 2, 5] as const;
 const BIG_STEPS = [5, 10, 25] as const;
+const THEME_OPTIONS: { id: ThemeMode; label: string }[] = [
+  { id: 'system', label: 'System' },
+  { id: 'light', label: 'Light' },
+  { id: 'dark', label: 'Dark' },
+];
 
 export default function App() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
@@ -93,6 +100,8 @@ export default function App() {
   const [previewPlaying, setPreviewPlaying] = useState(false);
 
   const isIndonesia = useMemo(() => detectIndonesiaRegion(), []);
+  const themeMode: ThemeMode = settings.theme ?? 'system';
+  const resolvedTheme = useResolvedTheme(themeMode);
 
   useEffect(() => {
     void settingsStorage.getValue().then(setSettings);
@@ -111,8 +120,6 @@ export default function App() {
   };
 
   const accent = settings.accent;
-  const tint = `color-mix(in srgb, ${accent} 10%, #ffffff)`;
-  const previewBg = `color-mix(in srgb, ${accent} 7%, #ffffff)`;
   const supportUrl = isIndonesia ? SUPPORT_URLS.indonesia : SUPPORT_URLS.global;
   const supportLabel = isIndonesia
     ? 'Buy me a coffee on Trakteer'
@@ -228,21 +235,22 @@ export default function App() {
 
   return (
     <div
+      data-theme={resolvedTheme}
       style={
         {
           '--accent': accent,
           minHeight: '100vh',
-          background: '#F4F8F7',
-          color: '#0B2B28',
+          background: 'var(--bg-page)',
+          color: 'var(--text-primary)',
           fontSize: 14,
         } as React.CSSProperties
       }
     >
       <header
         style={{
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #F9FCFB 100%)',
-          borderBottom: '1px solid #DCE7E5',
-          boxShadow: '0 1px 3px rgba(11,43,40,0.04)',
+          background: 'linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-header-end) 100%)',
+          borderBottom: '1px solid var(--border)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
         }}
       >
         <div
@@ -268,13 +276,19 @@ export default function App() {
               }}
             >
               LIGHTSPEED{' '}
-              <span style={{ fontWeight: 600, letterSpacing: 0, color: '#4A6663' }}>
+              <span style={{ fontWeight: 600, letterSpacing: 0, color: 'var(--text-muted)' }}>
                 Settings
               </span>
             </h1>
-            <span style={{ fontSize: 12, fontWeight: 700, color: accent }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-fg)' }}>
               Video Speed Controller Pro{' '}
-              <span style={{ fontWeight: 600, color: '#5F7672', fontVariantNumeric: 'tabular-nums' }}>
+              <span
+                style={{
+                  fontWeight: 600,
+                  color: 'var(--text-subtle)',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
                 · v{version}
               </span>
             </span>
@@ -286,10 +300,10 @@ export default function App() {
               gap: 6,
               fontSize: 12.5,
               fontWeight: 600,
-              color: '#4A6663',
+              color: 'var(--text-muted)',
             }}
           >
-            <CheckIcon size={16} color={accent} strokeWidth={2.4} />
+            <CheckIcon size={16} color="var(--accent-fg)" strokeWidth={2.4} />
             Changes save automatically
           </span>
           <a
@@ -304,15 +318,15 @@ export default function App() {
               height: 40,
               padding: '0 14px',
               borderRadius: 10,
-              border: '1.5px solid #DCE7E5',
-              background: '#FFFFFF',
-              color: '#0B2B28',
+              border: '1.5px solid var(--border)',
+              background: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
               textDecoration: 'none',
               fontSize: 13,
               fontWeight: 700,
             }}
           >
-            <GlobeIcon size={16} color={accent} />
+            <GlobeIcon size={16} color="var(--accent-fg)" />
             Website
           </a>
           <a
@@ -327,9 +341,9 @@ export default function App() {
               height: 40,
               padding: '0 14px',
               borderRadius: 10,
-              border: '1.5px solid #FDE3C2',
-              background: '#FFF4E5',
-              color: '#7A3E00',
+              border: '1.5px solid var(--warm-border)',
+              background: 'var(--warm-bg)',
+              color: 'var(--warm-text)',
               textDecoration: 'none',
               fontSize: 13,
               fontWeight: 700,
@@ -377,8 +391,8 @@ export default function App() {
                   minHeight: 44,
                   padding: '0 14px',
                   borderRadius: 10,
-                  background: isActive ? tint : 'transparent',
-                  color: isActive ? accent : '#2D4744',
+                  background: isActive ? 'var(--accent-tint)' : 'transparent',
+                  color: isActive ? 'var(--accent-fg)' : 'var(--text-secondary)',
                   fontWeight: isActive ? 700 : 600,
                   textDecoration: 'none',
                 }}
@@ -413,8 +427,8 @@ export default function App() {
               id="popup"
               className="ls-card"
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
                 display: 'flex',
@@ -428,7 +442,7 @@ export default function App() {
                   margin: '0 0 12px',
                   fontSize: 13.5,
                   lineHeight: 1.5,
-                  color: '#4A6663',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Choose what shows in the popup. The header with the on/off switch and Reset all
@@ -444,7 +458,7 @@ export default function App() {
                       alignItems: 'center',
                       gap: 16,
                       padding: '14px 0',
-                      borderTop: '1px solid #EDF3F2',
+                      borderTop: '1px solid var(--border-divider)',
                     }}
                   >
                     <div
@@ -457,7 +471,7 @@ export default function App() {
                       }}
                     >
                       <span style={{ fontSize: 14.5, fontWeight: 700 }}>{r.title}</span>
-                      <span style={{ fontSize: 13, lineHeight: 1.45, color: '#4A6663' }}>
+                      <span style={{ fontSize: 13, lineHeight: 1.45, color: 'var(--text-muted)' }}>
                         {r.desc}
                       </span>
                     </div>
@@ -481,7 +495,8 @@ export default function App() {
                         border: 0,
                         display: 'flex',
                         cursor: 'pointer',
-                        background: on ? accent : '#B7C6C3',
+                        background: on ? accent : 'var(--switch-off)',
+                        transition: 'background 0.15s ease',
                       }}
                     >
                       <span
@@ -490,7 +505,7 @@ export default function App() {
                           height: 26,
                           borderRadius: '50%',
                           background: '#FFFFFF',
-                          boxShadow: '0 1px 3px rgba(11,43,40,0.25)',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.28)',
                           transition: 'transform 0.15s ease',
                           transform: on ? 'translateX(20px)' : 'translateX(0)',
                         }}
@@ -506,8 +521,8 @@ export default function App() {
               id="quick"
               className="ls-card"
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
                 display: 'flex',
@@ -526,21 +541,22 @@ export default function App() {
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: '1 1 260px' }}>
                   <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Quick speeds</h2>
-                  <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: '#4A6663' }}>
+                  <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
                     The one-tap buttons in the popup, shown from slowest to fastest. Up to 10, from
                     0.1× to 16×.
                   </p>
                 </div>
                 <button
                   type="button"
+                  className="ls-btn ls-btn-surface"
                   onClick={resetQuick}
                   style={{
                     height: 40,
                     padding: '0 14px',
                     borderRadius: 10,
-                    border: '1.5px solid #C5D3D1',
-                    background: '#FFFFFF',
-                    color: '#2D4744',
+                    border: '1.5px solid var(--border-strong)',
+                    background: 'var(--bg-surface)',
+                    color: 'var(--text-secondary)',
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -571,7 +587,7 @@ export default function App() {
                         alignItems: 'center',
                         gap: 12,
                         minHeight: 60,
-                        borderTop: '1px solid #EDF3F2',
+                        borderTop: '1px solid var(--border-divider)',
                       }}
                     >
                       <span
@@ -579,7 +595,7 @@ export default function App() {
                           flex: '0 0 24px',
                           fontSize: 12.5,
                           fontWeight: 700,
-                          color: '#4A6663',
+                          color: 'var(--text-muted)',
                           fontVariantNumeric: 'tabular-nums',
                         }}
                       >
@@ -595,8 +611,8 @@ export default function App() {
                                 height: 36,
                                 padding: '0 14px',
                                 borderRadius: 10,
-                                background: tint,
-                                color: accent,
+                                background: 'var(--accent-tint)',
+                                color: 'var(--accent-fg)',
                                 fontSize: 15,
                                 fontWeight: 800,
                                 fontVariantNumeric: 'tabular-nums',
@@ -607,6 +623,7 @@ export default function App() {
                           </span>
                           <button
                             type="button"
+                            className="ls-btn ls-btn-surface"
                             onClick={() => {
                               setEditing(v);
                               setEditDraft(String(v));
@@ -620,9 +637,9 @@ export default function App() {
                               height: 40,
                               padding: '0 12px',
                               borderRadius: 10,
-                              border: '1.5px solid #C5D3D1',
-                              background: '#FFFFFF',
-                              color: '#2D4744',
+                              border: '1.5px solid var(--border-strong)',
+                              background: 'var(--bg-surface)',
+                              color: 'var(--text-secondary)',
                               fontSize: 13,
                               fontWeight: 700,
                               cursor: 'pointer',
@@ -633,6 +650,7 @@ export default function App() {
                           </button>
                           <button
                             type="button"
+                            className="ls-btn ls-btn-surface"
                             onClick={() => removeQuick(v)}
                             disabled={lastOne}
                             aria-label={`Delete ${label}`}
@@ -641,9 +659,9 @@ export default function App() {
                               height: 40,
                               padding: 0,
                               borderRadius: 10,
-                              border: '1.5px solid #F3C7C3',
-                              background: '#FFFFFF',
-                              color: '#B42318',
+                              border: '1.5px solid var(--danger-border)',
+                              background: 'var(--bg-surface)',
+                              color: 'var(--error)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -658,6 +676,7 @@ export default function App() {
                         <>
                           <span style={{ flex: '1 1 0', minWidth: 0, display: 'flex' }}>
                             <span
+                              className="ls-input-well"
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -665,8 +684,8 @@ export default function App() {
                                 height: 40,
                                 padding: '0 12px',
                                 borderRadius: 10,
-                                border: `2px solid ${accent}`,
-                                background: '#FFFFFF',
+                                border: '2px solid var(--accent-fg)',
+                                background: 'var(--bg-surface)',
                               }}
                             >
                               <input
@@ -696,14 +715,15 @@ export default function App() {
                                   padding: 0,
                                   fontSize: 15,
                                   fontWeight: 800,
-                                  color: '#0B2B28',
+                                  color: 'var(--text-primary)',
                                 }}
                               />
-                              <span style={{ fontWeight: 800, color: '#4A6663' }}>×</span>
+                              <span style={{ fontWeight: 800, color: 'var(--text-muted)' }}>×</span>
                             </span>
                           </span>
                           <button
                             type="button"
+                            className="ls-btn ls-btn-primary"
                             onClick={saveEdit}
                             style={{
                               height: 40,
@@ -721,14 +741,15 @@ export default function App() {
                           </button>
                           <button
                             type="button"
+                            className="ls-btn ls-btn-surface"
                             onClick={cancelEdit}
                             style={{
                               height: 40,
                               padding: '0 14px',
                               borderRadius: 10,
-                              border: '1.5px solid #C5D3D1',
-                              background: '#FFFFFF',
-                              color: '#2D4744',
+                              border: '1.5px solid var(--border-strong)',
+                              background: 'var(--bg-surface)',
+                              color: 'var(--text-secondary)',
                               fontSize: 13,
                               fontWeight: 700,
                               cursor: 'pointer',
@@ -750,16 +771,17 @@ export default function App() {
                   alignItems: 'center',
                   gap: 10,
                   paddingTop: 16,
-                  borderTop: '1px solid #EDF3F2',
+                  borderTop: '1px solid var(--border-divider)',
                 }}
               >
                 <label
                   htmlFor="ls-add-quick"
-                  style={{ fontSize: 13, fontWeight: 700, color: '#2D4744' }}
+                  style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)' }}
                 >
                   Add a speed
                 </label>
                 <span
+                  className="ls-input-well"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -767,8 +789,8 @@ export default function App() {
                     height: 44,
                     padding: '0 12px',
                     borderRadius: 10,
-                    border: `1.5px solid ${quickErr && editing === null ? '#B42318' : '#C5D3D1'}`,
-                    background: '#FFFFFF',
+                    border: `1.5px solid ${quickErr && editing === null ? 'var(--error)' : 'var(--border-strong)'}`,
+                    background: 'var(--bg-surface)',
                   }}
                 >
                   <input
@@ -796,13 +818,14 @@ export default function App() {
                       padding: 0,
                       fontSize: 15,
                       fontWeight: 800,
-                      color: '#0B2B28',
+                      color: 'var(--text-primary)',
                     }}
                   />
-                  <span style={{ fontWeight: 800, color: '#4A6663' }}>×</span>
+                  <span style={{ fontWeight: 800, color: 'var(--text-muted)' }}>×</span>
                 </span>
                 <button
                   type="button"
+                  className={`ls-btn ${quickFull ? '' : 'ls-btn-primary'}`}
                   onClick={addQuick}
                   disabled={quickFull}
                   style={{
@@ -815,8 +838,8 @@ export default function App() {
                     border: 0,
                     fontSize: 14,
                     fontWeight: 700,
-                    background: quickFull ? '#E3ECEA' : accent,
-                    color: quickFull ? '#5F7672' : '#FFFFFF',
+                    background: quickFull ? 'var(--btn-disabled-bg)' : accent,
+                    color: quickFull ? 'var(--btn-disabled-text)' : '#FFFFFF',
                     cursor: quickFull ? 'not-allowed' : 'pointer',
                   }}
                 >
@@ -829,7 +852,7 @@ export default function App() {
                   margin: '8px 0 0',
                   fontSize: 12.5,
                   fontWeight: 600,
-                  color: quickErr ? '#B42318' : '#4A6663',
+                  color: quickErr ? 'var(--error)' : 'var(--text-muted)',
                 }}
               >
                 {quickErr || `${settings.quickSpeeds.length} of 10 · the popup shows up to 5 per row`}
@@ -841,8 +864,8 @@ export default function App() {
               id="steps"
               className="ls-card"
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
                 display: 'flex',
@@ -852,7 +875,7 @@ export default function App() {
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Fine-tune steps</h2>
-                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: '#4A6663' }}>
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
                   How much the −/+ buttons change the speed. 1% of 1× is 0.01×.
                 </p>
               </div>
@@ -862,7 +885,7 @@ export default function App() {
                   aria-label="Small step"
                   style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
                 >
-                  <span style={{ fontSize: 12.5, fontWeight: 700, color: '#2D4744' }}>
+                  <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
                     Small step
                   </span>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -872,6 +895,7 @@ export default function App() {
                         <button
                           key={val}
                           type="button"
+                          className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
                           aria-pressed={active}
                           onClick={() => updateSettings((prev) => ({ ...prev, smallStep: val }))}
                           style={{
@@ -882,9 +906,9 @@ export default function App() {
                             fontSize: 14,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            background: active ? accent : '#FFFFFF',
-                            color: active ? '#FFFFFF' : '#2D4744',
-                            border: `1.5px solid ${active ? accent : '#C5D3D1'}`,
+                            background: active ? accent : 'var(--bg-surface)',
+                            color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                            border: `1.5px solid ${active ? accent : 'var(--border-strong)'}`,
                           }}
                         >
                           {val}%
@@ -899,7 +923,7 @@ export default function App() {
                   aria-label="Big step"
                   style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
                 >
-                  <span style={{ fontSize: 12.5, fontWeight: 700, color: '#2D4744' }}>
+                  <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
                     Big step
                   </span>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -909,6 +933,7 @@ export default function App() {
                         <button
                           key={val}
                           type="button"
+                          className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
                           aria-pressed={active}
                           onClick={() => updateSettings((prev) => ({ ...prev, bigStep: val }))}
                           style={{
@@ -919,9 +944,9 @@ export default function App() {
                             fontSize: 14,
                             fontWeight: 700,
                             cursor: 'pointer',
-                            background: active ? accent : '#FFFFFF',
-                            color: active ? '#FFFFFF' : '#2D4744',
-                            border: `1.5px solid ${active ? accent : '#C5D3D1'}`,
+                            background: active ? accent : 'var(--bg-surface)',
+                            color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                            border: `1.5px solid ${active ? accent : 'var(--border-strong)'}`,
                           }}
                         >
                           {val}%
@@ -938,8 +963,8 @@ export default function App() {
               id="shortcuts"
               className="ls-card"
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
                 display: 'flex',
@@ -953,7 +978,7 @@ export default function App() {
                   margin: '0 0 12px',
                   fontSize: 13.5,
                   lineHeight: 1.5,
-                  color: '#4A6663',
+                  color: 'var(--text-muted)',
                 }}
               >
                 Work on any page with a video, as long as you are not typing in a text field. Click
@@ -969,7 +994,7 @@ export default function App() {
                       alignItems: 'center',
                       gap: 12,
                       padding: '12px 0',
-                      borderTop: '1px solid #EDF3F2',
+                      borderTop: '1px solid var(--border-divider)',
                     }}
                   >
                     <span style={{ flex: '1 1 0', minWidth: 0, fontSize: 14, fontWeight: 600 }}>
@@ -984,18 +1009,19 @@ export default function App() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         borderRadius: 8,
-                        border: `1.5px solid ${isListening ? accent : '#C5D3D1'}`,
+                        border: `1.5px solid ${isListening ? 'var(--accent-fg)' : 'var(--border-strong)'}`,
                         borderBottomWidth: 3,
-                        background: '#FFFFFF',
+                        background: 'var(--bg-surface)',
                         fontSize: 14,
                         fontWeight: 800,
-                        color: isListening ? accent : '#0B2B28',
+                        color: isListening ? 'var(--accent-fg)' : 'var(--text-primary)',
                       }}
                     >
                       {isListening ? 'Press a key…' : settings.keys[k.id]}
                     </kbd>
                     <button
                       type="button"
+                      className="ls-btn ls-btn-surface"
                       onClick={() => {
                         setListening(isListening ? null : k.id);
                         setKeyMsg('');
@@ -1006,9 +1032,9 @@ export default function App() {
                         height: 40,
                         padding: '0 14px',
                         borderRadius: 10,
-                        border: '1.5px solid #C5D3D1',
-                        background: '#FFFFFF',
-                        color: '#2D4744',
+                        border: '1.5px solid var(--border-strong)',
+                        background: 'var(--bg-surface)',
+                        color: 'var(--text-secondary)',
                         fontSize: 13,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -1020,7 +1046,7 @@ export default function App() {
                 );
               })}
               {keyMsg && (
-                <p style={{ margin: '8px 0 0', fontSize: 12.5, fontWeight: 600, color: '#B42318' }}>
+                <p style={{ margin: '8px 0 0', fontSize: 12.5, fontWeight: 600, color: 'var(--error)' }}>
                   {keyMsg}
                 </p>
               )}
@@ -1031,127 +1057,173 @@ export default function App() {
               id="appearance"
               className="ls-card"
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #DCE7E5',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border)',
                 borderRadius: 16,
                 padding: 24,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 14,
+                gap: 18,
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Appearance</h2>
-                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: '#4A6663' }}>
-                  Accent color for buttons and highlights.
+                <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
+                  Theme mode and accent color for the popup and settings.
                 </p>
               </div>
+
               <div
                 role="group"
-                aria-label="Accent color"
-                style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}
+                aria-label="Theme mode"
+                style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
               >
-                {PRESET_ACCENTS.map((w) => {
-                  const active = w.hex.toUpperCase() === accent.toUpperCase();
-                  return (
-                    <button
-                      key={w.hex}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => updateSettings((prev) => ({ ...prev, accent: w.hex }))}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        height: 48,
-                        padding: '0 16px 0 10px',
-                        borderRadius: 12,
-                        background: '#FFFFFF',
-                        fontSize: 14,
-                        fontWeight: 700,
-                        color: '#0B2B28',
-                        cursor: 'pointer',
-                        border: `2px solid ${active ? w.hex : '#DCE7E5'}`,
-                      }}
-                    >
-                      <span
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  Theme
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {THEME_OPTIONS.map((opt) => {
+                    const active = themeMode === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
+                        aria-pressed={active}
+                        onClick={() => updateSettings((prev) => ({ ...prev, theme: opt.id }))}
                         style={{
-                          width: 28,
-                          height: 28,
-                          borderRadius: '50%',
-                          background: w.hex,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                          minWidth: 84,
+                          height: 42,
+                          padding: '0 16px',
+                          borderRadius: 10,
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: active ? accent : 'var(--bg-surface)',
+                          color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                          border: `1.5px solid ${active ? accent : 'var(--border-strong)'}`,
                         }}
                       >
-                        {active && <CheckIcon size={14} color="#FFFFFF" strokeWidth={3} />}
-                      </span>
-                      {w.name}
-                    </button>
-                  );
-                })}
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-                <label
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    height: 48,
-                    padding: '0 16px 0 10px',
-                    borderRadius: 12,
-                    background: '#FFFFFF',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    color: '#0B2B28',
-                    cursor: 'pointer',
-                    border: customActive ? `2px solid ${accent}` : '2px dashed #C5D3D1',
-                  }}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  Accent color
+                </span>
+                <div
+                  role="group"
+                  aria-label="Accent color"
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}
                 >
-                  <span
+                  {PRESET_ACCENTS.map((w) => {
+                    const active = w.hex.toUpperCase() === accent.toUpperCase();
+                    return (
+                      <button
+                        key={w.hex}
+                        type="button"
+                        className="ls-btn ls-btn-surface"
+                        aria-pressed={active}
+                        onClick={() => updateSettings((prev) => ({ ...prev, accent: w.hex }))}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 10,
+                          height: 48,
+                          padding: '0 16px 0 10px',
+                          borderRadius: 12,
+                          background: 'var(--bg-surface)',
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: 'var(--text-primary)',
+                          cursor: 'pointer',
+                          border: `2px solid ${active ? w.hex : 'var(--border)'}`,
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: '50%',
+                            background: w.hex,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {active && <CheckIcon size={14} color="#FFFFFF" strokeWidth={3} />}
+                        </span>
+                        {w.name}
+                      </button>
+                    );
+                  })}
+
+                  <label
+                    className="ls-btn ls-btn-surface"
                     style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: '50%',
-                      background:
-                        settings.customColor ||
-                        'conic-gradient(#E11D48, #F59E0B, #16A34A, #0891B2, #4F46E5, #C026D3, #E11D48)',
+                      position: 'relative',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      gap: 10,
+                      height: 48,
+                      padding: '0 16px 0 10px',
+                      borderRadius: 12,
+                      background: 'var(--bg-surface)',
+                      fontSize: 14,
+                      fontWeight: 700,
+                      color: 'var(--text-primary)',
+                      cursor: 'pointer',
+                      border: customActive ? `2px solid ${accent}` : '2px dashed var(--border-strong)',
                     }}
                   >
-                    {customActive && <CheckIcon size={14} color="#FFFFFF" strokeWidth={3} />}
-                  </span>
-                  {settings.customColor
-                    ? `Custom ${settings.customColor.toUpperCase()}`
-                    : 'Custom'}
-                  <input
-                    type="color"
-                    aria-label="Pick a custom accent color"
-                    value={settings.customColor || '#0F766E'}
-                    onChange={(e) => {
-                      const hex = e.target.value;
-                      updateSettings((prev) => ({
-                        ...prev,
-                        accent: hex,
-                        customColor: hex,
-                      }));
-                    }}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      margin: 0,
-                      padding: 0,
-                      border: 0,
-                      opacity: 0,
-                      cursor: 'pointer',
-                    }}
-                  />
-                </label>
+                    <span
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: '50%',
+                        background:
+                          settings.customColor ||
+                          'conic-gradient(#E11D48, #F59E0B, #16A34A, #0891B2, #4F46E5, #C026D3, #E11D48)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {customActive && <CheckIcon size={14} color="#FFFFFF" strokeWidth={3} />}
+                    </span>
+                    {settings.customColor
+                      ? `Custom ${settings.customColor.toUpperCase()}`
+                      : 'Custom'}
+                    <input
+                      type="color"
+                      aria-label="Pick a custom accent color"
+                      value={settings.customColor || '#0F766E'}
+                      onChange={(e) => {
+                        const hex = e.target.value;
+                        updateSettings((prev) => ({
+                          ...prev,
+                          accent: hex,
+                          customColor: hex,
+                        }));
+                      }}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        margin: 0,
+                        padding: 0,
+                        border: 0,
+                        opacity: 0,
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </label>
+                </div>
               </div>
               {customLowContrast && (
                 <p
@@ -1159,8 +1231,8 @@ export default function App() {
                     margin: 0,
                     padding: '10px 12px',
                     borderRadius: 10,
-                    background: '#FFF4E5',
-                    color: '#7A3E00',
+                    background: 'var(--warm-bg)',
+                    color: 'var(--warm-text)',
                     fontSize: 12.5,
                     fontWeight: 600,
                     lineHeight: 1.45,
@@ -1194,7 +1266,7 @@ export default function App() {
               }}
             >
               <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800 }}>Live preview</h2>
-              <span style={{ fontSize: 12.5, color: '#4A6663' }}>
+              <span style={{ fontSize: 12.5, color: 'var(--text-muted)' }}>
                 Updates as you change settings
               </span>
             </div>
@@ -1204,12 +1276,12 @@ export default function App() {
                 justifyContent: 'center',
                 padding: 24,
                 borderRadius: 16,
-                background: previewBg,
-                border: '1px solid #DCE7E5',
+                background: 'var(--preview-bg)',
+                border: '1px solid var(--border)',
                 overflowX: 'auto',
               }}
             >
-              <div style={{ borderRadius: 14, boxShadow: '0 14px 36px rgba(11,43,40,0.16)' }}>
+              <div style={{ borderRadius: 14, boxShadow: 'var(--shadow-pop)' }}>
                 <PopupView
                   enabled={previewEnabled}
                   scope={previewScope}
@@ -1219,6 +1291,7 @@ export default function App() {
                   smallStep={settings.smallStep}
                   bigStep={settings.bigStep}
                   accent={accent}
+                  theme={resolvedTheme}
                   isIndonesia={isIndonesia}
                   hostname="www.youtube.com"
                   video={{
@@ -1237,6 +1310,12 @@ export default function App() {
                   onChangeScope={setPreviewScope}
                   onChangeSpeed={setPreviewSpeed}
                   onTogglePlay={() => setPreviewPlaying((v) => !v)}
+                  onToggleTheme={() =>
+                    updateSettings((prev) => ({
+                      ...prev,
+                      theme: resolvedTheme === 'dark' ? 'light' : 'dark',
+                    }))
+                  }
                   onOpenSettings={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 />
               </div>
@@ -1256,7 +1335,7 @@ export default function App() {
           gap: 12,
           fontSize: 12.5,
           fontWeight: 600,
-          color: '#5F7672',
+          color: 'var(--text-subtle)',
         }}
       >
         <span>© 2026 Lightspeed - Video Speed Controller Pro</span>
@@ -1264,7 +1343,7 @@ export default function App() {
           href={PRIVACY_URL}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: '#2D4744', fontWeight: 700, textUnderlineOffset: 2 }}
+          className="ls-credit-link"
         >
           Privacy Policy
         </a>
