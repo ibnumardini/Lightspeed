@@ -19,7 +19,7 @@ export const SUPPORT_URLS = {
   global: 'https://ko-fi.com',
 } as const;
 
-export const PRIVACY_URL = 'https://github.com/ibnumardini/Lightspeed/blob/main/PRIVACY.md';
+export const PRIVACY_URL = 'https://github.com/ibnumardini/Lightspeed/blob/master/PRIVACY.md';
 export const WEBSITE_URL = 'https://ibnumardini.github.io/lightspeed/';
 
 export function relativeLuminance(hex: string): number {
