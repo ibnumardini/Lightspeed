@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.0] - 2026-11-23
+
+### Added
+
+- Expandable `+0.5×` micro-tab on each Quick speed button with smooth symmetric flip when a `.5×` speed is active.
+- On/off toggle for keyboard shortcuts in Settings (hides shortcut hints and disables key listeners when turned off).
+- Scroll wheel and Up/Down arrow support on the speed input (`Shift` uses big step) plus press-and-hold repeat on `−`/`+` step buttons.
+- Live playback progress bar, playing status indicator, and time-saved pill in the Now playing card.
+
+### Changed
+
+- Enhanced Dark mode contrast, surface separation, borders, and scope track depth.
+- Compacted the Playback speed `Apply` bar so it appears only when editing or invalid, moving the live percentage readout next to the section label.
+- Completed Bahasa Indonesia localization across the popup and Settings page, unified the `Reset` button label with a bolder rounded icon, and flattened the popup footer row into a single flex layout.
+
+### Fixed
+
+- Eliminated initial theme/accent flash when opening the popup or Settings by caching resolved theme variables and waiting for local settings before mounting React.
+- Prevented header subtitle text from overlapping the Reset button in narrower layouts.
+
 ## [1.0.1] - 2026-11-22
 
 ### Changed
