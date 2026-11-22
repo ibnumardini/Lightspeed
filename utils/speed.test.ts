@@ -8,6 +8,7 @@ import {
   parseSpeed,
   resolveEffectiveSpeed,
 } from './speed';
+import { resolveLang } from './i18n';
 import { resolveTheme } from './theme';
 
 describe('speed utils', () => {
@@ -36,17 +37,17 @@ describe('speed utils', () => {
   });
 
   test('calcTimeStats computes normal, faster, and slower deltas', () => {
-    expect(calcTimeStats(2887, 4350, 1)).toEqual({
+    expect(calcTimeStats(2887, 4350, 1)).toMatchObject({
       leftText: '24:23 left',
       deltaText: 'normal speed',
       deltaKind: 'normal',
     });
-    expect(calcTimeStats(2887, 4350, 2)).toEqual({
+    expect(calcTimeStats(2887, 4350, 2)).toMatchObject({
       leftText: '12:12 left',
       deltaText: 'saves 12:12',
       deltaKind: 'faster',
     });
-    expect(calcTimeStats(2887, 4350, 0.5)).toEqual({
+    expect(calcTimeStats(2887, 4350, 0.5)).toMatchObject({
       leftText: '48:46 left',
       deltaText: '+24:23 longer',
       deltaKind: 'slower',
@@ -92,11 +93,18 @@ describe('color utils', () => {
   });
 });
 
-describe('theme utils', () => {
+describe('theme & i18n utils', () => {
   test('resolveTheme respects explicit light/dark and falls back to system', () => {
     expect(resolveTheme('light', 'dark')).toBe('light');
     expect(resolveTheme('dark', 'light')).toBe('dark');
     expect(resolveTheme('system', 'dark')).toBe('dark');
     expect(resolveTheme(undefined, 'light')).toBe('light');
+  });
+
+  test('resolveLang respects explicit en/id and falls back to browser', () => {
+    expect(resolveLang('en', 'id')).toBe('en');
+    expect(resolveLang('id', 'en')).toBe('id');
+    expect(resolveLang('auto', 'id')).toBe('id');
+    expect(resolveLang(undefined, 'en')).toBe('en');
   });
 });

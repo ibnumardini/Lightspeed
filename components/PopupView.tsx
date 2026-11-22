@@ -11,6 +11,7 @@ import {
   SunIcon,
 } from '@/components/Icons';
 import { PRIVACY_URL, SUPPORT_URLS, WEBSITE_URL } from '@/utils/color';
+import { getStrings, type ResolvedLang } from '@/utils/i18n';
 import type { VideoInfo } from '@/utils/messaging';
 import {
   calcTimeStats,
@@ -35,6 +36,7 @@ export interface PopupViewProps {
   keys?: ShortcutKeys;
   accent: string;
   theme?: ResolvedTheme;
+  lang?: ResolvedLang;
   isIndonesia: boolean;
   hostname: string;
   video: VideoInfo | null;
@@ -46,14 +48,9 @@ export interface PopupViewProps {
   onChangeSpeed: (speed: number) => void;
   onTogglePlay: () => void;
   onToggleTheme: () => void;
+  onToggleLang: () => void;
   onOpenSettings: () => void;
 }
-
-const SCOPES: { id: ScopeMode; label: string }[] = [
-  { id: 'tab', label: 'This tab' },
-  { id: 'site', label: 'This site' },
-  { id: 'all', label: 'All tabs' },
-];
 
 export function PopupView({
   enabled,
@@ -66,6 +63,7 @@ export function PopupView({
   keys = { up: 'A', down: 'D', reset: 'S' },
   accent,
   theme = 'light',
+  lang = 'en',
   isIndonesia,
   hostname,
   video,
@@ -77,6 +75,7 @@ export function PopupView({
   onChangeSpeed,
   onTogglePlay,
   onToggleTheme,
+  onToggleLang,
   onOpenSettings,
 }: PopupViewProps) {
   const [draft, setDraft] = useState(() => formatSpeed(speed));
@@ -85,6 +84,13 @@ export function PopupView({
   useEffect(() => {
     setDraft(formatSpeed(speed));
   }, [speed]);
+
+  const t = getStrings(lang);
+  const scopes: { id: ScopeMode; label: string }[] = [
+    { id: 'tab', label: t.scopeTab },
+    { id: 'site', label: t.scopeSite },
+    { id: 'all', label: t.scopeAll },
+  ];
 
   const parsed = parseSpeed(draft);
   const valid = parsed !== null;
@@ -102,13 +108,13 @@ export function PopupView({
     }
   };
 
-  let hint = `Now ${Math.round(speed * 100)}% · type any speed, then Apply`;
+  let hint = t.hintNormal(Math.round(speed * 100));
   let hintColor = 'var(--text-muted)';
   if (!valid) {
-    hint = 'Enter a speed from 0.1× to 16×';
+    hint = t.hintInvalid;
     hintColor = 'var(--error)';
   } else if (dirty) {
-    hint = `Press Apply or Enter to switch to ${formatShortSpeed(parsed)}`;
+    hint = t.hintDirty(formatShortSpeed(parsed));
     hintColor = 'var(--accent-fg)';
   }
 
@@ -117,12 +123,18 @@ export function PopupView({
   const showSpeedRow = vis.fine || vis.manual;
 
   const supportUrl = isIndonesia ? SUPPORT_URLS.indonesia : SUPPORT_URLS.global;
-  const supportAria = isIndonesia
-    ? 'Support Lightspeed on Trakteer'
-    : 'Support Lightspeed on Ko-fi';
+  const supportAria = t.supportAria(isIndonesia);
   const version = browser?.runtime?.getManifest?.().version ?? '1.0.0';
 
   const stats = video ? calcTimeStats(video.currentTime, video.duration, speed) : null;
+  const leftLabel = stats ? (stats.isLive ? t.live : t.timeLeft(stats.leftDuration)) : '';
+  const deltaLabel = stats
+    ? stats.deltaKind === 'faster'
+      ? t.savesTime(stats.deltaDuration)
+      : stats.deltaKind === 'slower'
+        ? t.longerTime(stats.deltaDuration)
+        : t.normalSpeed
+    : '';
   const deltaColor =
     stats?.deltaKind === 'faster'
       ? 'var(--accent-fg)'
@@ -210,7 +222,7 @@ export function PopupView({
           type="button"
           className="ls-btn ls-btn-surface ls-reset-btn"
           onClick={onResetAll}
-          title="Reset all tabs and sites to 1×"
+          title={t.resetAllTitle}
           style={{
             flex: '0 0 auto',
             display: 'inline-flex',
@@ -228,15 +240,15 @@ export function PopupView({
           }}
         >
           <ResetIcon />
-          Reset all
+          {t.resetAll}
         </button>
 
         <button
           type="button"
           role="switch"
           aria-checked={enabled}
-          aria-label="Speed control on or off"
-          title={enabled ? 'Turn off Lightspeed' : 'Turn on Lightspeed'}
+          aria-label={t.powerAria}
+          title={enabled ? t.turnOffTitle : t.turnOnTitle}
           onClick={onTogglePower}
           style={{
             position: 'relative',
@@ -328,7 +340,7 @@ export function PopupView({
                   color: 'var(--text-muted)',
                 }}
               >
-                Apply to
+                {t.applyTo}
               </legend>
               <div
                 className="ls-scope-track"
@@ -340,7 +352,7 @@ export function PopupView({
                   background: 'var(--accent-tint)',
                 }}
               >
-                {SCOPES.map((sc) => {
+                {scopes.map((sc) => {
                   const checked = scope === sc.id;
                   return (
                     <label
@@ -418,7 +430,7 @@ export function PopupView({
                   color: 'var(--text-muted)',
                 }}
               >
-                Quick speed
+                {t.quickSpeed}
               </span>
               <div
                 style={{
@@ -437,7 +449,7 @@ export function PopupView({
                       className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset ? ' ls-has-key' : ''}`}
                       onClick={() => commitSpeed(v)}
                       aria-pressed={active}
-                      title={isReset ? `Shortcut: ${keys.reset}` : undefined}
+                      title={isReset ? t.shortcutTip(keys.reset) : undefined}
                       style={{
                         height: 40,
                         padding: 0,
@@ -476,7 +488,7 @@ export function PopupView({
                   color: 'var(--text-muted)',
                 }}
               >
-                Playback speed
+                {t.playbackSpeed}
               </span>
               <div style={{ display: 'flex', gap: 6, alignItems: 'stretch' }}>
                 {vis.fine && (
@@ -485,7 +497,7 @@ export function PopupView({
                       type="button"
                       className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed - bigStep / 100)}
-                      aria-label={`Decrease speed by ${bigStep}%`}
+                      aria-label={t.decreaseBy(bigStep)}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -505,8 +517,8 @@ export function PopupView({
                       type="button"
                       className="ls-btn ls-btn-tint ls-has-key"
                       onClick={() => commitSpeed(speed - smallStep / 100)}
-                      aria-label={`Decrease speed by ${smallStep}% (shortcut ${keys.down})`}
-                      title={`Shortcut: ${keys.down}`}
+                      aria-label={t.decreaseBy(smallStep, keys.down)}
+                      title={t.shortcutTip(keys.down)}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -611,8 +623,8 @@ export function PopupView({
                       type="button"
                       className="ls-btn ls-btn-tint ls-has-key"
                       onClick={() => commitSpeed(speed + smallStep / 100)}
-                      aria-label={`Increase speed by ${smallStep}% (shortcut ${keys.up})`}
-                      title={`Shortcut: ${keys.up}`}
+                      aria-label={t.increaseBy(smallStep, keys.up)}
+                      title={t.shortcutTip(keys.up)}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -635,7 +647,7 @@ export function PopupView({
                       type="button"
                       className="ls-btn ls-btn-tint"
                       onClick={() => commitSpeed(speed + bigStep / 100)}
-                      aria-label={`Increase speed by ${bigStep}%`}
+                      aria-label={t.increaseBy(bigStep)}
                       style={{
                         flex: '0 0 44px',
                         height: 44,
@@ -688,7 +700,7 @@ export function PopupView({
                       cursor: dirty ? 'pointer' : 'not-allowed',
                     }}
                   >
-                    Apply
+                    {t.apply}
                   </button>
                 </div>
               )}
@@ -714,7 +726,7 @@ export function PopupView({
                 className={`ls-btn ${video ? 'ls-btn-primary' : ''}`}
                 onClick={onTogglePlay}
                 disabled={!video}
-                aria-label={video?.playing ? 'Pause video' : 'Play video'}
+                aria-label={video?.playing ? t.pauseVideo : t.playVideo}
                 style={{
                   flex: '0 0 40px',
                   width: 40,
@@ -752,7 +764,7 @@ export function PopupView({
                     color: 'var(--text-muted)',
                   }}
                 >
-                  Now playing
+                  {t.nowPlaying}
                 </span>
                 <span
                   style={{
@@ -764,7 +776,7 @@ export function PopupView({
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {hostname || (restricted ? 'Browser page' : 'This tab')}
+                  {hostname || (restricted ? t.browserPage : t.thisTab)}
                 </span>
                 <span
                   style={{
@@ -775,10 +787,10 @@ export function PopupView({
                   }}
                 >
                   {video
-                    ? `${video.playing ? 'Playing' : 'Paused'} · ${formatDuration(video.currentTime)} / ${formatDuration(video.duration)}`
+                    ? `${video.playing ? t.playing : t.paused} · ${formatDuration(video.currentTime)} / ${formatDuration(video.duration)}`
                     : restricted
-                      ? 'Not available on browser pages'
-                      : 'No video detected on this tab'}
+                      ? t.notAvailableBrowser
+                      : t.noVideoDetected}
                 </span>
               </div>
 
@@ -800,7 +812,7 @@ export function PopupView({
                       fontVariantNumeric: 'tabular-nums',
                     }}
                   >
-                    {stats.leftText}
+                    {leftLabel}
                   </span>
                   <span
                     style={{
@@ -811,7 +823,7 @@ export function PopupView({
                       fontVariantNumeric: 'tabular-nums',
                     }}
                   >
-                    {stats.deltaText}
+                    {deltaLabel}
                   </span>
                 </div>
               )}
@@ -845,9 +857,9 @@ export function PopupView({
                 textAlign: 'center',
               }}
             >
-              <span style={{ fontSize: 14, fontWeight: 800 }}>Lightspeed is off</span>
+              <span style={{ fontSize: 14, fontWeight: 800 }}>{t.offTitle}</span>
               <span style={{ fontSize: 12.5, lineHeight: 1.45, color: 'var(--text-muted)' }}>
-                Videos play at their normal speed until you turn it back on.
+                {t.offDesc}
               </span>
               <button
                 type="button"
@@ -865,7 +877,7 @@ export function PopupView({
                   cursor: 'pointer',
                 }}
               >
-                Turn on
+                {t.turnOn}
               </button>
             </div>
           </div>
@@ -887,10 +899,10 @@ export function PopupView({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: 10,
+            gap: 8,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <button
               type="button"
               className="ls-btn ls-btn-surface"
@@ -899,9 +911,9 @@ export function PopupView({
                 flex: '0 0 auto',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 7,
+                gap: 6,
                 height: 36,
-                padding: '0 12px',
+                padding: '0 11px',
                 borderRadius: 10,
                 border: '1.5px solid var(--border)',
                 background: 'var(--bg-surface)',
@@ -912,19 +924,93 @@ export function PopupView({
               }}
             >
               <SlidersIcon color="var(--accent-fg)" />
-              <span>Settings</span>
+              <span>{t.settings}</span>
             </button>
 
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'stretch',
+                height: 36,
+                borderRadius: 10,
+                border: '1.5px solid var(--border)',
+                background: 'var(--bg-surface)',
+                boxShadow: 'var(--shadow-btn)',
+                overflow: 'hidden',
+              }}
+            >
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                title={theme === 'dark' ? t.switchToLight : t.switchToDark}
+                aria-label={theme === 'dark' ? t.switchToLight : t.switchToDark}
+                className="ls-btn"
+                style={{
+                  width: 34,
+                  height: '100%',
+                  padding: 0,
+                  border: 0,
+                  background: 'transparent',
+                  color: 'var(--accent-fg)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                {theme === 'dark' ? (
+                  <SunIcon size={15} color="var(--accent-fg)" />
+                ) : (
+                  <MoonIcon size={15} color="var(--accent-fg)" />
+                )}
+              </button>
+              <span
+                aria-hidden="true"
+                style={{
+                  width: 1,
+                  background: 'var(--border)',
+                  alignSelf: 'stretch',
+                  margin: '6px 0',
+                }}
+              />
+              <button
+                type="button"
+                onClick={onToggleLang}
+                title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+                aria-label={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+                className="ls-btn"
+                style={{
+                  width: 34,
+                  height: '100%',
+                  padding: 0,
+                  border: 0,
+                  background: 'transparent',
+                  color: 'var(--accent-fg)',
+                  fontSize: 11,
+                  fontWeight: 800,
+                  letterSpacing: '0.03em',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                {lang.toUpperCase()}
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <a
               href={WEBSITE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              title="Official website"
-              aria-label="Visit official website"
+              title={t.officialWebsite}
+              aria-label={t.visitWebsite}
               className="ls-btn ls-btn-surface"
               style={{
-                flex: '0 0 36px',
-                width: 36,
+                flex: '0 0 34px',
+                width: 34,
                 height: 36,
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -939,60 +1025,32 @@ export function PopupView({
               <GlobeIcon size={16} color="var(--accent-fg)" />
             </a>
 
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-              className="ls-btn ls-btn-surface"
+            <a
+              href={supportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={supportAria}
+              className="ls-btn ls-btn-warm"
               style={{
-                flex: '0 0 36px',
-                width: 36,
-                height: 36,
-                padding: 0,
+                flex: '0 0 auto',
                 display: 'inline-flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                gap: 6,
+                height: 36,
+                padding: '0 11px',
                 borderRadius: 10,
-                border: '1.5px solid var(--border)',
-                background: 'var(--bg-surface)',
-                color: 'var(--accent-fg)',
-                cursor: 'pointer',
+                border: '1.5px solid var(--warm-border)',
+                background: 'var(--warm-bg)',
+                color: 'var(--warm-text)',
+                textDecoration: 'none',
+                fontSize: 12.5,
+                fontWeight: 700,
               }}
             >
-              {theme === 'dark' ? (
-                <SunIcon size={16} color="var(--accent-fg)" />
-              ) : (
-                <MoonIcon size={16} color="var(--accent-fg)" />
-              )}
-            </button>
+              <CoffeeIcon size={16} />
+              {t.buyCoffee}
+            </a>
           </div>
-
-          <a
-            href={supportUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={supportAria}
-            className="ls-btn ls-btn-warm"
-            style={{
-              flex: '0 0 auto',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              height: 36,
-              padding: '0 12px',
-              borderRadius: 10,
-              border: '1.5px solid var(--warm-border)',
-              background: 'var(--warm-bg)',
-              color: 'var(--warm-text)',
-              textDecoration: 'none',
-              fontSize: 12.5,
-              fontWeight: 700,
-            }}
-          >
-            <CoffeeIcon size={16} />
-            Buy me a coffee
-          </a>
         </div>
 
         <div
@@ -1017,7 +1075,7 @@ export function PopupView({
             className="ls-credit-link"
             style={{ flex: '0 0 auto', whiteSpace: 'nowrap' }}
           >
-            Privacy Policy
+            {t.privacyPolicy}
           </a>
         </div>
       </footer>

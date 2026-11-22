@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PopupView } from '@/components/PopupView';
+import { resolveLang } from '@/utils/i18n';
 import type { RuntimeMessage, TabStateResponse, VideoInfo } from '@/utils/messaging';
 import { clampSpeed, DEFAULT_SPEED, detectIndonesiaRegion } from '@/utils/speed';
 import {
@@ -19,6 +20,7 @@ export default function App() {
 
   const isIndonesia = useMemo(() => detectIndonesiaRegion(), []);
   const resolvedTheme = useResolvedTheme(settings.theme);
+  const resolvedLang = resolveLang(settings.lang);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', settings.accent);
@@ -114,6 +116,15 @@ export default function App() {
     });
   };
 
+  const handleToggleLang = () => {
+    const nextLang = resolvedLang === 'id' ? 'en' : 'id';
+    setSettings((prev) => {
+      const next = { ...prev, lang: nextLang } as Settings;
+      void settingsStorage.setValue(next);
+      return next;
+    });
+  };
+
   const handleOpenSettings = () => {
     void browser.runtime.openOptionsPage();
   };
@@ -130,6 +141,7 @@ export default function App() {
       keys={settings.keys}
       accent={settings.accent}
       theme={resolvedTheme}
+      lang={resolvedLang}
       isIndonesia={isIndonesia}
       hostname={hostname}
       video={video}
@@ -140,6 +152,7 @@ export default function App() {
       onChangeSpeed={handleChangeSpeed}
       onTogglePlay={() => void handleTogglePlay()}
       onToggleTheme={handleToggleTheme}
+      onToggleLang={handleToggleLang}
       onOpenSettings={handleOpenSettings}
     />
   );

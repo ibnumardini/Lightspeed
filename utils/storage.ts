@@ -2,6 +2,7 @@ import { storage } from 'wxt/utils/storage';
 
 export type ScopeMode = 'tab' | 'site' | 'all';
 export type ThemeMode = 'system' | 'light' | 'dark';
+export type LanguageMode = 'auto' | 'en' | 'id';
 
 export interface PopupVisibility {
   scope: boolean;
@@ -28,6 +29,7 @@ export interface Settings {
   accent: string;
   customColor: string | null;
   theme: ThemeMode;
+  lang: LanguageMode;
 }
 
 export const DEFAULT_QUICK_SPEEDS = [1, 2, 3, 4, 5];
@@ -53,6 +55,7 @@ export const DEFAULT_SETTINGS: Settings = {
   accent: '#0F766E',
   customColor: null,
   theme: 'system',
+  lang: 'auto',
 };
 
 export const settingsStorage = storage.defineItem<Settings>('local:lightspeed:settings', {

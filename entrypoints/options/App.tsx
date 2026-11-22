@@ -17,6 +17,7 @@ import {
   SUPPORT_URLS,
   WEBSITE_URL,
 } from '@/utils/color';
+import { getStrings, resolveLang } from '@/utils/i18n';
 import {
   DEFAULT_SPEED,
   detectIndonesiaRegion,
@@ -26,6 +27,7 @@ import {
 import {
   DEFAULT_QUICK_SPEEDS,
   DEFAULT_SETTINGS,
+  type LanguageMode,
   type PopupVisibility,
   type ScopeMode,
   type Settings,
@@ -108,6 +110,37 @@ export default function App() {
   const isIndonesia = useMemo(() => detectIndonesiaRegion(), []);
   const themeMode: ThemeMode = settings.theme ?? 'system';
   const resolvedTheme = useResolvedTheme(themeMode);
+  const langMode: LanguageMode = settings.lang ?? 'auto';
+  const resolvedLang = resolveLang(langMode);
+  const t = getStrings(resolvedLang);
+
+  const navItems = [
+    { id: 'popup', label: t.navPopup },
+    { id: 'quick', label: t.navQuick },
+    { id: 'steps', label: t.navSteps },
+    { id: 'shortcuts', label: t.navShortcuts },
+    { id: 'appearance', label: t.navAppearance },
+  ] as const;
+
+  const visRows: { key: keyof PopupVisibility; title: string; desc: string }[] = [
+    { key: 'scope', title: t.visScopeTitle, desc: t.visScopeDesc },
+    { key: 'quick', title: t.visQuickTitle, desc: t.visQuickDesc },
+    { key: 'fine', title: t.visFineTitle, desc: t.visFineDesc },
+    { key: 'manual', title: t.visManualTitle, desc: t.visManualDesc },
+    { key: 'now', title: t.visNowTitle, desc: t.visNowDesc },
+  ];
+
+  const langOptions: { id: LanguageMode; label: string }[] = [
+    { id: 'auto', label: t.langAuto },
+    { id: 'en', label: 'English' },
+    { id: 'id', label: 'Bahasa Indonesia' },
+  ];
+
+  const themeOptions: { id: ThemeMode; label: string }[] = [
+    { id: 'system', label: t.themeSystem },
+    { id: 'light', label: t.themeLight },
+    { id: 'dark', label: t.themeDark },
+  ];
 
   useEffect(() => {
     document.documentElement.style.setProperty('--accent', settings.accent);
@@ -154,9 +187,7 @@ export default function App() {
 
   const accent = settings.accent;
   const supportUrl = isIndonesia ? SUPPORT_URLS.indonesia : SUPPORT_URLS.global;
-  const supportLabel = isIndonesia
-    ? 'Buy me a coffee on Trakteer'
-    : 'Buy me a coffee on Ko-fi';
+  const supportLabel = t.supportButton(isIndonesia);
   const version = browser?.runtime?.getManifest?.().version ?? '1.0.0';
 
   const quickFull = settings.quickSpeeds.length >= 10;
@@ -164,15 +195,15 @@ export default function App() {
   const addQuick = () => {
     const n = parseSpeed(addDraft);
     if (n === null) {
-      setQuickErr('Enter a speed from 0.1× to 16×.');
+      setQuickErr(t.quickErrRange);
       return;
     }
     if (settings.quickSpeeds.includes(n)) {
-      setQuickErr(`${formatShortSpeed(n)} is already in the list.`);
+      setQuickErr(t.quickErrDuplicate(formatShortSpeed(n)));
       return;
     }
     if (quickFull) {
-      setQuickErr('You can have up to 10 quick speeds.');
+      setQuickErr(t.quickErrMax);
       return;
     }
     updateSettings((prev) => ({
@@ -187,11 +218,11 @@ export default function App() {
     if (editing === null) return;
     const n = parseSpeed(editDraft);
     if (n === null) {
-      setQuickErr('Enter a speed from 0.1× to 16×.');
+      setQuickErr(t.quickErrRange);
       return;
     }
     if (n !== editing && settings.quickSpeeds.includes(n)) {
-      setQuickErr(`${formatShortSpeed(n)} is already in the list.`);
+      setQuickErr(t.quickErrDuplicate(formatShortSpeed(n)));
       return;
     }
     updateSettings((prev) => ({
@@ -231,9 +262,9 @@ export default function App() {
   };
 
   const keyDefs: { id: keyof ShortcutKeys; action: string }[] = [
-    { id: 'up', action: `Increase speed by ${settings.smallStep}%` },
-    { id: 'down', action: `Decrease speed by ${settings.smallStep}%` },
-    { id: 'reset', action: 'Reset to 1×' },
+    { id: 'up', action: t.shortcutUp(settings.smallStep) },
+    { id: 'down', action: t.shortcutDown(settings.smallStep) },
+    { id: 'reset', action: t.shortcutReset },
   ];
 
   const handleCaptureKey = (
@@ -252,7 +283,7 @@ export default function App() {
       (k) => k !== id && settings.keys[k] === key,
     );
     if (taken) {
-      setKeyMsg(`${key} is already used by another shortcut.`);
+      setKeyMsg(t.keyTaken(key));
       return;
     }
     updateSettings((prev) => ({
@@ -281,7 +312,7 @@ export default function App() {
     const cleaned = stepDraft.trim().replace(/%/g, '');
     const n = Number(cleaned);
     if (!Number.isInteger(n) || n < 1 || n > max) {
-      setStepErr(`Enter a whole number from 1% to ${max}%.`);
+      setStepErr(t.stepErrRange(max));
       return;
     }
     updateSettings((prev) =>
@@ -363,7 +394,7 @@ export default function App() {
             }}
           >
             <CheckIcon size={16} color="var(--accent-fg)" strokeWidth={2.4} />
-            Changes save automatically
+            {t.changesAutoSave}
           </span>
           <a
             href={WEBSITE_URL}
@@ -386,7 +417,7 @@ export default function App() {
             }}
           >
             <GlobeIcon size={16} color="var(--accent-fg)" />
-            Website
+            {t.website}
           </a>
           <a
             href={supportUrl}
@@ -436,7 +467,7 @@ export default function App() {
             top: 24,
           }}
         >
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const isActive = activeNav === item.id;
             return (
               <a
@@ -496,7 +527,7 @@ export default function App() {
                 gap: 4,
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Popup layout</h2>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navPopup}</h2>
               <p
                 style={{
                   margin: '0 0 12px',
@@ -505,10 +536,9 @@ export default function App() {
                   color: 'var(--text-muted)',
                 }}
               >
-                Choose what shows in the popup. The header with the on/off switch and Reset all
-                always stays.
+                {t.popupLayoutDesc}
               </p>
-              {VISIBILITY_ROWS.map((r) => {
+              {visRows.map((r) => {
                 const on = settings.vis[r.key];
                 return (
                   <div
@@ -601,10 +631,9 @@ export default function App() {
                 }}
               >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: '1 1 260px' }}>
-                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Quick speeds</h2>
+                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navQuick}</h2>
                   <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
-                    The one-tap buttons in the popup, shown from slowest to fastest. Up to 10, from
-                    0.1× to 16×.
+                    {t.quickSpeedsDesc}
                   </p>
                 </div>
                 <button
@@ -623,7 +652,7 @@ export default function App() {
                     cursor: 'pointer',
                   }}
                 >
-                  Reset to default
+                  {t.resetToDefault}
                 </button>
               </div>
 
@@ -707,7 +736,7 @@ export default function App() {
                             }}
                           >
                             <PencilIcon />
-                            Edit
+                            {t.edit}
                           </button>
                           <button
                             type="button"
@@ -812,7 +841,7 @@ export default function App() {
                               cursor: 'pointer',
                             }}
                           >
-                            Save
+                            {t.save}
                           </button>
                           <button
                             type="button"
@@ -830,7 +859,7 @@ export default function App() {
                               cursor: 'pointer',
                             }}
                           >
-                            Cancel
+                            {t.cancel}
                           </button>
                         </>
                       )}
@@ -853,7 +882,7 @@ export default function App() {
                   htmlFor="ls-add-quick"
                   style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)' }}
                 >
-                  Add a speed
+                  {t.addASpeed}
                 </label>
                 <span
                   className="ls-input-well"
@@ -872,7 +901,7 @@ export default function App() {
                     id="ls-add-quick"
                     type="text"
                     inputMode="decimal"
-                    placeholder="e.g. 1.5"
+                    placeholder={t.addPlaceholder}
                     value={addDraft}
                     onChange={(e) => {
                       setAddDraft(e.target.value);
@@ -933,7 +962,7 @@ export default function App() {
                   }}
                 >
                   <PlusIcon />
-                  Add
+                  {t.add}
                 </button>
               </div>
               <p
@@ -944,7 +973,7 @@ export default function App() {
                   color: quickErr ? 'var(--error)' : 'var(--text-muted)',
                 }}
               >
-                {quickErr || `${settings.quickSpeeds.length} of 10 · the popup shows up to 5 per row`}
+                {quickErr || t.quickCountMsg(settings.quickSpeeds.length)}
               </p>
             </section>
 
@@ -964,19 +993,19 @@ export default function App() {
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Fine-tune steps</h2>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navSteps}</h2>
                 <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
-                  How much the −/+ buttons change the speed. 1% of 1× is 0.01×.
+                  {t.fineTuneDesc}
                 </p>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
                 <div
                   role="group"
-                  aria-label="Small step"
+                  aria-label={t.smallStep}
                   style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
                 >
                   <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
-                    Small step
+                    {t.smallStep}
                   </span>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {SMALL_STEPS.map((val) => {
@@ -1256,7 +1285,7 @@ export default function App() {
                 gap: 4,
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Keyboard shortcuts</h2>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navShortcuts}</h2>
               <p
                 style={{
                   margin: '0 0 12px',
@@ -1265,8 +1294,7 @@ export default function App() {
                   color: 'var(--text-muted)',
                 }}
               >
-                Work on any page with a video, as long as you are not typing in a text field. Click
-                Change, then press a letter or number.
+                {t.shortcutsDesc}
               </p>
               {keyDefs.map((k) => {
                 const isListening = listening === k.id;
@@ -1301,7 +1329,7 @@ export default function App() {
                         color: isListening ? 'var(--accent-fg)' : 'var(--text-primary)',
                       }}
                     >
-                      {isListening ? 'Press a key…' : settings.keys[k.id]}
+                      {isListening ? t.pressKey : settings.keys[k.id]}
                     </kbd>
                     <button
                       type="button"
@@ -1324,7 +1352,7 @@ export default function App() {
                         cursor: 'pointer',
                       }}
                     >
-                      {isListening ? 'Cancel' : 'Change'}
+                      {isListening ? t.cancel : t.change}
                     </button>
                   </div>
                 );
@@ -1352,22 +1380,60 @@ export default function App() {
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>Appearance</h2>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800 }}>{t.navAppearance}</h2>
                 <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.5, color: 'var(--text-muted)' }}>
-                  Theme mode and accent color for the popup and settings.
+                  {t.appearanceDesc}
                 </p>
               </div>
 
               <div
                 role="group"
-                aria-label="Theme mode"
+                aria-label={t.language}
                 style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
               >
                 <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
-                  Theme
+                  {t.language}
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {THEME_OPTIONS.map((opt) => {
+                  {langOptions.map((opt) => {
+                    const active = langMode === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
+                        aria-pressed={active}
+                        onClick={() => updateSettings((prev) => ({ ...prev, lang: opt.id }))}
+                        style={{
+                          minWidth: 84,
+                          height: 42,
+                          padding: '0 16px',
+                          borderRadius: 10,
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: active ? accent : 'var(--bg-surface)',
+                          color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                          border: `1.5px solid ${active ? accent : 'var(--border-strong)'}`,
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div
+                role="group"
+                aria-label={t.theme}
+                style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+              >
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  {t.theme}
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {themeOptions.map((opt) => {
                     const active = themeMode === opt.id;
                     return (
                       <button
@@ -1523,15 +1589,14 @@ export default function App() {
                     lineHeight: 1.45,
                   }}
                 >
-                  This color is light, so white text on buttons may be hard to read. Try a darker
-                  shade.
+                  {t.lowContrastWarn}
                 </p>
               )}
             </section>
           </main>
 
           <aside
-            aria-label="Live preview"
+            aria-label={t.livePreview}
             style={{
               flex: '1 1 450px',
               minWidth: 0,
@@ -1550,9 +1615,9 @@ export default function App() {
                 gap: 8,
               }}
             >
-              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800 }}>Live preview</h2>
+              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 800 }}>{t.livePreview}</h2>
               <span style={{ fontSize: 12.5, color: 'var(--text-muted)' }}>
-                Updates as you change settings
+                {t.livePreviewSub}
               </span>
             </div>
             <div
@@ -1578,6 +1643,7 @@ export default function App() {
                   keys={settings.keys}
                   accent={accent}
                   theme={resolvedTheme}
+                  lang={resolvedLang}
                   isIndonesia={isIndonesia}
                   hostname="www.youtube.com"
                   video={{
@@ -1600,6 +1666,12 @@ export default function App() {
                     updateSettings((prev) => ({
                       ...prev,
                       theme: resolvedTheme === 'dark' ? 'light' : 'dark',
+                    }))
+                  }
+                  onToggleLang={() =>
+                    updateSettings((prev) => ({
+                      ...prev,
+                      lang: resolvedLang === 'id' ? 'en' : 'id',
                     }))
                   }
                   onOpenSettings={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

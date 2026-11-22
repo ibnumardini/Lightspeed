@@ -51,33 +51,50 @@ export interface TimeStats {
   leftText: string;
   deltaText: string;
   deltaKind: 'normal' | 'faster' | 'slower';
+  isLive: boolean;
+  leftDuration: string;
+  deltaDuration: string;
 }
 
 export function calcTimeStats(currentTime: number, duration: number, speed: number): TimeStats {
   if (!Number.isFinite(duration) || duration <= 0) {
-    return { leftText: 'Live', deltaText: 'normal speed', deltaKind: 'normal' };
+    return {
+      leftText: 'Live',
+      deltaText: 'normal speed',
+      deltaKind: 'normal',
+      isLive: true,
+      leftDuration: '',
+      deltaDuration: '',
+    };
   }
   const rem = Math.max(0, duration - Math.max(0, currentTime));
   const safeSpeed = clampSpeed(speed);
   const atSpeed = rem / safeSpeed;
   const delta = rem - atSpeed;
+  const leftDuration = formatDuration(atSpeed);
 
   let deltaText = 'normal speed';
   let deltaKind: TimeStats['deltaKind'] = 'normal';
+  let deltaDuration = '';
   if (!nearSpeed(safeSpeed, 1)) {
     if (delta > 0) {
-      deltaText = `saves ${formatDuration(delta)}`;
+      deltaDuration = formatDuration(delta);
+      deltaText = `saves ${deltaDuration}`;
       deltaKind = 'faster';
     } else {
-      deltaText = `+${formatDuration(-delta)} longer`;
+      deltaDuration = formatDuration(-delta);
+      deltaText = `+${deltaDuration} longer`;
       deltaKind = 'slower';
     }
   }
 
   return {
-    leftText: `${formatDuration(atSpeed)} left`,
+    leftText: `${leftDuration} left`,
     deltaText,
     deltaKind,
+    isLive: false,
+    leftDuration,
+    deltaDuration,
   };
 }
 
