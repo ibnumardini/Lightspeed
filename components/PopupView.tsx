@@ -7,7 +7,7 @@ import {
   PauseIcon,
   PlayIcon,
   ResetIcon,
-  SlidersIcon,
+  SettingsIcon,
   SunIcon,
 } from '@/components/Icons';
 import { PRIVACY_URL, SUPPORT_URLS, WEBSITE_URL } from '@/utils/color';
@@ -1094,7 +1094,7 @@ export function PopupView({
               cursor: 'pointer',
             }}
           >
-            <SlidersIcon color="var(--accent-fg)" />
+            <SettingsIcon color="var(--accent-fg)" />
             <span>{t.settings}</span>
           </button>
 
