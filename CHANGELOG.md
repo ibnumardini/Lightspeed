@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.1.1] - 2026-11-23
+
+### Added
+
+- Toolbar badge visibility setting in Settings > Appearance (`Always show`, `Hide at 1×`, and `Always hide`), defaulting to `Always show` so `1×` stays visible on the extension icon.
+
+### Changed
+
+- Reordered the popup controls to place `Playback speed` above `Quick speed`.
+- Refined Dark mode surfaces, borders, and neutral text tones for cleaner contrast with less accent color bleed.
+- Replaced the popup Settings sliders icon with a cog icon.
+- Updated landing page and store screenshots to match the latest UI.
+
+### Fixed
+
+- Preloaded the active tab playback state in parallel with settings before mounting the popup, eliminating the brief `1×` quick-speed flash on open.
+
 ## [1.1.0] - 2026-11-23
 
 ### Added
