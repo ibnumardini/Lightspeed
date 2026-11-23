@@ -48,3 +48,12 @@
 5. Source code declaration: WXT bundles and minifies the React/TypeScript build, so if AMO requests source code, upload `.output/lightspeed-x.y.z-sources.zip` (generated automatically by `bun run zip:firefox`) and note the build commands (`bun install && bun run build:firefox`).
 6. Enter release notes for this version (paste the changelog entry).
 7. Submit for review.
+
+## 5. Microsoft Edge Add-ons
+
+1. Go to [Microsoft Partner Center (Edge)](https://partner.microsoft.com/dashboard/microsoftedge/overview) and open the Lightspeed listing (or click Create new extension for the first submission; individual developer registration is free).
+2. Upload the same Chromium package: `dist/lightspeed-x.y.z-chrome.zip`.
+3. Update Properties if needed (Category: `Productivity`, Website: `https://ibnumardini.github.io/lightspeed/`, Privacy policy: `https://ibnumardini.github.io/lightspeed/privacy.html`, Support: `hi@mardini.dev`).
+4. In Store listings, upload `assets/store/edge-logo-300x300.png` (`300×300`), the `1280×800` screenshots (`assets/store/screenshot-*.png`), and optional promotional tiles (`promo-small-440x280.png`, `promo-marquee-1400x560.png`).
+5. Add brief Notes for certification explaining `storage` (local preferences and per-site speeds) and `tabs` (active tab hostname for scope and toolbar badge), with zero telemetry.
+6. Click Publish to submit for review.
