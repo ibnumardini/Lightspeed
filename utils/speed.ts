@@ -1,3 +1,5 @@
+import type { BadgeMode } from '@/utils/storage';
+
 export const MIN_SPEED = 0.1;
 export const MAX_SPEED = 16;
 export const DEFAULT_SPEED = 1;
@@ -26,9 +28,14 @@ export function formatShortSpeed(v: number): string {
   return `${roundSpeed(v)}×`;
 }
 
-export function formatBadgeSpeed(v: number, enabled: boolean): string {
+export function formatBadgeSpeed(
+  v: number,
+  enabled: boolean,
+  mode: BadgeMode = 'always',
+): string {
+  if (mode === 'hidden') return '';
   if (!enabled) return 'OFF';
-  if (nearSpeed(v, DEFAULT_SPEED)) return '';
+  if (mode === 'non-default' && nearSpeed(v, DEFAULT_SPEED)) return '';
   const s = String(roundSpeed(v));
   return s.length <= 3 ? `${s}×` : s.slice(0, 4);
 }

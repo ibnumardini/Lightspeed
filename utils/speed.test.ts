@@ -54,12 +54,21 @@ describe('speed utils', () => {
     });
   });
 
-  test('formatBadgeSpeed hides 1x, fits 4 chars, and handles OFF state', () => {
-    expect(formatBadgeSpeed(1, true)).toBe('');
-    expect(formatBadgeSpeed(1.5, true)).toBe('1.5×');
-    expect(formatBadgeSpeed(1.25, true)).toBe('1.25');
-    expect(formatBadgeSpeed(16, true)).toBe('16×');
-    expect(formatBadgeSpeed(2, false)).toBe('OFF');
+  test('formatBadgeSpeed respects always, non-default, hidden modes and OFF state', () => {
+    expect(formatBadgeSpeed(1, true)).toBe('1×');
+    expect(formatBadgeSpeed(1, true, 'always')).toBe('1×');
+    expect(formatBadgeSpeed(1.5, true, 'always')).toBe('1.5×');
+    expect(formatBadgeSpeed(1.25, true, 'always')).toBe('1.25');
+    expect(formatBadgeSpeed(16, true, 'always')).toBe('16×');
+    expect(formatBadgeSpeed(2, false, 'always')).toBe('OFF');
+
+    expect(formatBadgeSpeed(1, true, 'non-default')).toBe('');
+    expect(formatBadgeSpeed(1.5, true, 'non-default')).toBe('1.5×');
+    expect(formatBadgeSpeed(2, false, 'non-default')).toBe('OFF');
+
+    expect(formatBadgeSpeed(1, true, 'hidden')).toBe('');
+    expect(formatBadgeSpeed(2, true, 'hidden')).toBe('');
+    expect(formatBadgeSpeed(2, false, 'hidden')).toBe('');
   });
 
   test('resolveEffectiveSpeed follows enabled > tab > site > all priority', () => {

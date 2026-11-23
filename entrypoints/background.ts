@@ -7,6 +7,7 @@ import {
 } from '@/utils/speed';
 import {
   allSpeedStorage,
+  type BadgeMode,
   type ScopeMode,
   settingsStorage,
   siteSpeedsStorage,
@@ -79,10 +80,11 @@ export default defineBackground(() => {
     speed: number,
     enabled: boolean,
     accent: string,
+    badgeMode: BadgeMode,
   ): Promise<void> {
     const actionApi = browser.action ?? browser.browserAction;
     if (!actionApi) return;
-    const text = formatBadgeSpeed(speed, enabled);
+    const text = formatBadgeSpeed(speed, enabled, badgeMode);
     const bg = enabled ? accent : '#5F7672';
     try {
       await Promise.all([
@@ -121,7 +123,13 @@ export default defineBackground(() => {
           siteSpeeds,
           allSpeed,
         });
-        await updateTabBadge(tab.id, speed, settings.enabled, settings.accent);
+        await updateTabBadge(
+          tab.id,
+          speed,
+          settings.enabled,
+          settings.accent,
+          settings.badgeMode ?? 'always',
+        );
         if (!hostname) return;
         await sendToTab(tab.id, {
           type: 'APPLY_SPEED',

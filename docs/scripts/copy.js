@@ -49,7 +49,7 @@ export const COPY = {
     cards: [
       {
         title: 'Toolbar speed badge',
-        desc: 'Shows the active speed right on the extension icon whenever playback is not 1×, and clears automatically at normal speed or shows OFF when paused.',
+        desc: 'Shows the active speed right on the extension icon. Choose Always show, Hide at 1×, or Always hide in Settings.',
       },
       {
         title: 'Themes and dynamic accents',
@@ -146,7 +146,7 @@ export const COPY = {
     cards: [
       {
         title: 'Badge kecepatan di icon toolbar',
-        desc: 'Menampilkan kecepatan aktif langsung di icon extension saat bukan 1×, otomatis bersih di kecepatan normal, dan menampilkan OFF saat dimatikan.',
+        desc: 'Menampilkan kecepatan aktif langsung di icon extension. Pilih Selalu tampil, Sembunyikan di 1×, atau Selalu sembunyikan di Pengaturan.',
       },
       {
         title: 'Theme dan warna accent dinamis',

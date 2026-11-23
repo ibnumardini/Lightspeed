@@ -11,7 +11,7 @@
 - **Flexible scope**: apply speed per tab, per site (saved locally), or across all tabs, including SPAs and iframes.
 - **Quick speeds & fine-tune controls**: up to 10 customizable presets (each with an expandable `+0.5×` micro-tab), press-and-hold percentage step buttons, and direct `0.1×` to `16×` input with scroll wheel and arrow-key support.
 - **Keyboard shortcuts**: `A` (speed up), `D` (slow down), and `S` (reset to `1×`), toggleable on/off or rebindable in Settings, and paused while typing.
-- **Toolbar badge & Now playing**: live speed badge on the extension icon (hidden at `1×`, shows `OFF` when paused), playback progress bar, remaining duration, and time saved.
+- **Toolbar badge & Now playing**: live speed badge on the extension icon (`Always show`, `Hide at 1×`, or `Always hide`), playback progress bar, remaining duration, and time saved.
 - **Settings with live preview**: toggle popup sections on/off, switch System/Light/Dark themes, pick from 6 WCAG-checked accents or a custom color, and switch between English and Bahasa Indonesia.
 
 <img alt="Lightspeed Settings page with live preview" src="./docs/assets/settings-layout-light.webp" width="760" />

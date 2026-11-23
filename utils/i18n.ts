@@ -120,6 +120,10 @@ export interface Strings {
   themeSystem: string;
   themeLight: string;
   themeDark: string;
+  toolbarBadge: string;
+  badgeAlways: string;
+  badgeHide1x: string;
+  badgeHidden: string;
   accentColor: string;
   lowContrastWarn: string;
 
@@ -228,13 +232,17 @@ const EN: Strings = {
   change: 'Change',
   keyTaken: (key) => `${key} is already used by another shortcut.`,
 
-  appearanceDesc: 'Language, theme mode, and accent color for the popup and settings.',
+  appearanceDesc: 'Language, theme mode, toolbar badge, and accent color.',
   language: 'Language',
   langAuto: 'Auto',
   theme: 'Theme',
   themeSystem: 'System',
   themeLight: 'Light',
   themeDark: 'Dark',
+  toolbarBadge: 'Toolbar badge',
+  badgeAlways: 'Always show',
+  badgeHide1x: 'Hide at 1×',
+  badgeHidden: 'Always hide',
   accentColor: 'Accent color',
   lowContrastWarn:
     'This color is light, so white text on buttons may be hard to read. Try a darker shade.',
@@ -344,13 +352,17 @@ const ID: Strings = {
   change: 'Ubah',
   keyTaken: (key) => `Tombol ${key} sudah dipakai pintasan lain.`,
 
-  appearanceDesc: 'Bahasa, mode tema, dan warna aksen untuk popup dan pengaturan.',
+  appearanceDesc: 'Bahasa, mode tema, badge toolbar, dan warna aksen.',
   language: 'Bahasa',
   langAuto: 'Otomatis',
   theme: 'Tema',
   themeSystem: 'Sistem',
   themeLight: 'Terang',
   themeDark: 'Gelap',
+  toolbarBadge: 'Badge toolbar',
+  badgeAlways: 'Selalu tampil',
+  badgeHide1x: 'Sembunyikan di 1×',
+  badgeHidden: 'Selalu sembunyikan',
   accentColor: 'Warna aksen',
   lowContrastWarn:
     'Warna ini terlalu terang sehingga teks putih di tombol bisa sulit dibaca. Coba pilih warna yang lebih gelap.',

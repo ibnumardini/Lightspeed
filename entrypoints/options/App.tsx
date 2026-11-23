@@ -25,6 +25,7 @@ import {
   parseSpeed,
 } from '@/utils/speed';
 import {
+  type BadgeMode,
   DEFAULT_QUICK_SPEEDS,
   DEFAULT_SETTINGS,
   type LanguageMode,
@@ -111,6 +112,7 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
   const themeMode: ThemeMode = settings.theme ?? 'system';
   const resolvedTheme = useResolvedTheme(themeMode);
   const langMode: LanguageMode = settings.lang ?? 'auto';
+  const badgeMode: BadgeMode = settings.badgeMode ?? 'always';
   const resolvedLang = resolveLang(langMode);
   const t = getStrings(resolvedLang);
 
@@ -140,6 +142,12 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
     { id: 'system', label: t.themeSystem },
     { id: 'light', label: t.themeLight },
     { id: 'dark', label: t.themeDark },
+  ];
+
+  const badgeOptions: { id: BadgeMode; label: string }[] = [
+    { id: 'always', label: t.badgeAlways },
+    { id: 'non-default', label: t.badgeHide1x },
+    { id: 'hidden', label: t.badgeHidden },
   ];
 
   useEffect(() => {
@@ -1508,6 +1516,44 @@ export default function App({ initialSettings = DEFAULT_SETTINGS }: { initialSet
                         className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
                         aria-pressed={active}
                         onClick={() => updateSettings((prev) => ({ ...prev, theme: opt.id }))}
+                        style={{
+                          minWidth: 84,
+                          height: 42,
+                          padding: '0 16px',
+                          borderRadius: 10,
+                          fontSize: 13.5,
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          background: active ? accent : 'var(--bg-surface)',
+                          color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                          border: `1.5px solid ${active ? accent : 'var(--border-strong)'}`,
+                        }}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div
+                role="group"
+                aria-label={t.toolbarBadge}
+                style={{ display: 'flex', flexDirection: 'column', gap: 8 }}
+              >
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-secondary)' }}>
+                  {t.toolbarBadge}
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {badgeOptions.map((opt) => {
+                    const active = badgeMode === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-surface'}`}
+                        aria-pressed={active}
+                        onClick={() => updateSettings((prev) => ({ ...prev, badgeMode: opt.id }))}
                         style={{
                           minWidth: 84,
                           height: 42,
