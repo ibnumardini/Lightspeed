@@ -50,32 +50,32 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
-  --bg-page: #0b0d0f;
-  --bg-surface: color-mix(in srgb, var(--accent, #0f766e) 1%, #131517);
-  --bg-subtle: color-mix(in srgb, var(--accent, #0f766e) 2%, #181b1e);
-  --bg-header-end: color-mix(in srgb, var(--accent, #0f766e) 1.5%, #15181b);
-  --bg-now-start: color-mix(in srgb, var(--accent, #0f766e) 3%, #191c20);
-  --bg-now-end: color-mix(in srgb, var(--accent, #0f766e) 2%, #15181b);
-  --bg-hover: color-mix(in srgb, var(--accent, #0f766e) 4%, #1e2226);
-  --bg-nav-hover: color-mix(in srgb, var(--accent, #0f766e) 3%, #1a1e22);
-  --border: color-mix(in srgb, var(--accent, #0f766e) 6%, #2b3036);
-  --border-subtle: color-mix(in srgb, var(--accent, #0f766e) 4%, #23272c);
-  --border-divider: color-mix(in srgb, var(--accent, #0f766e) 3%, #1f2328);
-  --border-strong: color-mix(in srgb, var(--accent, #0f766e) 8%, #393f47);
-  --border-hover: color-mix(in srgb, var(--accent, #0f766e) 16%, #4a525c);
-  --text-primary: #f3f8f7;
-  --text-secondary: #d4e2e0;
-  --text-muted: #a1b8b4;
-  --text-subtle: #88a19d;
+  --bg-page: #121417;
+  --bg-surface: color-mix(in srgb, var(--accent, #0f766e) 1%, #1b1e23);
+  --bg-subtle: color-mix(in srgb, var(--accent, #0f766e) 2%, #22262c);
+  --bg-header-end: color-mix(in srgb, var(--accent, #0f766e) 1.5%, #1e2228);
+  --bg-now-start: color-mix(in srgb, var(--accent, #0f766e) 3%, #242930);
+  --bg-now-end: color-mix(in srgb, var(--accent, #0f766e) 2%, #1f242a);
+  --bg-hover: color-mix(in srgb, var(--accent, #0f766e) 4%, #2a2f37);
+  --bg-nav-hover: color-mix(in srgb, var(--accent, #0f766e) 3%, #252a31);
+  --border: color-mix(in srgb, var(--accent, #0f766e) 6%, #323842);
+  --border-subtle: color-mix(in srgb, var(--accent, #0f766e) 4%, #2a3038);
+  --border-divider: color-mix(in srgb, var(--accent, #0f766e) 3%, #282d35);
+  --border-strong: color-mix(in srgb, var(--accent, #0f766e) 8%, #434b57);
+  --border-hover: color-mix(in srgb, var(--accent, #0f766e) 16%, #56606f);
+  --text-primary: #f4f6f8;
+  --text-secondary: #d5dce3;
+  --text-muted: #a3aeb9;
+  --text-subtle: #8b97a4;
   --accent-fg: color-mix(in srgb, var(--accent, #0f766e) 46%, #ffffff);
-  --accent-tint: color-mix(in srgb, var(--accent, #0f766e) 13%, #191d21);
-  --accent-tint-hover: color-mix(in srgb, var(--accent, #0f766e) 20%, #20252a);
-  --preview-bg: #0c0e10;
-  --btn-disabled-bg: color-mix(in srgb, var(--accent, #0f766e) 2%, #181b1e);
-  --btn-disabled-text: #7a928e;
-  --switch-off: color-mix(in srgb, var(--accent, #0f766e) 5%, #2d3238);
-  --knob-off: color-mix(in srgb, var(--accent, #0f766e) 6%, #3c424a);
-  --power-off-border: color-mix(in srgb, var(--accent, #0f766e) 7%, #3a4048);
+  --accent-tint: color-mix(in srgb, var(--accent, #0f766e) 14%, #242930);
+  --accent-tint-hover: color-mix(in srgb, var(--accent, #0f766e) 22%, #2c323b);
+  --preview-bg: #14171b;
+  --btn-disabled-bg: color-mix(in srgb, var(--accent, #0f766e) 2%, #22262c);
+  --btn-disabled-text: #7e8a96;
+  --switch-off: color-mix(in srgb, var(--accent, #0f766e) 5%, #373e47);
+  --knob-off: color-mix(in srgb, var(--accent, #0f766e) 6%, #49525e);
+  --power-off-border: color-mix(in srgb, var(--accent, #0f766e) 7%, #464f5b);
   --warm-bg: #312312;
   --warm-border: #634420;
   --warm-text: #fdba74;
@@ -212,7 +212,7 @@ input:focus-visible {
 }
 
 [data-theme='dark'] .ls-scope-track {
-  background: #0d0f11 !important;
+  background: #131519 !important;
   box-shadow:
     inset 0 1px 2px rgba(0, 0, 0, 0.4),
     inset 0 0 0 1px rgba(255, 255, 255, 0.07);
