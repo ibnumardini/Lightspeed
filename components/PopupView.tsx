@@ -468,83 +468,6 @@ export function PopupView({
             </fieldset>
           )}
 
-          {vis.quick && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <span
-                style={{
-                  fontSize: 11,
-                  lineHeight: '16px',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'var(--text-muted)',
-                }}
-              >
-                {t.quickSpeed}
-              </span>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(${quickCols}, minmax(0, 1fr))`,
-                  gap: 6,
-                }}
-              >
-                {quickList.map((v) => {
-                  const active = nearSpeed(speed, v);
-                  const isReset = shortcutsEnabled && nearSpeed(v, 1);
-                  const halfVal = Math.round((v + 0.5) * 100) / 100;
-                  const showHalf =
-                    halfVal <= 16 && !quickList.some((q) => nearSpeed(q, halfVal));
-                  const halfActive = showHalf && nearSpeed(speed, halfVal);
-                  return (
-                    <div key={v} className={`ls-quick-cell${halfActive ? ' is-flipped' : ''}`}>
-                      <button
-                        type="button"
-                        className={`ls-quick-main ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset && !halfActive ? ' ls-has-key' : ''}`}
-                        onClick={() => commitSpeed(v)}
-                        aria-pressed={active}
-                        aria-label={formatShortSpeed(v)}
-                        title={isReset ? t.shortcutTip(keys.reset) : formatShortSpeed(v)}
-                        style={{
-                          borderRadius: showHalf ? '10px 4px 4px 10px' : 10,
-                          border: `1px solid ${active ? accent : 'transparent'}`,
-                          background: active ? accent : 'var(--accent-tint)',
-                          color: active ? '#FFFFFF' : 'var(--accent-fg)',
-                        }}
-                      >
-                        {isReset && !halfActive && (
-                          <kbd className="ls-key-hint" aria-hidden="true">
-                            {keys.reset}
-                          </kbd>
-                        )}
-                        {showHalf && <span className="ls-quick-half-dot" aria-hidden="true" />}
-                        <span className="ls-quick-half-label">{formatShortSpeed(v)}</span>
-                      </button>
-                      {showHalf && (
-                        <button
-                          type="button"
-                          className={`ls-quick-half ls-btn ${halfActive ? 'ls-btn-primary' : 'ls-btn-tint'}`}
-                          onClick={() => commitSpeed(halfVal)}
-                          aria-pressed={halfActive}
-                          aria-label={formatShortSpeed(halfVal)}
-                          title={formatShortSpeed(halfVal)}
-                          style={{
-                            border: `1px solid ${halfActive ? accent : 'transparent'}`,
-                            background: halfActive ? accent : 'var(--accent-tint)',
-                            color: halfActive ? '#FFFFFF' : 'var(--accent-fg)',
-                          }}
-                        >
-                          <span className="ls-quick-half-dot" aria-hidden="true" />
-                          <span className="ls-quick-half-label">{formatShortSpeed(halfVal)}</span>
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
           {showSpeedRow && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <div
@@ -805,6 +728,83 @@ export function PopupView({
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {vis.quick && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span
+                style={{
+                  fontSize: 11,
+                  lineHeight: '16px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-muted)',
+                }}
+              >
+                {t.quickSpeed}
+              </span>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${quickCols}, minmax(0, 1fr))`,
+                  gap: 6,
+                }}
+              >
+                {quickList.map((v) => {
+                  const active = nearSpeed(speed, v);
+                  const isReset = shortcutsEnabled && nearSpeed(v, 1);
+                  const halfVal = Math.round((v + 0.5) * 100) / 100;
+                  const showHalf =
+                    halfVal <= 16 && !quickList.some((q) => nearSpeed(q, halfVal));
+                  const halfActive = showHalf && nearSpeed(speed, halfVal);
+                  return (
+                    <div key={v} className={`ls-quick-cell${halfActive ? ' is-flipped' : ''}`}>
+                      <button
+                        type="button"
+                        className={`ls-quick-main ls-btn ${active ? 'ls-btn-primary' : 'ls-btn-tint'}${isReset && !halfActive ? ' ls-has-key' : ''}`}
+                        onClick={() => commitSpeed(v)}
+                        aria-pressed={active}
+                        aria-label={formatShortSpeed(v)}
+                        title={isReset ? t.shortcutTip(keys.reset) : formatShortSpeed(v)}
+                        style={{
+                          borderRadius: showHalf ? '10px 4px 4px 10px' : 10,
+                          border: `1px solid ${active ? accent : 'transparent'}`,
+                          background: active ? accent : 'var(--accent-tint)',
+                          color: active ? '#FFFFFF' : 'var(--accent-fg)',
+                        }}
+                      >
+                        {isReset && !halfActive && (
+                          <kbd className="ls-key-hint" aria-hidden="true">
+                            {keys.reset}
+                          </kbd>
+                        )}
+                        {showHalf && <span className="ls-quick-half-dot" aria-hidden="true" />}
+                        <span className="ls-quick-half-label">{formatShortSpeed(v)}</span>
+                      </button>
+                      {showHalf && (
+                        <button
+                          type="button"
+                          className={`ls-quick-half ls-btn ${halfActive ? 'ls-btn-primary' : 'ls-btn-tint'}`}
+                          onClick={() => commitSpeed(halfVal)}
+                          aria-pressed={halfActive}
+                          aria-label={formatShortSpeed(halfVal)}
+                          title={formatShortSpeed(halfVal)}
+                          style={{
+                            border: `1px solid ${halfActive ? accent : 'transparent'}`,
+                            background: halfActive ? accent : 'var(--accent-tint)',
+                            color: halfActive ? '#FFFFFF' : 'var(--accent-fg)',
+                          }}
+                        >
+                          <span className="ls-quick-half-dot" aria-hidden="true" />
+                          <span className="ls-quick-half-label">{formatShortSpeed(halfVal)}</span>
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
