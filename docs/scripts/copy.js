@@ -6,6 +6,7 @@ export const COPY = {
     navPrivacy: 'Privacy',
     navGithub: 'GitHub',
     heroTitle: 'Video speed, without the friction.',
+    heroLatestLabel: 'Latest release',
     heroSub:
       '0.1× to 16× playback speed for Chromium and Firefox-based browsers. Per tab, per site, or across every tab.',
     addChrome: 'Add to Chrome',
@@ -66,8 +67,8 @@ export const COPY = {
     releasesViewAll: 'All releases on GitHub',
     releasesLatest: 'Latest',
     releasesLoading: 'Loading releases…',
-    releasesFallbackTitle: 'v1.0.0',
-    releasesFallbackDate: 'Nov 22, 2026',
+    releasesFallbackTitle: 'v1.1.1',
+    releasesFallbackDate: 'Nov 23, 2026',
     releasesFallbackNotes: [
       '0.1× to 16× HTML5 video playback speed control across Chromium (MV3) and Firefox-based (MV2) browsers.',
       'Per-tab, per-site, and all-tabs scope modes with automatic enforcement in SPAs and iframes.',
@@ -103,6 +104,7 @@ export const COPY = {
     navPrivacy: 'Privasi',
     navGithub: 'GitHub',
     heroTitle: 'Atur kecepatan video tanpa ribet.',
+    heroLatestLabel: 'Rilis terbaru',
     heroSub:
       'Kecepatan 0.1× sampai 16× untuk browser berbasis Chromium dan Firefox. Per tab, per situs, atau semua tab.',
     addChrome: 'Pasang di Chrome',
@@ -163,8 +165,8 @@ export const COPY = {
     releasesViewAll: 'Semua rilis di GitHub',
     releasesLatest: 'Terbaru',
     releasesLoading: 'Memuat daftar rilis…',
-    releasesFallbackTitle: 'v1.0.0',
-    releasesFallbackDate: '22 Nov 2026',
+    releasesFallbackTitle: 'v1.1.1',
+    releasesFallbackDate: '23 Nov 2026',
     releasesFallbackNotes: [
       'Kontrol kecepatan video HTML5 0.1× sampai 16× untuk browser berbasis Chromium (MV3) dan Firefox (MV2).',
       'Mode scope per tab, per situs, dan semua tab yang tetap aktif di SPA dan iframe.',

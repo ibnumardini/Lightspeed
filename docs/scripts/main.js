@@ -102,6 +102,7 @@ function App() {
 
   const supportUrl = isID ? 'https://trakteer.id/ibnumardini/tip' : 'https://ko-fi.com/ibnumardini';
   const supportName = isID ? 'Trakteer' : 'Ko-fi';
+  const latestVersion = releases?.[0]?.tag_name || t.releasesFallbackTitle;
 
   return html`
     <div>
@@ -121,6 +122,12 @@ function App() {
       <header className="hero">
         <${DuskBackdrop} theme=${theme} />
         <div className="hero-content">
+          <a href="#releases" className="hero-version">
+            <span className="hero-version-tag">${latestVersion}</span>
+            <span className="hero-version-sep" aria-hidden="true">·</span>
+            <span>${t.heroLatestLabel}</span>
+            <span className="hero-version-arrow" aria-hidden="true">→</span>
+          </a>
           <h1 className="hero-title">${t.heroTitle}</h1>
           <p className="hero-subtitle">${t.heroSub}</p>
 
